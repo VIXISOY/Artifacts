@@ -1,28 +1,51 @@
 from Private import *
 import requests
-import certifi
 import json
 
+class APIClient:
+    BASE_URL = "https://api.artifactsmmo.com"
+    TOKEN = token
 
-base_url = "https://api.artifactsmmo.com"
+    def __init__(self):
+        self.base_url = self.BASE_URL
+        self.headers = {
+            "Accept": "application/json",
+            "Authorization": f"Bearer {self.TOKEN}",
+            "Content-Type": "application/json"
+        }
 
-headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-    "Authorization": f"Bearer {token}"
-}
-def nice_json(response):
-    return json.dumps(response, indent=2)
+client = APIClient()
 
-def get(url):
-    return requests.get(base_url+url, headers=headers, verify=False).json()
+def handle_response(response):
+    if response.status_code == 200:
+        try:
+            return response.json()
+        except json.JSONDecodeError:
+            print("Error decoding JSON response")
+            return None
+    else:
+        print(f"Request failed with status code: {response.status_code}")
+        return None
 
-def nice_get(url):
-    return nice_json(get(url))
+def get(endpoint, params=None):
+    response = requests.get(client.BASE_URL+endpoint, headers=client.headers, params=params)
+    return handle_response(response)
 
-def serverStatus():
-    return nice_get("/")
+def post(endpoint, data=None):
+    response = requests.post(client.BASE_URL+endpoint, headers=client.headers, json=data)
+    return handle_response(response)
+
+def json_print(get_response):
+    print("Response JSON:\n", json.dumps(get_response, indent=2))
+
+def get_server_status():
+    return get("/")
+
+def get_number_of_players():
+    return get("/").get("data").get("characters_online")
 
 if __name__ == "__main__":
 
-    print(serverStatus())
+    json_print(get_server_status())
+
+    print("Number of Players Online:", get_number_of_players())
