@@ -1,3 +1,5 @@
-print("test")
-print("test")
-print("test")
+from time import sleep
+
+while True:
+    print("test")
+    sleep(2)
