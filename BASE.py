@@ -38,6 +38,17 @@ def post(endpoint, data=None):
 def json_print(get_response):
     print("Response JSON:\n", json.dumps(get_response, indent=2))
 
+
+class Character:
+
+    def __init__(self, name, api=APIClient()):
+        self.name = name
+        self.client = api
+
+    def move(self, x, y, map_id=0):
+        response = post(f"/my/{self.name}/action/move",f'"x"={x},"y"={y},"map_id"={map_id}')
+        return response
+
 def get_server_status():
     return get("/")
 
@@ -49,3 +60,5 @@ if __name__ == "__main__":
     json_print(get_server_status())
 
     print("Number of Players Online:", get_number_of_players())
+
+    Bonga = Character("Bonga")
