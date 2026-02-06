@@ -25,7 +25,7 @@ def handle_response(response):
             print("Error decoding JSON response")
             return None
     else:
-        print(f"Request failed with status code: {response.status_code}")
+        print(response.json())
         return None
 
 def get(endpoint, params=None,Debug = 0):
@@ -57,7 +57,7 @@ class Character:
         self.client = api
 
     def move(self, x, y, map_id=1):
-        response = post(f"/my/{self.name}/action/move",json.loads(f'{{"x": {x},"y": {y},"map_id": {map_id}}}'))
+        response = post(f"/my/{self.name}/action/move",{"x": x, "y": y,"map_id": map_id})
         return response
     
     def rest(self):
@@ -70,10 +70,13 @@ def get_server_status():
 def get_number_of_players():
     return get("/").get("data").get("characters_online")
 
+BAGAR = Character("BAGAR")
+
 if __name__ == "__main__":
 
-    json_print(get_server_status())
+    #json_print(get_server_status())
 
-    print("Number of Players Online:", get_number_of_players())
+    #print("Number of Players Online:", get_number_of_players())
 
-    Bonga = Character("Bonga")
+    json_print(BAGAR.move(0,0))
+
