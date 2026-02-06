@@ -5,13 +5,14 @@ import json
 class APIClient:
     BASE_URL = "https://api.artifactsmmo.com"
     TOKEN = token
+    session = requests.Session()
 
     def __init__(self):
         self.base_url = self.BASE_URL
         self.headers = {
+            "Content-Type": "application/json",
             "Accept": "application/json",
-            "Authorization": f"Bearer {self.TOKEN}",
-            "Content-Type": "application/json"
+            "Authorization": f"Bearer {self.TOKEN}"
         }
 
 client = APIClient()
@@ -27,17 +28,27 @@ def handle_response(response):
         print(f"Request failed with status code: {response.status_code}")
         return None
 
-def get(endpoint, params=None):
-    response = requests.get(client.BASE_URL+endpoint, headers=client.headers, params=params)
-    return handle_response(response)
+def get(endpoint, params=None,Debug = 0):
+    if not Debug:
+        response = requests.get(client.BASE_URL+endpoint, headers=client.headers, params=params)
+        return handle_response(response)
+    else:
+        prepared = requests.Request("GET", client.BASE_URL+endpoint, headers=client.headers, params=params).prepare()
+        print(f'{prepared.method} {prepared.url}\n{prepared.headers}\n{prepared.body}')
+        return handle_response(client.session.send(prepared))
+        
+def post(endpoint, data=None, Debug = 0):
+    if not Debug:
+        response = requests.post(client.BASE_URL+endpoint, headers=client.headers, json=data)
+        return handle_response(response)
+    else:
+        prepared = requests.Request("POST", client.BASE_URL+endpoint, headers=client.headers, json=data).prepare()
+        print(f'{prepared.method} {prepared.url}\n{prepared.headers}\n{prepared.body}')
+        return handle_response(client.session.send(prepared))
 
-def post(endpoint, data=None):
-    response = requests.post(client.BASE_URL+endpoint, headers=client.headers, json=data)
-    return handle_response(response)
 
 def json_print(get_response):
     print("Response JSON:\n", json.dumps(get_response, indent=2))
-
 
 class Character:
 
@@ -45,10 +56,14 @@ class Character:
         self.name = name
         self.client = api
 
-    def move(self, x, y, map_id=0):
-        response = post(f"/my/{self.name}/action/move",f'"x"={x},"y"={y},"map_id"={map_id}')
+    def move(self, x, y, map_id=1):
+        response = post(f"/my/{self.name}/action/move",json.loads(f'{{"x": {x},"y": {y},"map_id": {map_id}}}'))
         return response
-
+    
+    def rest(self):
+        response = post(f"/my/{self.name}/action/rest")
+        return response
+    
 def get_server_status():
     return get("/")
 
