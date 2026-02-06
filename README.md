@@ -1,3 +1,3 @@
 # Artifacts
 
-BAGUETTE
+BAGUETTE/BAGARRE
