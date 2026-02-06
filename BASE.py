@@ -20,10 +20,14 @@ client = APIClient()
 def handle_response(response):
     if response.status_code == 200:
         try:
+            print(f'{float(response.json()["data"]["cooldown"]["remaining_seconds"])} seconds remaining cooldown')
             return response.json()
         except json.JSONDecodeError:
             print("Error decoding JSON response")
             return None
+    elif response.status_code == 499:
+        print(f'Action could not be made {float(response.json()["error"]["message"].split()[5])} seconds cooldown')
+        return response.json()
     else:
         print(response.json())
         return None
@@ -56,8 +60,9 @@ class Character:
         self.name = name
         self.client = api
 
-    def move(self, x, y, map_id=1):
-        response = post(f"/my/{self.name}/action/move",{"x": x, "y": y,"map_id": map_id})
+    def move(self, x, y, Debug = 0):
+        response = post(f"/my/{self.name}/action/move",{"x": x, "y": y}, Debug=Debug)
+        print(f"{self.name} is at:", x, y)
         return response
     
     def rest(self):
@@ -78,5 +83,4 @@ if __name__ == "__main__":
 
     #print("Number of Players Online:", get_number_of_players())
 
-    json_print(BAGAR.move(0,0))
-
+    BAGAR.move(11,-5)
