@@ -33,10 +33,6 @@ def handle_response(response):
     else:
         print(response.json())
         return None
-
-def handle_cooldown():
-    
-    return None
     
 def get(endpoint, params=None,Debug = 0):
     if not Debug:
@@ -69,6 +65,10 @@ class Character:
     def get_cooldown(self):
         cooldown = get(f"/characters/{self.name}")["data"]["cooldown"]
         return cooldown
+        
+    def handle_cooldown():
+        get_cooldown()
+        return None
 
     def move(self, x, y, Debug = 0):
         handle_cooldown()
