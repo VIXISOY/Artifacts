@@ -67,8 +67,9 @@ class Character:
         return cooldown
         
     def handle_cooldown():
-        get_cooldown()
-        return None
+        for i in range(get_cooldown(), 0, -1):
+            print(f"\rCooldown: {i}s", end="", flush=True)
+            time.sleep(1)
 
     def move(self, x, y, Debug = 0):
         handle_cooldown()
