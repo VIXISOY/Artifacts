@@ -69,10 +69,8 @@ class Character:
     
     def moveTo(self, poi,Debug = 0):
         x, y = move.poi(poi,layer="Overworld", Debug=Debug)
-        response = post(f"/my/{self.name}/action/move",{"x": x, "y": y}, Debug=Debug)
-        print(f"{self.name} is at:", x, y)
-        return response
-    
+        self.move(x, y, Debug=Debug)
+        
     def rest(self):
         response = post(f"/my/{self.name}/action/rest")
         return response
@@ -91,8 +89,8 @@ BAGAR = Character("BAGAR")
 
 if __name__ == "__main__":
 
-    json_print(get_chars_status(1))
+    #json_print(get_chars_status(1))
 
     #print("Number of Players Online:", get_number_of_players())
 
-    #json_print(BAGAR.rest())
+    BAGAR.moveTo("cow")

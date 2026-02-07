@@ -8,8 +8,10 @@ class InexistentPositionException(Exception):
 
 "open the POI.json file and load it"
 with open('POI.json') as POIjson:
-    POI = json.load(POIjson)
-    print(POIjson)
+    try:
+        POI = json.load(POIjson)
+    except json.JSONDecodeError:
+        print("Error decoding POI.json")
 
 
 def poi(poi, layer, Debug = 0):
