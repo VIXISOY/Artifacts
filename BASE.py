@@ -86,7 +86,7 @@ def get_server_status():
     return get("/")
 
 def get_number_of_players():
-    return get("/").get("data").get("characters_online")
+    return get("/")["data"]["characters_online"]
 
 BAGAR = Character("BAGAR")
 
