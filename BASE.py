@@ -65,6 +65,10 @@ class Character:
     def __init__(self, name, api=APIClient()):
         self.name = name
         self.client = api
+        
+    def get_cooldown(self):
+        cooldown = get(f"/characters/{self.name}")["data"]["cooldown"]
+        return cooldown
 
     def move(self, x, y, Debug = 0):
         handle_cooldown()
