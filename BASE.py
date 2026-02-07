@@ -15,25 +15,26 @@ class APIClient:
             "Accept": "application/json",
             "Authorization": f"Bearer {self.TOKEN}"
         }
+
 client = APIClient()
 
 def handle_response(response):
     if response.status_code == 200:
         if response.request.method == "POST":
             try:
-                print(f'{float(response.json()["data"]["cooldown"]["remaining_seconds"])} seconds remaining cooldown')
+                print(f'{float(response.json()["data"]["cooldown"]["remaining_seconds"])} seconds remaining [COOLDOWN]')
                 return response.json()
             except json.JSONDecodeError:
                 print("Error decoding JSON response")
                 return None
         return response.json()
     elif response.status_code == 499:
-        print(f'Action could not be made {float(response.json()["error"]["message"].split()[5])} seconds cooldown')
+        print(f'Action could not be made {float(response.json()["error"]["message"].split()[5])} seconds remaining [COOLDOWN]')
         return response.json()
     else:
         print(response.json())
         return None
-
+    
 def get(endpoint, params=None,Debug = 0):
     if not Debug:
         response = requests.get(client.BASE_URL+endpoint, headers=client.headers, params=params)
@@ -61,8 +62,18 @@ class Character:
     def __init__(self, name, api=APIClient()):
         self.name = name
         self.client = api
+        
+    def get_cooldown(self):
+        cooldown = get(f"/characters/{self.name}")["data"]["cooldown"]
+        return cooldown
+        
+    def handle_cooldown():
+        get_cooldown()
+        return None
 
     def move(self, x, y, Debug = 0):
+        handle_cooldown()
+        print("===MOVE===")
         response = post(f"/my/{self.name}/action/move",{"x": x, "y": y}, Debug=Debug)
         print(f"{self.name} is at:", x, y)
         return response
@@ -72,18 +83,15 @@ class Character:
         self.move(x, y, Debug=Debug)
         
     def rest(self):
+        print("===REST===")
         response = post(f"/my/{self.name}/action/rest")
         return response
     
-def get_server_status(Debug=0):
-    return get("/",Debug=Debug)
-
-def get_chars_status(Debug=0):
-    return get("/my/characters",Debug=Debug)
-
+def get_server_status():
+    return get("/")
 
 def get_number_of_players():
-    return get("/").get("data").get("characters_online")
+    return get("/")["data"]["characters_online"]
 
 BAGAR = Character("BAGAR")
 
