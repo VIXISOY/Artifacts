@@ -2,6 +2,8 @@ from Private import *
 import requests
 import json
 import move
+import time
+from datetime import datetime, timezone
 
 class APIClient:
     BASE_URL = "https://api.artifactsmmo.com"
@@ -41,7 +43,7 @@ def get(endpoint, params=None,Debug = 0):
         return handle_response(response)
     else:
         prepared = requests.Request("GET", client.BASE_URL+endpoint, headers=client.headers, params=params).prepare()
-        print(f'{prepared.method} {prepared.url}\n{prepared.headers}\n{prepared.body}')
+        print(f'{prepared.method} {prepared.url}\n{prepared.headers}\n{prepared.body}\n')
         return handle_response(client.session.send(prepared))
         
 def post(endpoint, data=None, Debug = 0):
@@ -50,12 +52,18 @@ def post(endpoint, data=None, Debug = 0):
         return handle_response(response)
     else:
         prepared = requests.Request("POST", client.BASE_URL+endpoint, headers=client.headers, json=data).prepare()
-        print(f'{prepared.method} {prepared.url}\n{prepared.headers}\n{prepared.body}')
+        print(f'{prepared.method} {prepared.url}\n{prepared.headers}\n{prepared.body}\n')
         return handle_response(client.session.send(prepared))
 
 
 def json_print(get_response):
     print("Response JSON:\n", json.dumps(get_response, indent=2))
+
+
+def get_cooldown(end_time):
+    ts = datetime.fromisoformat(end_time.replace("Z", "+00:00")).timestamp()
+    cooldown = ts - time.time()
+    return max(0,int(cooldown+1)) #floor operation
 
 class Character:
 
@@ -64,22 +72,24 @@ class Character:
         self.client = api
         
     def get_cooldown(self):
-        cooldown = get(f"/characters/{self.name}")["data"]["cooldown"]
+        cooldown_timestamp = get(f"/characters/{self.name}")["data"]["cooldown_expiration"]
+        cooldown = get_cooldown(cooldown_timestamp)
         return cooldown
         
-    def handle_cooldown():
-        for i in range(get_cooldown(), 0, -1):
+    def handle_cooldown(self):
+        for i in range(self.get_cooldown(), 0, -1):
             print(f"\rCooldown: {i}s", end="", flush=True)
             time.sleep(1)
+        print()
 
     def move(self, x, y, Debug = 0):
-        handle_cooldown()
+        self.handle_cooldown()
         print("===MOVE===")
         response = post(f"/my/{self.name}/action/move",{"x": x, "y": y}, Debug=Debug)
-        print(f"{self.name} is at:", x, y)
+        print(f"{self.name} is at: {x}, {y}\n")
         return response
     
-    def moveTo(self, poi,Debug = 0):
+    def move_to(self, poi,Debug = 0):
         x, y = move.poi(poi,layer="Overworld", Debug=Debug)
         self.move(x, y, Debug=Debug)
         
@@ -102,4 +112,5 @@ if __name__ == "__main__":
 
     #print("Number of Players Online:", get_number_of_players())
 
-    BAGAR.moveTo("cow")
+    BAGAR.move_to("cow")
+    BAGAR.move_to("mountain_entrance")
