@@ -14,17 +14,18 @@ class APIClient:
             "Accept": "application/json",
             "Authorization": f"Bearer {self.TOKEN}"
         }
-
 client = APIClient()
 
 def handle_response(response):
     if response.status_code == 200:
-        try:
-            print(f'{float(response.json()["data"]["cooldown"]["remaining_seconds"])} seconds remaining cooldown')
-            return response.json()
-        except json.JSONDecodeError:
-            print("Error decoding JSON response")
-            return None
+        if response.request.method == "POST":
+            try:
+                print(f'{float(response.json()["data"]["cooldown"]["remaining_seconds"])} seconds remaining cooldown')
+                return response.json()
+            except json.JSONDecodeError:
+                print("Error decoding JSON response")
+                return None
+        return response.json()
     elif response.status_code == 499:
         print(f'Action could not be made {float(response.json()["error"]["message"].split()[5])} seconds cooldown')
         return response.json()
@@ -69,8 +70,12 @@ class Character:
         response = post(f"/my/{self.name}/action/rest")
         return response
     
-def get_server_status():
-    return get("/")
+def get_server_status(Debug=0):
+    return get("/",Debug=Debug)
+
+def get_chars_status(Debug=0):
+    return get("/my/characters",Debug=Debug)
+
 
 def get_number_of_players():
     return get("/").get("data").get("characters_online")
@@ -79,8 +84,8 @@ BAGAR = Character("BAGAR")
 
 if __name__ == "__main__":
 
-    #json_print(get_server_status())
+    json_print(get_chars_status(1))
 
     #print("Number of Players Online:", get_number_of_players())
 
-    BAGAR.move(11,-5)
+    #json_print(BAGAR.rest())
