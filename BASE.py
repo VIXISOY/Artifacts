@@ -19,12 +19,13 @@ client = APIClient()
 
 def handle_response(response):
     if response.status_code == 200:
-        try:
-            print(f'{float(response.json()["data"]["cooldown"]["remaining_seconds"])} seconds remaining [COOLDOWN]')
-            return response.json()
-        except json.JSONDecodeError:
-            print("Error decoding JSON response")
-            return None
+        if response.request.method == "POST":
+            try:
+                print(f'{float(response.json()["data"]["cooldown"]["remaining_seconds"])} seconds remaining [COOLDOWN]')
+                return response.json()
+            except json.JSONDecodeError:
+                print("Error decoding JSON response")
+                return None
     elif response.status_code == 499:
         print(f'Action could not be made {float(response.json()["error"]["message"].split()[5])} seconds remaining [COOLDOWN]')
         return response.json()
