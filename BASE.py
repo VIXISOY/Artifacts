@@ -1,6 +1,7 @@
 from Private import *
 import requests
 import json
+import move
 
 class APIClient:
     BASE_URL = "https://api.artifactsmmo.com"
@@ -62,6 +63,12 @@ class Character:
         self.client = api
 
     def move(self, x, y, Debug = 0):
+        response = post(f"/my/{self.name}/action/move",{"x": x, "y": y}, Debug=Debug)
+        print(f"{self.name} is at:", x, y)
+        return response
+    
+    def moveTo(self, poi,Debug = 0):
+        x, y = move.poi(poi,layer="Overworld", Debug=Debug)
         response = post(f"/my/{self.name}/action/move",{"x": x, "y": y}, Debug=Debug)
         print(f"{self.name} is at:", x, y)
         return response
