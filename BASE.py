@@ -26,6 +26,7 @@ def handle_response(response):
             except json.JSONDecodeError:
                 print("Error decoding JSON response")
                 return None
+        return response.json()
     elif response.status_code == 499:
         print(f'Action could not be made {float(response.json()["error"]["message"].split()[5])} seconds remaining [COOLDOWN]')
         return response.json()
