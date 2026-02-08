@@ -99,10 +99,19 @@ class Character:
         self.move(x, y, Debug=Debug)
         
     def rest(self, Debug = 0):
+        handle_cooldown(self.get_cooldown())
         print("===REST===")
         response = post(f"/my/{self.name}/action/rest", Debug=Debug)
-        return response
+        return response 
     
+    def fight(self, enemy, Debug = 0):
+        self.move_to(enemy, Debug=Debug) #we move to the enemy before fighting, to be sure we are in range
+        handle_cooldown(self.get_cooldown())
+        print("===FIGHT===")
+        response = post(f"/my/{self.name}/action/fight", {"enemy": enemy}, Debug=Debug)
+        print(f"{self.name} fought {enemy} and {response['data']['fight']['result']}")
+        return response
+
 def get_server_status():
     return get("/")
 
