@@ -43,7 +43,7 @@ def get(endpoint, params=None,Debug = 0):
         return handle_response(response)
     else:
         prepared = requests.Request("GET", client.BASE_URL+endpoint, headers=client.headers, params=params).prepare()
-        print(f'{prepared.method} {prepared.url}\n{prepared.headers}\n{prepared.body}\n')
+        print(f'{prepared.method} {prepared.url}\n{prepared.headers}\n{prepared.body}')
         return handle_response(client.session.send(prepared))
         
 def post(endpoint, data=None, Debug = 0):
@@ -52,7 +52,7 @@ def post(endpoint, data=None, Debug = 0):
         return handle_response(response)
     else:
         prepared = requests.Request("POST", client.BASE_URL+endpoint, headers=client.headers, json=data).prepare()
-        print(f'{prepared.method} {prepared.url}\n{prepared.headers}\n{prepared.body}\n')
+        print(f'{prepared.method} {prepared.url}\n{prepared.headers}\n{prepared.body}')
         return handle_response(client.session.send(prepared))
 
 
@@ -60,10 +60,16 @@ def json_print(get_response):
     print("Response JSON:\n", json.dumps(get_response, indent=2))
 
 
-def get_cooldown(end_time):
-    ts = datetime.fromisoformat(end_time.replace("Z", "+00:00")).timestamp()
+def get_cooldown(end_timestamp):
+    ts = datetime.fromisoformat(end_timestamp.replace("Z", "+00:00")).timestamp()
     cooldown = ts - time.time()
     return max(0,int(cooldown+1)) #floor operation
+
+def handle_cooldown(cooldown):
+    for i in range(cooldown, 0, -1):
+        print(f"\rCooldown: {i}s", end="", flush=True)
+        time.sleep(1)
+    print()
 
 class Character:
 
@@ -83,10 +89,10 @@ class Character:
         print()
 
     def move(self, x, y, Debug = 0):
-        self.handle_cooldown()
+        handle_cooldown(self.get_cooldown())
         print("===MOVE===")
         response = post(f"/my/{self.name}/action/move",{"x": x, "y": y}, Debug=Debug)
-        print(f"{self.name} is at: {x}, {y}\n")
+        print(f"{self.name} is at: {x}, {y}")
         return response
     
     def move_to(self, poi,Debug = 0):
