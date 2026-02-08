@@ -24,14 +24,14 @@ def handle_response(response):
     if response.status_code == 200:
         if response.request.method == "POST":
             try:
-                print(f'{float(response.json()["data"]["cooldown"]["remaining_seconds"])} seconds remaining [COOLDOWN]')
+                print(f'{float(response.json()["data"]["cooldown"]["remaining_seconds"])} seconds [COOLDOWN]')
                 return response.json()
             except json.JSONDecodeError:
                 print("Error decoding JSON response")
                 return None
         return response.json()
     elif response.status_code == 499:
-        print(f'Action could not be made {float(response.json()["error"]["message"].split()[5])} seconds remaining [COOLDOWN]')
+        print(f'Action could not be made {float(response.json()["error"]["message"].split()[5])} seconds [COOLDOWN]')
         return response.json()
     else:
         print(response.json())
@@ -67,10 +67,13 @@ def calculate_cooldown(end_timestamp):
 
 def handle_cooldown(cooldown):
     print("===COOL===")
-    for i in range(cooldown, 0, -1):
-        print(f"\rCooldown: {i}s", end="", flush=True)
-        time.sleep(1)
-    print()
+    if cooldown != 0:
+        for i in range(cooldown, 0, -1):
+            print(f"\rCooldown: {i}s", end="", flush=True)
+            time.sleep(1)
+        print()
+    else:
+        print("No cooldown")
 
 class Character:
 
