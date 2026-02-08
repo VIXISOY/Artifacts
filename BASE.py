@@ -179,12 +179,6 @@ class Character:
         cooldown_timestamp = get(f"/characters/{self.name}")["data"]["cooldown_expiration"]
         cooldown = get_cooldown(cooldown_timestamp)
         return cooldown
-        
-    def handle_cooldown(self):
-        for i in range(self.get_cooldown(), 0, -1):
-            print(f"\rCooldown: {i}s", end="", flush=True)
-            time.sleep(1)
-        print()
 
     def move(self, x, y, Debug = 0):
         handle_cooldown(self.get_cooldown())
@@ -199,14 +193,17 @@ class Character:
         self.move(x, y, Debug=Debug)
         
     def rest(self, Debug = 0):
+        handle_cooldown(self.get_cooldown())
         print("===REST===")
         response = post(f"/my/{self.name}/action/rest", Debug=Debug)
         return response
     
     def fight(self, enemy, Debug = 0):
+        handle_cooldown(self.get_cooldown())
         print("===FIGHT===")
         self.move_to(enemy, Debug=Debug) #we move to the enemy before fighting, to be sure we are in range
         response = post(f"/my/{self.name}/action/fight", {"enemy": enemy}, Debug=Debug)
+        print(f"{self.name} fought {enemy} and {response['data']['fight']['result']}")
         return response
     
     def careful_fight(self, enemy, Debug = 0):
