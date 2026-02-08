@@ -108,8 +108,16 @@ class Character:
         self.move_to(enemy, Debug=Debug) #we move to the enemy before fighting, to be sure we are in range
         handle_cooldown(self.get_cooldown())
         print("===FIGHT===")
-        response = post(f"/my/{self.name}/action/fight", {"enemy": enemy}, Debug=Debug)
+        response = post(f"/my/{self.name}/action/fight", Debug=Debug)
         print(f"{self.name} fought {enemy} and {response['data']['fight']['result']}")
+        return response
+    
+    def gather(self, item, Debug = 0):
+        self.move_to(item, Debug=Debug) #we move to the location before gathering, to be sure we are in range
+        handle_cooldown(self.get_cooldown())
+        print("===GATHER===")
+        response = post(f"/my/{self.name}/action/gathering", Debug=Debug)
+        print(f"{self.name} gathered {item}")
         return response
 
 def get_server_status():
@@ -126,5 +134,6 @@ if __name__ == "__main__":
 
     #print("Number of Players Online:", get_number_of_players())
 
-    BAGAR.move_to("cow")
-    BAGAR.move_to("mountain_entrance")
+    #BAGAR.move_to("cow")
+    #BAGAR.move_to("mountain_entrance")
+    BAGAR.gather("ash_tree")
