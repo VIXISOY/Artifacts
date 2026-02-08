@@ -1,7 +1,6 @@
 from Reseau import *
 
 class Character:
-
     def __init__(self, name, api=APIClient()):
         self.name = name
         self.client = api
@@ -21,7 +20,11 @@ class Character:
     def move_to(self, poi, Debug=0):
         if poi_dict[poi] != None:
             x, y = poi_dict[poi]["x"], poi_dict[poi]["y"]
-        self.move(x, y, Debug=Debug)
+        return self.move(x, y, Debug=Debug)
+
+    def move_to_loot(self, loot, Debug=0):
+        poi = loot_dict[loot]["location"][0]  # we take the first location of the item, 
+        return self.move_to(poi, Debug=Debug)
 
     def rest(self, Debug=0):
         handle_cooldown(self.get_cooldown())
@@ -36,14 +39,31 @@ class Character:
         response = post(f"/my/{self.name}/action/fight", Debug=Debug)
         print(f"{self.name} fought {enemy} and {response['data']['fight']['result']}")
         return response
+    
+    def fight_for(self, loot, Debug=0):
+        poi = loot_dict[loot]["location"][0]
+        return self.fight(poi, Debug=Debug)
 
-    def gather(self, item, Debug=0):
-        self.move_to(item, Debug=Debug)  # we move to the location before gathering, to be sure we are in range
+    def gather(self, poi, Debug=0):
+        self.move_to(poi, Debug=Debug) 
         handle_cooldown(self.get_cooldown())
         print("===GATHER===")
         response = post(f"/my/{self.name}/action/gathering", Debug=Debug)
-        print(f"{self.name} gathered {item}")
+        print(f"{self.name} gathered at {poi}")
         return response
+
+    def gather_loot(self, loot, Debug=0):
+        poi = loot_dict[loot]["location"][0]
+        return self.gather(poi, Debug=Debug)
+    
+    def craft(self, item, amount, Debug=0):
+        self.move_to_loot(item, Debug=Debug)  
+        handle_cooldown(self.get_cooldown())
+        print("===CRAFTING===")
+        response = post(f"/my/{self.name}/action/crafting",{"code": item, "quantity": amount} ,Debug=Debug)
+        print(f"{self.name} crafted {amount} {item}")
+        return response
+    
 
 BAGAR = Character("BAGAR")
 
@@ -55,4 +75,5 @@ if __name__ == "__main__":
 
     #BAGAR.move_to("cow")
     #BAGAR.move_to("mountain_entrance")
-    BAGAR.gather("ash_tree")
+    #while True:
+    BAGAR.loot("feather")

@@ -4,6 +4,7 @@ import json
 import time
 from datetime import datetime, timezone
 from poi import poi_dict
+from loot import loot_dict
 
 class APIClient:
     BASE_URL = "https://api.artifactsmmo.com"
