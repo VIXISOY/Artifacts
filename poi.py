@@ -9,5 +9,6 @@ poi_dict = {
     "red_slime": {"x":2, "y":-2, "layer":["Overworld"] },
     "green_slime": {"x":0, "y":-1, "layer":["Overworld"] },
     "yellow_slime": {"x":4, "y":-1, "layer":["Overworld"] },
-    "blue_slime": {"x":2, "y":-1, "layer":["Overworld"] }
+    "blue_slime": {"x":2, "y":-1, "layer":["Overworld"] },
+    "bank": {"x":4, "y":1, "layer":["Overworld"] }
 }

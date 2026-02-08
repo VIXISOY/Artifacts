@@ -63,7 +63,22 @@ class Character:
         response = post(f"/my/{self.name}/action/crafting",{"code": item, "quantity": amount} ,Debug=Debug)
         print(f"{self.name} crafted {amount} {item}")
         return response
-    
+        
+    def bank_deposit_item(self,item, amount, Debug=0):
+        self.move_to("bank", Debug=Debug)
+        handle_cooldown(self.get_cooldown())
+        print("===DEPOSIT_BANK===")
+        response = post(f"/my/{self.name}/action/bank/deposit/item",{"code": item, "quantity": amount} ,Debug=Debug)
+        print(f"{self.name} deposited {amount} {item} in the bank")
+        return response
+
+    def bank_withdraw_item(self,item, amount, Debug=0):
+        self.move_to("bank", Debug=Debug)
+        handle_cooldown(self.get_cooldown())
+        print("===WITHDRAW_BANK===")
+        response = post(f"/my/{self.name}/action/bank/withdraw/item",{"code": item, "quantity": amount} ,Debug=Debug)
+        print(f"{self.name} withdrew {amount} {item} from the bank")
+        return response
 
 BAGAR = Character("BAGAR")
 
@@ -75,5 +90,5 @@ if __name__ == "__main__":
 
     #BAGAR.move_to("cow")
     #BAGAR.move_to("mountain_entrance")
-    #while True:
-    BAGAR.loot("feather")
+    while True:
+        BAGAR.loot("copper_rocks")
