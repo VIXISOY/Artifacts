@@ -1,7 +1,6 @@
 from Private import *
 import requests
 import json
-import move
 import time
 from datetime import datetime, timezone
 from poi import poi_dict #peux pas tester sur portable, sinon c'est juste import poi et ca fonctionne 
@@ -95,19 +94,15 @@ class Character:
         response = post(f"/my/{self.name}/action/move",{"x": x, "y": y}, Debug=Debug)
         print(f"{self.name} is at: {x}, {y}")
         return response
-    
-    def move_to(self, poi,Debug = 0):
-        x, y = move.poi(poi,layer="Overworld", Debug=Debug)
-        self.move(x, y, Debug=Debug)
         
-    def move_to_simple(self, poi):
+    def move_to(self, poi, Debug = 0):
         if poi_dict[poi] != None :
             x, y = poi_dict[poi]["x"], poi_dict[poi]["y"]
         self.move(x, y, Debug=Debug)
         
-    def rest(self):
+    def rest(self, Debug = 0):
         print("===REST===")
-        response = post(f"/my/{self.name}/action/rest")
+        response = post(f"/my/{self.name}/action/rest", Debug=Debug)
         return response
     
 def get_server_status():
