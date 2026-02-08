@@ -22,10 +22,6 @@ class Character:
             x, y = poi_dict[poi]["x"], poi_dict[poi]["y"]
         return self.move(x, y, Debug=Debug)
 
-    def move_to_loot(self, loot, Debug=0):
-        poi = loot_dict[loot]["location"][0]  # we take the first location of the item, 
-        return self.move_to(poi, Debug=Debug)
-
     def rest(self, Debug=0):
         handle_cooldown(self.get_cooldown())
         print("===REST===")
@@ -39,10 +35,7 @@ class Character:
         response = post(f"/my/{self.name}/action/fight", Debug=Debug)
         print(f"{self.name} fought {enemy} and {response['data']['fight']['result']}")
         return response
-    
-    def fight_for(self, loot, Debug=0):
-        poi = loot_dict[loot]["location"][0]
-        return self.fight(poi, Debug=Debug)
+
 
     def gather(self, poi, Debug=0):
         self.move_to(poi, Debug=Debug) 
@@ -51,14 +44,8 @@ class Character:
         response = post(f"/my/{self.name}/action/gathering", Debug=Debug)
         print(f"{self.name} gathered at {poi}")
         return response
-
-    def gather_loot(self, loot, Debug=0):
-        poi = loot_dict[loot]["location"][0]
-        return self.gather(poi, Debug=Debug)
     
     def craft(self, item, amount, Debug=0):
-        self.move_to_loot(item, Debug=Debug)  
-        handle_cooldown(self.get_cooldown())
         print("===CRAFTING===")
         response = post(f"/my/{self.name}/action/crafting",{"code": item, "quantity": amount} ,Debug=Debug)
         print(f"{self.name} crafted {amount} {item}")
@@ -91,4 +78,4 @@ if __name__ == "__main__":
     #BAGAR.move_to("cow")
     #BAGAR.move_to("mountain_entrance")
     while True:
-        BAGAR.loot("copper_rocks")
+        BAGAR.craft_smart()
