@@ -20,7 +20,9 @@ class Character:
     def move_to(self, poi, Debug=0):
         if poi_dict[poi] != None:
             x, y = poi_dict[poi]["x"], poi_dict[poi]["y"]
-        return self.move(x, y, Debug=Debug)
+            return self.move(x, y, Debug=Debug)
+        else:
+            print("ERROR poi name not found")
 
     def rest(self, Debug=0):
         handle_cooldown(self.get_cooldown())
@@ -36,7 +38,6 @@ class Character:
         print(f"{self.name} fought {enemy} and {response['data']['fight']['result']}")
         return response
 
-
     def gather(self, poi, Debug=0):
         self.move_to(poi, Debug=Debug) 
         handle_cooldown(self.get_cooldown())
@@ -44,8 +45,18 @@ class Character:
         response = post(f"/my/{self.name}/action/gathering", Debug=Debug)
         print(f"{self.name} gathered at {poi}")
         return response
+
+    def get_item(self, loot, Debug=0):
+        match loot_dict[loot]["action"]:
+            case "gather":
+                self.gather(loot_dict[loot]["location"], Debug=Debug)
+            case "fight":
+                self.fight(loot_dict[loot]["location"], Debug=Debug)
     
     def craft(self, item, amount, Debug=0):
+        #Get item [craft skill]
+        #move to craft skill (in poi)
+        handle_cooldown(self.get_cooldown())
         print("===CRAFTING===")
         response = post(f"/my/{self.name}/action/crafting",{"code": item, "quantity": amount} ,Debug=Debug)
         print(f"{self.name} crafted {amount} {item}")
@@ -75,7 +86,4 @@ if __name__ == "__main__":
 
     #print("Number of Players Online:", get_number_of_players())
 
-    #BAGAR.move_to("cow")
-    #BAGAR.move_to("mountain_entrance")
-    while True:
-        BAGAR.craft_smart()
+    BAGAR.get_item("ash_wood", Debug=0)
