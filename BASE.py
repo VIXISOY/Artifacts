@@ -60,7 +60,7 @@ def json_print(get_response):
     print("Response JSON:\n", json.dumps(get_response, indent=2))
 
 
-def get_cooldown(end_timestamp):
+def calculate_cooldown(end_timestamp):
     ts = datetime.fromisoformat(end_timestamp.replace("Z", "+00:00")).timestamp()
     cooldown = ts - time.time()
     return max(0,int(cooldown+1)) #floor operation
@@ -79,14 +79,8 @@ class Character:
         
     def get_cooldown(self):
         cooldown_timestamp = get(f"/characters/{self.name}")["data"]["cooldown_expiration"]
-        cooldown = get_cooldown(cooldown_timestamp)
+        cooldown = calculate_cooldown(cooldown_timestamp)
         return cooldown
-        
-    def handle_cooldown(self):
-        for i in range(self.get_cooldown(), 0, -1):
-            print(f"\rCooldown: {i}s", end="", flush=True)
-            time.sleep(1)
-        print()
 
     def move(self, x, y, Debug = 0):
         handle_cooldown(self.get_cooldown())
