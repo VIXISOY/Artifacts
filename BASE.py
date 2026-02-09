@@ -86,5 +86,3 @@ if __name__ == "__main__":
     #print("Number of Players Online:", get_number_of_players())
     BAGAR.craft("copper_axe",1)
     BAGAR.farm_item("ash_wood", Debug=0)
-
-    BAGAR.get_item("ash_wood", Debug=0)
