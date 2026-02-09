@@ -66,10 +66,9 @@ def calculate_cooldown(end_timestamp):
     return max(0,int(cooldown+1)) #floor operation
 
 def handle_cooldown(cooldown):
-    print("===COOL===")
     if cooldown != 0:
         for i in range(cooldown, 0, -1):
-            print(f"\rCooldown: {i}s", end="", flush=True)
+            print(f"\r===COOL=== Cooldown: {i-1}s", end="", flush=True)
             time.sleep(1)
         print()
     else:

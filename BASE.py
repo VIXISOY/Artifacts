@@ -12,7 +12,7 @@ class Character:
 
     def move(self, x, y, Debug=0):
         handle_cooldown(self.get_cooldown())
-        print("===MOVE===")
+        print("===MOVE===", end=" ")
         response = post(f"/my/{self.name}/action/move", {"x": x, "y": y}, Debug=Debug)
         print(f"{self.name} is at: {x}, {y}")
         return response
@@ -26,14 +26,14 @@ class Character:
 
     def rest(self, Debug=0):
         handle_cooldown(self.get_cooldown())
-        print("===REST===")
+        print("===REST===", end=" ")
         response = post(f"/my/{self.name}/action/rest", Debug=Debug)
         return response
 
     def fight(self, enemy, Debug=0):
         self.move_to(enemy, Debug=Debug)
         handle_cooldown(self.get_cooldown())
-        print("===FIGHT===")
+        print("===FIGHT===", end=" ")
         response = post(f"/my/{self.name}/action/fight", Debug=Debug)
         print(f"{self.name} fought {enemy} and {response['data']['fight']['result']}")
         return response
@@ -41,7 +41,7 @@ class Character:
     def gather(self, poi, Debug=0):
         self.move_to(poi, Debug=Debug) 
         handle_cooldown(self.get_cooldown())
-        print("===GATHER===")
+        print("===GATHER===", end=" ")
         response = post(f"/my/{self.name}/action/gathering", Debug=Debug)
         print(f"{self.name} gathered at {poi}")
         return response
@@ -56,7 +56,7 @@ class Character:
     def craft(self, item, amount, Debug=0):
         self.move_to(get_item(item)["data"]["craft"]["skill"], Debug=Debug)
         handle_cooldown(self.get_cooldown())
-        print("===CRAFTING===")
+        print("===CRAFTING===", end=" ")
         response = post(f"/my/{self.name}/action/crafting",{"code": item, "quantity": amount} ,Debug=Debug)
         print(f"{self.name} crafted {amount} {item}")
         return response
@@ -64,16 +64,16 @@ class Character:
     def bank_deposit_item(self,item, amount, Debug=0):
         self.move_to("bank", Debug=Debug)
         handle_cooldown(self.get_cooldown())
-        print("===DEPOSIT_BANK===")
-        response = post(f"/my/{self.name}/action/bank/deposit/item",{"code": item, "quantity": amount} ,Debug=Debug)
+        print("===DEPOSIT_BANK===", end=" ")
+        response = post(f"/my/{self.name}/action/bank/deposit/item",[{"code": item, "quantity": amount}] ,Debug=Debug)
         print(f"{self.name} deposited {amount} {item} in the bank")
         return response
 
     def bank_withdraw_item(self,item, amount, Debug=0):
         self.move_to("bank", Debug=Debug)
         handle_cooldown(self.get_cooldown())
-        print("===WITHDRAW_BANK===")
-        response = post(f"/my/{self.name}/action/bank/withdraw/item",{"code": item, "quantity": amount} ,Debug=Debug)
+        print("===WITHDRAW_BANK===", end=" ")
+        response = post(f"/my/{self.name}/action/bank/withdraw/item",[{"code": item, "quantity": amount}] ,Debug=Debug)
         print(f"{self.name} withdrew {amount} {item} from the bank")
         return response
 
