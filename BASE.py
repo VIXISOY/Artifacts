@@ -31,7 +31,7 @@ class Character:
         return response
 
     def fight(self, enemy, Debug=0):
-        self.move_to(enemy, Debug=Debug)  # we move to the enemy before fighting, to be sure we are in range
+        self.move_to(enemy, Debug=Debug)
         handle_cooldown(self.get_cooldown())
         print("===FIGHT===")
         response = post(f"/my/{self.name}/action/fight", Debug=Debug)
@@ -56,6 +56,8 @@ class Character:
     def craft(self, item, amount, Debug=0):
         #Get item [craft skill]
         #move to craft skill (in poi)
+        craftstation = "woodcutting"
+        self.move_to(craftstation, Debug=Debug)
         handle_cooldown(self.get_cooldown())
         print("===CRAFTING===")
         response = post(f"/my/{self.name}/action/crafting",{"code": item, "quantity": amount} ,Debug=Debug)
