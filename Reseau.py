@@ -81,6 +81,9 @@ def get_server_status():
 def get_number_of_players():
     return get("/")["data"]["characters_online"]
 
+def get_item(code):
+    return get(f"/items/{code}")
+
 if __name__ == "__main__":
 
     print("Number of Players Online:", get_number_of_players())

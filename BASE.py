@@ -46,7 +46,7 @@ class Character:
         print(f"{self.name} gathered at {poi}")
         return response
 
-    def get_item(self, loot, Debug=0):
+    def farm_item(self, loot, Debug=0):
         match loot_dict[loot]["action"]:
             case "gather":
                 self.gather(loot_dict[loot]["location"], Debug=Debug)
@@ -54,10 +54,7 @@ class Character:
                 self.fight(loot_dict[loot]["location"], Debug=Debug)
     
     def craft(self, item, amount, Debug=0):
-        #Get item [craft skill]
-        #move to craft skill (in poi)
-        craftstation = "woodcutting"
-        self.move_to(craftstation, Debug=Debug)
+        self.move_to(get_item(item)["data"]["craft"]["skill"], Debug=Debug)
         handle_cooldown(self.get_cooldown())
         print("===CRAFTING===")
         response = post(f"/my/{self.name}/action/crafting",{"code": item, "quantity": amount} ,Debug=Debug)
@@ -87,5 +84,7 @@ if __name__ == "__main__":
     #json_print(get_chars_status(1))
 
     #print("Number of Players Online:", get_number_of_players())
+    BAGAR.craft("copper_axe",1)
+    BAGAR.farm_item("ash_wood", Debug=0)
 
     BAGAR.get_item("ash_wood", Debug=0)
