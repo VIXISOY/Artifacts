@@ -79,13 +79,30 @@ class Character:
         print(f"{self.name} withdrew {amount} {item} from the bank")
         return response
 
+    def get_inventory(self, Debug=0):
+        response = get(f"/characters/{self.name}", Debug=Debug)
+        return response["data"]["inventory"]
+
+    def print_inventory(self, Debug=0):
+        print("===INVENTORY===", end=" ")
+        print(f"{self.name}")
+        inventory = self.get_inventory(Debug=Debug)
+        inventory = sorted(inventory,key=lambda x: x.get("quantity"),reverse=True)
+        for item in inventory[0:10]:
+            print(f"{item["code"]} : {item['quantity']}", end=" | ")
+        print()
+        for item in inventory[10:20]:
+            print(f"{item["code"]} : {item['quantity']}", end=" | ")
+
+
 BAGAR = Character("BAGAR")
 FEMME = Character("FEMME")
 
 if __name__ == "__main__":
 
     #json_print(get_chars_status(1))
+    BAGAR.print_inventory()
 
     #print("Number of Players Online:", get_number_of_players())
-    BAGAR.craft("copper_axe",1)
-    BAGAR.farm_item("ash_wood", Debug=0)
+    #BAGAR.craft("copper_axe",1)
+    #BAGAR.farm_item("ash_wood", Debug=0)
