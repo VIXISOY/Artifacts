@@ -84,7 +84,10 @@ class Character:
         return response["data"]["inventory"]
 
     def get_item_quantity(self, code, Debug=0):
-        return next(item["quantity"] for item in self.get_inventory() if item["code"] == code)
+        items = [item for item in self.get_inventory(Debug=Debug) if item["code"] == code]
+        if len(items) == 0:
+            return 0
+        return items[0]["quantity"]
 
     def print_inventory(self, Debug=0):
         print("===INVENTORY===", end=" ")
@@ -136,4 +139,5 @@ CHOPA = Character("CHOPA")
 KRYST = Character("KRYST")
 
 if __name__ == "__main__":
-    BAGAR.use("cooked_gudgeon")
+    print(BAGAR.get_item_quantity("cooked_gudgeon"))
+    print(KRYST.get_item_quantity("sunflower"))
