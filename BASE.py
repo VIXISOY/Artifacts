@@ -120,13 +120,9 @@ class Character:
 
 BAGAR = Character("BAGAR")
 FEMME = Character("FEMME")
+CHILD = Character("CHILD")
 
 if __name__ == "__main__":
-
-    FEMME.print_inventory()
-    #print(FEMME.get_position())
-    FEMME.bank_deposit_full_inventory()
-
-    #print("Number of Players Online:", get_number_of_players())
-    #BAGAR.craft("copper_axe",1)
-    #BAGAR.farm_item("ash_wood", Debug=0)
+    quantity = CHILD.get_item_quantity("copper_ore")
+    print(f'CHILD have {quantity} copper ore which can create {int(quantity/10)} copper bars' )
+    json_print(CHILD.craft("copper_bar",int(CHILD.get_item_quantity("copper_ore")/10)))
