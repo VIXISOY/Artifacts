@@ -72,7 +72,7 @@ def handle_cooldown(cooldown):
             time.sleep(1)
         print()
     else:
-        print("No cooldown")
+        print("===COOL=== No cooldown")
 
 def get_server_status():
     return get("/")
