@@ -83,6 +83,15 @@ def get_number_of_players():
 def get_item(code):
     return get(f"/items/{code}")
 
+def get_bank_items(code=None):
+    if code == None:
+        return get(f"/my/bank/items")
+    else:
+        return get(f"/my/bank/items", params={"item_code": code})
+
+def get_bank_item_quantity(code):
+    return get_bank_items(code)["data"][0]["quantity"]
+
 if __name__ == "__main__":
 
     print("Number of Players Online:", get_number_of_players())

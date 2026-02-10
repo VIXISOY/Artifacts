@@ -83,6 +83,9 @@ class Character:
         response = get(f"/characters/{self.name}", Debug=Debug)
         return response["data"]["inventory"]
 
+    def get_item_quantity(self, code, Debug=0):
+        return next(item["quantity"] for item in self.get_inventory() if item["code"] == code)
+
     def print_inventory(self, Debug=0):
         print("===INVENTORY===", end=" ")
         print(f"{self.name}")
