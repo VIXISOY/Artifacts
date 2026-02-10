@@ -10,17 +10,18 @@ class Character:
         cooldown = calculate_cooldown(cooldown_timestamp)
         return cooldown
 
-    def move(self, x, y, Debug=0):
+    def move(self, x, y, poi=None, Debug=0):
         handle_cooldown(self.get_cooldown())
         print("===MOVE===", end=" ")
         response = post(f"/my/{self.name}/action/move", {"x": x, "y": y}, Debug=Debug)
-        print(f"{self.name} is at: {x}, {y}")
+        print(f"{self.name} is at: {x}, {y} {poi}")
         return response
 
     def move_to(self, poi, Debug=0):
         if poi_dict[poi] != None:
             x, y = poi_dict[poi]["x"], poi_dict[poi]["y"]
-            return self.move(x, y, Debug=Debug)
+            if (x, y) != self.get_position():
+                return self.move(x, y, poi, Debug=Debug)
         else:
             print("ERROR poi name not found")
 
@@ -32,28 +33,27 @@ class Character:
 
     def fight(self, enemy, quantity=1, Debug=0):
         self.move_to(enemy, Debug=Debug)
-        for i in range(quantity):
-            handle_cooldown(self.get_cooldown())
-            print("===FIGHT===", end=" ")
-            response = post(f"/my/{self.name}/action/fight", Debug=Debug)
-            print(f"{self.name} fought {enemy} and {response['data']['fight']['result']}")
+        handle_cooldown(self.get_cooldown())
+        print("===FIGHT===", end=" ")
+        response = post(f"/my/{self.name}/action/fight", Debug=Debug)
+        print(f"{self.name} fought {enemy} and {response['data']['fight']['result']}")
         return response
 
     def gather(self, poi, quantity=1, Debug=0):
         self.move_to(poi, Debug=Debug)
-        for i in range(quantity):
-            handle_cooldown(self.get_cooldown())
-            print("===GATHER===", end=" ")
-            response = post(f"/my/{self.name}/action/gathering", Debug=Debug)
-            print(f"{self.name} gathered at {poi}")
+        handle_cooldown(self.get_cooldown())
+        print("===GATHER===", end=" ")
+        response = post(f"/my/{self.name}/action/gathering", Debug=Debug)
+        print(f"{self.name} gathered at {poi}")
         return response
 
     def farm_item(self, loot, quantity=1, Debug=0):
-        match loot_dict[loot]["action"]:
-            case "gather":
-                self.gather(loot_dict[loot]["location"],quantity, Debug=Debug)
-            case "fight":
-                self.fight(loot_dict[loot]["location"],quantity, Debug=Debug)
+        for i in range(quantity):
+            match loot_dict[loot]["action"]:
+                case "gather":
+                    self.gather(loot_dict[loot]["location"],quantity, Debug=Debug)
+                case "fight":
+                    self.fight(loot_dict[loot]["location"],quantity, Debug=Debug)
     
     def craft(self, item, amount, Debug=0):
         self.move_to(get_item(item)["data"]["craft"]["skill"], Debug=Debug)
@@ -93,6 +93,11 @@ class Character:
         print()
         for item in inventory[10:20]:
             print(f"{item["code"]} : {item['quantity']}", end=" | ")
+        print()
+
+    def get_position(self, Debug=0):
+        response = get(f"/characters/{self.name}", Debug=Debug)
+        return response["data"]["x"], response["data"]["y"]
 
 
 BAGAR = Character("BAGAR")
@@ -101,7 +106,8 @@ FEMME = Character("FEMME")
 if __name__ == "__main__":
 
     #json_print(get_chars_status(1))
-    BAGAR.print_inventory()
+    FEMME.print_inventory()
+    print(FEMME.get_position())
 
     #print("Number of Players Online:", get_number_of_players())
     #BAGAR.craft("copper_axe",1)
