@@ -14,7 +14,7 @@ if __name__ == '__main__':
             CHILD.bank_withdraw_item(heal_item, min(get_bank_item_quantity(heal_item), quantity))
             if CHILD.get_item_quantity(heal_item) == 0:
                 break #no more food
-        info = CHILD.get_info()
+        info = CHILD.get_character()
         missing_health = info["max_hp"]-info["hp"]
         if missing_health > heal_amount:
             CHILD.use(heal_item,min(missing_health//heal_amount, quantity))
