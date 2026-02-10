@@ -121,7 +121,7 @@ class Character:
         print(f"{self.name} deposited full inventory in the bank")
         return response
     
-    def get_info(self, Debug=0):
+    def get_character(self, Debug=0):
         response = get(f"/characters/{self.name}", Debug=Debug)
         return response["data"]
     
@@ -139,5 +139,5 @@ CHOPA = Character("CHOPA")
 KRYST = Character("KRYST")
 
 if __name__ == "__main__":
-    print(BAGAR.get_item_quantity("cooked_gudgeon"))
-    print(KRYST.get_item_quantity("sunflower"))
+    
+    json_print(CHILD.fight("chicken",1))
