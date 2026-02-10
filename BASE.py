@@ -121,6 +121,8 @@ class Character:
 BAGAR = Character("BAGAR")
 FEMME = Character("FEMME")
 CHILD = Character("CHILD")
+CHOPA = Character("CHOPA")
+KRYST = Character("KRYST")
 
 if __name__ == "__main__":
     quantity = CHILD.get_item_quantity("copper_ore")
