@@ -1,11 +1,17 @@
 from BASE import *
 
+ore = "copper_ore"
+tool = "copper_pickaxe"
+quantity = 80
+
 if __name__ == '__main__':
+    CHILD.bank_deposit_full_inventory()
+    CHILD.bank_withdraw_item(tool,1)
+    CHILD.equip(tool, "weapon")
     while True:
-        quantity = 80
         CHILD.bank_deposit_full_inventory()
-        if get_bank_item_quantity("copper_ore") <= quantity:
-            CHILD.farm_item("copper_ore",quantity)
+        if get_bank_item_quantity(ore) <= quantity:
+            CHILD.farm_item(ore,quantity)
         CHILD.bank_deposit_full_inventory()
-        CHILD.bank_withdraw_item("copper_ore",min(get_bank_item_quantity("copper_ore"),quantity))
-        CHILD.craft("copper_bar",CHILD.get_item_quantity("copper_ore")//10)
+        CHILD.bank_withdraw_item(ore,min(get_bank_item_quantity(ore),quantity))
+        CHILD.craft(ore,CHILD.get_item_quantity(ore)//10)
