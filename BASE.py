@@ -30,28 +30,30 @@ class Character:
         response = post(f"/my/{self.name}/action/rest", Debug=Debug)
         return response
 
-    def fight(self, enemy, Debug=0):
+    def fight(self, enemy, quantity=1, Debug=0):
         self.move_to(enemy, Debug=Debug)
-        handle_cooldown(self.get_cooldown())
-        print("===FIGHT===", end=" ")
-        response = post(f"/my/{self.name}/action/fight", Debug=Debug)
-        print(f"{self.name} fought {enemy} and {response['data']['fight']['result']}")
+        for i in range(quantity):
+            handle_cooldown(self.get_cooldown())
+            print("===FIGHT===", end=" ")
+            response = post(f"/my/{self.name}/action/fight", Debug=Debug)
+            print(f"{self.name} fought {enemy} and {response['data']['fight']['result']}")
         return response
 
-    def gather(self, poi, Debug=0):
-        self.move_to(poi, Debug=Debug) 
-        handle_cooldown(self.get_cooldown())
-        print("===GATHER===", end=" ")
-        response = post(f"/my/{self.name}/action/gathering", Debug=Debug)
-        print(f"{self.name} gathered at {poi}")
+    def gather(self, poi, quantity=1, Debug=0):
+        self.move_to(poi, Debug=Debug)
+        for i in range(quantity):
+            handle_cooldown(self.get_cooldown())
+            print("===GATHER===", end=" ")
+            response = post(f"/my/{self.name}/action/gathering", Debug=Debug)
+            print(f"{self.name} gathered at {poi}")
         return response
 
-    def farm_item(self, loot, Debug=0):
+    def farm_item(self, loot, quantity=1, Debug=0):
         match loot_dict[loot]["action"]:
             case "gather":
-                self.gather(loot_dict[loot]["location"], Debug=Debug)
+                self.gather(loot_dict[loot]["location"],quantity, Debug=Debug)
             case "fight":
-                self.fight(loot_dict[loot]["location"], Debug=Debug)
+                self.fight(loot_dict[loot]["location"],quantity, Debug=Debug)
     
     def craft(self, item, amount, Debug=0):
         self.move_to(get_item(item)["data"]["craft"]["skill"], Debug=Debug)
@@ -78,6 +80,7 @@ class Character:
         return response
 
 BAGAR = Character("BAGAR")
+FEMME = Character("FEMME")
 
 if __name__ == "__main__":
 
