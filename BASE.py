@@ -88,17 +88,32 @@ class Character:
         print(f"{self.name}")
         inventory = self.get_inventory(Debug=Debug)
         inventory = sorted(inventory,key=lambda x: x.get("quantity"),reverse=True)
-        for item in inventory[0:10]:
-            print(f"{item["code"]} : {item['quantity']}", end=" | ")
-        print()
-        for item in inventory[10:20]:
-            print(f"{item["code"]} : {item['quantity']}", end=" | ")
-        print()
+        if inventory[0]["quantity"] != 0:
+            for item in inventory[0:10]:
+                if item["quantity"] > 0:
+                    print(f"{item["code"]} : {item['quantity']}", end=" | ")
+            print()
+            if item["quantity"] > 0:
+                for item in inventory[10:20]:
+                    if item["quantity"] > 0:
+                        print(f"{item["code"]} : {item['quantity']}", end=" | ")
+                print()
+        else:
+            print("Inventory is empty")
 
     def get_position(self, Debug=0):
         response = get(f"/characters/{self.name}", Debug=Debug)
         return response["data"]["x"], response["data"]["y"]
 
+    def bank_deposit_full_inventory(self, Debug=0):
+        self.move_to("bank", Debug=Debug)
+        handle_cooldown(self.get_cooldown())
+        print("===DEPOSIT_FULL_INVENTORY===", end=" ")
+        full = [item for item in self.get_inventory() if item["quantity"] > 0]
+        response = post(f"/my/{self.name}/action/bank/deposit/item", full, Debug=Debug)
+        print(full)
+        print(f"{self.name} deposited full inventory in the bank")
+        return response
 
 BAGAR = Character("BAGAR")
 FEMME = Character("FEMME")
@@ -107,7 +122,8 @@ if __name__ == "__main__":
 
     #json_print(get_chars_status(1))
     FEMME.print_inventory()
-    print(FEMME.get_position())
+    #print(FEMME.get_position())
+    FEMME.bank_deposit_full_inventory()
 
     #print("Number of Players Online:", get_number_of_players())
     #BAGAR.craft("copper_axe",1)
