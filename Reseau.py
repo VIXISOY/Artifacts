@@ -38,24 +38,13 @@ def handle_response(response):
         print(response.json())
         return None
     
-def get(endpoint, params=None,Debug = 0):
-    if not Debug:
-        response = requests.get(client.BASE_URL+endpoint, headers=client.headers, params=params)
-        return handle_response(response)
-    else:
-        prepared = requests.Request("GET", client.BASE_URL+endpoint, headers=client.headers, params=params).prepare()
-        print(f'{prepared.method} {prepared.url}\n{prepared.headers}\n{prepared.body}')
-        return handle_response(client.session.send(prepared))
+def get(endpoint, params=None):
+    response = requests.get(client.BASE_URL+endpoint, headers=client.headers, params=params)
+    return handle_response(response)
         
-def post(endpoint, data=None, Debug = 0):
-    if not Debug:
-        response = requests.post(client.BASE_URL+endpoint, headers=client.headers, json=data)
-        return handle_response(response)
-    else:
-        prepared = requests.Request("POST", client.BASE_URL+endpoint, headers=client.headers, json=data).prepare()
-        print(f'{prepared.method} {prepared.url}\n{prepared.headers}\n{prepared.body}')
-        return handle_response(client.session.send(prepared))
-
+def post(endpoint, data=None):
+    response = requests.post(client.BASE_URL+endpoint, headers=client.headers, json=data)
+    return handle_response(response)
 
 def json_print(get_response):
     print("Response JSON:\n", json.dumps(get_response, indent=2))
