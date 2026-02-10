@@ -117,12 +117,21 @@ class Character:
         print(full)
         print(f"{self.name} deposited full inventory in the bank")
         return response
+    
+    def get_info(self, Debug=0):
+        response = get(f"/characters/{self.name}", Debug=Debug)
+        return response["data"]
+    
+    def use(self, item, quantity=1, Debug=0):
+        handle_cooldown(self.get_cooldown())
+        print("===USE===", end=" ")
+        response = post(f"/my/{self.name}/action/use",{"code": item, "quantity": quantity} ,Debug=Debug)
+        print(f"{self.name} used {quantity} {item}")
+        return response
 
 BAGAR = Character("BAGAR")
 FEMME = Character("FEMME")
 CHILD = Character("CHILD")
 
 if __name__ == "__main__":
-    quantity = CHILD.get_item_quantity("copper_ore")
-    print(f'CHILD have {quantity} copper ore which can create {int(quantity/10)} copper bars' )
-    json_print(CHILD.craft("copper_bar",int(CHILD.get_item_quantity("copper_ore")/10)))
+    BAGAR.use("cooked_gudgeon")
