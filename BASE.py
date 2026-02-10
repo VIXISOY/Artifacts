@@ -121,7 +121,7 @@ class Character:
         print(f"{self.name} deposited full inventory in the bank")
         return response
     
-    def get_info(self, Debug=0):
+    def get_character(self, Debug=0):
         response = get(f"/characters/{self.name}", Debug=Debug)
         return response["data"]
     
