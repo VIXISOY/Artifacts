@@ -5,8 +5,11 @@ loot_dict = {
     "gudgeon": {"action":"gather","location": "gudgeon_spot" },
     "algae": {"action":"gather","location": "gudgeon_spot" },
     "shell": {"action":"gather","location": "gudgeon_spot" },
+    "shrimp": {"action":"gather","location": "shrimp_spot" },
+    "golden_shrimp": {"action":"gather","location": "shrimp_spot" },
     "red_slimeball": {"action":"fight","location":"red_slime" },
     "green_slimeball": {"action":"fight","location":"green_slime" },
     "yellow_slimeball": {"action":"fight","location":"yellow_slime" },
     "blue_slimeball": {"action":"fight","location":"blue_slime" }
+
 }
