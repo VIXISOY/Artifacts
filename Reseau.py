@@ -90,7 +90,10 @@ def get_bank_items(code=None):
         return get(f"/my/bank/items", params={"item_code": code})
 
 def get_bank_item_quantity(code):
-    return get_bank_items(code)["data"][0]["quantity"]
+    if get_bank_items(code)["data"]:
+        return get_bank_items(code)["data"][0]["quantity"]
+    else:
+        return 0
 
 if __name__ == "__main__":
 
