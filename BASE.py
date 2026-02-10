@@ -147,4 +147,4 @@ KRYST = Character("KRYST")
 
 if __name__ == "__main__":
     
-    json_print(CHILD.fight("chicken",1))
+    json_print(CHILD.fight("chicken"))
