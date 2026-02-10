@@ -18,5 +18,6 @@ poi_dict = {
     "gearcrafting": {"x": 3, "y": 1, "layer": ["Overworld"]},
     "jewelrycrafting": {"x": 1, "y": 3, "layer": ["Overworld"]},
     "alchemy": {"x": 2, "y": 3, "layer": ["Overworld"]},
-    "mining": {"x": 1, "y": 5, "layer": ["Overworld"]}
+    "mining": {"x": 1, "y": 5, "layer": ["Overworld"]},
+    "sunflower_field": {"x": 2, "y": 2, "layer": ["Overworld"]},
 }
