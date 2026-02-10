@@ -10,6 +10,7 @@ poi_dict = {
     "yellow_slime": {"x":4, "y":-1, "layer":["Overworld"] },
     "blue_slime": {"x":2, "y":-1, "layer":["Overworld"] },
     "bank": {"x":4, "y":1, "layer":["Overworld"] },
+    "gudgeon_spot": {"x":4, "y":2, "layer":["Overworld"] },
 
     "woodcutting": {"x":-2, "y":-3, "layer":["Overworld"] },
     "cooking": {"x": 1, "y": 1, "layer": ["Overworld"]},
