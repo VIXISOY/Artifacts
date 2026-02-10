@@ -131,6 +131,13 @@ class Character:
         response = post(f"/my/{self.name}/action/use",{"code": item, "quantity": quantity})
         print(f"{self.name} used {quantity} {item}")
         return response
+    
+    def equip(self, item, slot, quantity=1):
+        handle_cooldown(self.get_cooldown())
+        print("===EQUIP===", end=" ")
+        response = post(f"/my/{self.name}/action/equip",{"code": item, "slot": slot, "quantity": quantity})
+        print(f"{self.name} equiped {quantity} {item} on slot {slot}")
+        return response
 
 BAGAR = Character("BAGAR")
 FEMME = Character("FEMME")
