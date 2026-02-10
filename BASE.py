@@ -123,7 +123,6 @@ FEMME = Character("FEMME")
 
 if __name__ == "__main__":
 
-    #json_print(get_chars_status(1))
     FEMME.print_inventory()
     #print(FEMME.get_position())
     FEMME.bank_deposit_full_inventory()
