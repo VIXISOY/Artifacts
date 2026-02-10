@@ -11,5 +11,7 @@ loot_dict = {
     "green_slimeball": {"action":"fight","location":"green_slime" },
     "yellow_slimeball": {"action":"fight","location":"yellow_slime" },
     "blue_slimeball": {"action":"fight","location":"blue_slime" },
-    "sunflower": {"action":"gather","location":"sunflower_field" }
+    "sunflower": {"action":"gather","location":"sunflower_field" },
+    "wool": {"action":"fight","location":"sheep" },
+    
 }

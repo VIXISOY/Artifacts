@@ -21,4 +21,6 @@ poi_dict = {
     "alchemy": {"x": 2, "y": 3, "layer": ["Overworld"]},
     "mining": {"x": 1, "y": 5, "layer": ["Overworld"]},
     "sunflower_field": {"x": 2, "y": 2, "layer": ["Overworld"]},
+    "sheep": {"x":5, "y":12, "layer":["Overworld"] },
+
 }

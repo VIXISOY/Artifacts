@@ -139,5 +139,5 @@ CHOPA = Character("CHOPA")
 KRYST = Character("KRYST")
 
 if __name__ == "__main__":
-    print(BAGAR.get_item_quantity("cooked_gudgeon"))
-    print(KRYST.get_item_quantity("sunflower"))
+    
+    json_print(CHILD.fight("chicken",1))
