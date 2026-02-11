@@ -149,7 +149,7 @@ class Character:
             missing = items["quantity"] * ammount - get_bank_item_quantity(items["code"]) - self.get_item_quantity(items["code"])
             if missing > 0:
                 print(f"Missing {missing} {items['code']}")
-                print(f"Estimated Time before completion: ")
+                print(f"Estimated Time before retrieval: {int(missing * 30 / 60)}m {missing * 30 % 60}s")
                 if loot_dict.get(items["code"]) == None:
                     self.auto_craft(items["code"],missing)
                 else:
@@ -171,5 +171,6 @@ CHOPA = Character("CHOPA")
 KRYST = Character("KRYST")
 
 if __name__ == "__main__":
-    
-    json_print(CHILD.fight("chicken"))
+
+    #json_print(CHILD.fight("chicken"))
+    BAGAR.auto_craft("copper_pickaxe")
