@@ -12,6 +12,10 @@ poi_dict = {
     "bank": {"x":4, "y":1, "layer":["Overworld"] },
     "gudgeon_spot": {"x":4, "y":2, "layer":["Overworld"] },
     "shrimp_spot": {"x":5, "y":2, "layer":["Overworld"] },
+    "sunflower_field": {"x": 2, "y": 2, "layer": ["Overworld"]},
+    "sheep": {"x":5, "y":12, "layer":["Overworld"] },
+    "iron_rocks": {"x":1, "y":7, "layer":["Overworld"] },
+    "spruce_tree": {"x":2, "y":6, "layer":["Overworld"] },
 
     "woodcutting": {"x":-2, "y":-3, "layer":["Overworld"] },
     "cooking": {"x": 1, "y": 1, "layer": ["Overworld"]},
@@ -19,8 +23,5 @@ poi_dict = {
     "gearcrafting": {"x": 3, "y": 1, "layer": ["Overworld"]},
     "jewelrycrafting": {"x": 1, "y": 3, "layer": ["Overworld"]},
     "alchemy": {"x": 2, "y": 3, "layer": ["Overworld"]},
-    "mining": {"x": 1, "y": 5, "layer": ["Overworld"]},
-    "sunflower_field": {"x": 2, "y": 2, "layer": ["Overworld"]},
-    "sheep": {"x":5, "y":12, "layer":["Overworld"] },
-    "iron_rocks": {"x":1, "y":7, "layer":["Overworld"] },
+    "mining": {"x": 1, "y": 5, "layer": ["Overworld"]}
 }

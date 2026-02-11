@@ -2,6 +2,7 @@ loot_dict = {
     "copper_ore": {"action":"gather","location":"copper_rocks" },
     "feather": {"action":"fight","location":"chicken" },
     "ash_wood": {"action":"gather","location": "ash_tree" },
+    "spruce_wood": {"action":"gather","location":"spruce_tree"},
     "gudgeon": {"action":"gather","location": "gudgeon_spot" },
     "algae": {"action":"gather","location": "gudgeon_spot" },
     "shell": {"action":"gather","location": "gudgeon_spot" },
