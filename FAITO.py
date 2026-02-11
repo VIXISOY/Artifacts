@@ -21,4 +21,5 @@ if __name__ == '__main__':
         missing_health = info["max_hp"]-info["hp"]
         CHILD.use(heal_item,min(missing_health//heal_amount, quantity))
         CHILD.rest()
-        response = post(f"/my/{BAGAR.name}/action/task/complete")
+        CHILD.fight(enemy) 
+        response = post(f"/my/{CHILD.name}/action/task/complete")
