@@ -53,7 +53,10 @@ class Character:
                 case "gather":
                     self.gather(loot_dict[loot]["location"])
                 case "fight":
-                    self.fight(loot_dict[loot]["location"])
+                    if self.get_character()["hp"]/self.get_character()["max_hp"]<= 0.2:
+                        self.rest()
+                    else:
+                        self.fight(loot_dict[loot]["location"])
 
     def craft(self, item, amount=1):
         self.move_to(get_item(item)["data"]["craft"]["skill"])
@@ -138,6 +141,28 @@ class Character:
         response = post(f"/my/{self.name}/action/equip",{"code": item, "slot": slot, "quantity": quantity})
         print(f"{self.name} equiped {quantity} {item} on slot {slot}")
         return response
+
+    def auto_craft(self,code,ammount=1):
+        print("===AUTOCRAFT===", end=" ")
+        print(f"{self.name} auto craft {ammount} {code}")
+        for items in get_item(code)["data"]["craft"]["items"]:
+            missing = items["quantity"] * ammount - get_bank_item_quantity(items["code"]) - self.get_item_quantity(items["code"])
+            if missing > 0:
+                print(f"Missing {missing} {items['code']}")
+                print(f"Estimated Time before completion: ")
+                if loot_dict.get(items["code"]) == None:
+                    self.auto_craft(items["code"],missing)
+                else:
+                    start = self.get_item_quantity(items["code"])
+                    while self.get_item_quantity(items["code"])-start < missing :
+                        self.farm_item(items["code"],missing)
+                    self.bank_deposit_full_inventory()
+            print("Enough materials in Bank")
+        for items in get_item(code)["data"]["craft"]["items"]:
+                self.bank_withdraw_item(items["code"], items["quantity"] * ammount)
+        self.craft(code, ammount)
+        self.bank_deposit_full_inventory()
+        return None
 
 BAGAR = Character("BAGAR")
 FEMME = Character("FEMME")
