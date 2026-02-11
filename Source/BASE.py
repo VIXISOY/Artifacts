@@ -118,7 +118,7 @@ class Character:
         self.move_to("bank")
         handle_cooldown(self.get_cooldown())
         print("===DEPOSIT_FULL_INVENTORY===", end=" ")
-        full = [item for item in self.get_inventory() if (item["quantity"] > 0 and item["type"] == "weapon")]
+        full = [item for item in self.get_inventory() if (item["quantity"] > 0 and item["type"] != "weapon")]
         response = post(f"/my/{self.name}/action/bank/deposit/item", full)
         print(full)
         print(f"{self.name} deposited full inventory in the bank")
