@@ -9,7 +9,7 @@ if __name__ == '__main__':
     #result = {"data":{"characters":[{"level":0}]}} #dummy result to enter the loop
     #while result["data"]["characters"][0]["level"] < 4:
         #result =CHILD.fight(enemy) 
-    response = post(f"/my/{BAGAR.name}/action/task/complete")
+    response = post(f"/my/{CHILD.name}/action/task/complete")
     while response == None: # task not succesfull
         current_amount = CHILD.get_item_quantity(heal_item)
         if current_amount == 0:
