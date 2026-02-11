@@ -1,7 +1,7 @@
 from BASE import *
 
-ore = "copper_ore"
-ingot = "copper_bar"
+ore = "iron_ore"
+ingot = "iron_bar"
 tool = "copper_pickaxe"
 quantity = 80
 
