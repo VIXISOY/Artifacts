@@ -6,8 +6,11 @@ quantity = 50
 enemy = "yellow_slime"
 
 if __name__ == '__main__':
-    result = {"data":{"characters":[{"level":0}]}} #dummy result to enter the loop
-    while result["data"]["characters"][0]["level"] < 4:
+    #result = {"data":{"characters":[{"level":0}]}} #dummy result to enter the loop
+    #while result["data"]["characters"][0]["level"] < 4:
+        #result =CHILD.fight(enemy) 
+    response = post(f"/my/{BAGAR.name}/action/task/complete")
+    while response == None: # task not succesfull
         current_amount = CHILD.get_item_quantity(heal_item)
         if current_amount == 0:
             CHILD.bank_deposit_full_inventory()
@@ -16,7 +19,6 @@ if __name__ == '__main__':
                 break #no more food
         info = CHILD.get_character()
         missing_health = info["max_hp"]-info["hp"]
-        if missing_health > heal_amount:
-            CHILD.use(heal_item,min(missing_health//heal_amount, quantity))
+        CHILD.use(heal_item,min(missing_health//heal_amount, quantity))
         CHILD.rest()
-        result =CHILD.fight(enemy) 
+        response = post(f"/my/{BAGAR.name}/action/task/complete")
