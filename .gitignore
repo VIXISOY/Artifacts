@@ -12,3 +12,5 @@
 /test.py
 /hello.txt
 /logs
+/Source/__pycache__/
+*.swp
