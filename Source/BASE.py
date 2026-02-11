@@ -48,6 +48,17 @@ class Character:
         return response
 
     def farm_item(self, loot, quantity=1):
+        subtype = get_item(loot)["data"]["subtype"]
+        for item in self.get_inventory():
+            if item["code"] != "":
+                tmp = get_item(item["code"])
+                if loot_dict[loot]["action"] == "fight":
+                    if (tmp["data"]["type"] == "weapon" and tmp["data"]["subtype"] == ""):
+                        self.equip(item["code"])
+                else:
+                    if tmp["data"]["effects"] != []:
+                        if tmp["data"]["effects"][1]["code"] == subtype:
+                            self.equip(item["code"])
         for i in range(quantity):
             match loot_dict[loot]["action"]:
                 case "gather":
@@ -118,7 +129,11 @@ class Character:
         self.move_to("bank")
         handle_cooldown(self.get_cooldown())
         print("===DEPOSIT_FULL_INVENTORY===", end=" ")
-        full = [item for item in self.get_inventory() if (item["quantity"] > 0 and item["type"] != "weapon")]
+        full = []
+        for item in self.get_inventory() :
+            if (item["quantity"] > 0):
+                if get_item(item["code"])["data"]["type"] != "weapon":
+                    full.append(item)
         response = post(f"/my/{self.name}/action/bank/deposit/item", full)
         print(full)
         print(f"{self.name} deposited full inventory in the bank")
@@ -161,7 +176,7 @@ class Character:
                     while self.get_item_quantity(items["code"])-start < missing :
                         self.farm_item(items["code"],missing)
                     self.bank_deposit_full_inventory()
-            print("Enough materials in Bank")
+            print(f"Enough {items["code"]} in Bank")
         for items in get_item(code)["data"]["craft"]["items"]:
                 self.bank_withdraw_item(items["code"], items["quantity"] * ammount)
         self.craft(code, ammount)
