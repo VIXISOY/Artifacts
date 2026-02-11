@@ -118,7 +118,7 @@ class Character:
         self.move_to("bank")
         handle_cooldown(self.get_cooldown())
         print("===DEPOSIT_FULL_INVENTORY===", end=" ")
-        full = [item for item in self.get_inventory() if item["quantity"] > 0]
+        full = [item for item in self.get_inventory() if (item["quantity"] > 0 and item["type"] == "weapon")]
         response = post(f"/my/{self.name}/action/bank/deposit/item", full)
         print(full)
         print(f"{self.name} deposited full inventory in the bank")
@@ -135,9 +135,12 @@ class Character:
         print(f"{self.name} used {quantity} {item}")
         return response
     
-    def equip(self, item, quantity=1):
+    def equip(self, item, slot=None, quantity=1):
         handle_cooldown(self.get_cooldown())
-        slot = get_item(item)["data"]["type"]
+        if slot is None:
+            slot = get_item(item)["data"]["type"]
+            if slot == "ring" :
+                slot = "ring1"
         print("===EQUIP===", end=" ")
         response = post(f"/my/{self.name}/action/equip",{"code": item, "slot": slot, "quantity": quantity})
         print(f"{self.name} equiped {quantity} {item} on slot {slot}")
