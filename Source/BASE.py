@@ -66,7 +66,7 @@ class Character:
         print(f"{self.name} crafted {amount} {item}")
         return response
         
-    def bank_deposit_item(self,item, amount):
+    def bank_deposit_item(self,item, amount=1):
         self.move_to("bank")
         handle_cooldown(self.get_cooldown())
         print("===DEPOSIT_BANK===", end=" ")
@@ -74,7 +74,7 @@ class Character:
         print(f"{self.name} deposited {amount} {item} in the bank")
         return response
 
-    def bank_withdraw_item(self,item, amount):
+    def bank_withdraw_item(self,item, amount=1):
         self.move_to("bank")
         handle_cooldown(self.get_cooldown())
         print("===WITHDRAW_BANK===", end=" ")
@@ -135,8 +135,9 @@ class Character:
         print(f"{self.name} used {quantity} {item}")
         return response
     
-    def equip(self, item, slot, quantity=1):
+    def equip(self, item, quantity=1):
         handle_cooldown(self.get_cooldown())
+        slot = get_item(item)["data"]["type"]
         print("===EQUIP===", end=" ")
         response = post(f"/my/{self.name}/action/equip",{"code": item, "slot": slot, "quantity": quantity})
         print(f"{self.name} equiped {quantity} {item} on slot {slot}")

@@ -2,7 +2,6 @@ from Source.BASE import *
 
 if __name__ == '__main__':
     # while True
-    BAGAR.auto_craft("copper_helmet")
     BAGAR.bank_withdraw_item("copper_helmet")
     BAGAR.equip("copper_helmet")
 
