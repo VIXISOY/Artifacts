@@ -1,10 +1,10 @@
-from Private import *
+from Source.Private import *
 import requests
 import json
 import time
 from datetime import datetime, timezone
-from poi import poi_dict
-from loot import loot_dict
+from Source.poi import poi_dict
+from Source.loot import loot_dict
 
 class APIClient:
     BASE_URL = "https://api.artifactsmmo.com"

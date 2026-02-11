@@ -1,4 +1,4 @@
-from BASE import *
+from Source.BASE import *
 
 ore = "iron_ore"
 ingot = "iron_bar"

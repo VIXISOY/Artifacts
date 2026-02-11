@@ -1,4 +1,4 @@
-from Reseau import *
+from Source.Reseau import *
 
 class Character:
     def __init__(self, name, api=APIClient()):

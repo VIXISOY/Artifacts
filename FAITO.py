@@ -1,4 +1,4 @@
-from BASE import *
+from Source.BASE import *
 
 heal_item = "cooked_gudgeon"
 heal_amount = 75
