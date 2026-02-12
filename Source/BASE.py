@@ -188,7 +188,7 @@ class Character:
         self.move_to(poi)
         handle_cooldown(self.get_cooldown())
         print("===RECYCLE===", end=" ")
-        response = post(f"/my/{self.name}/action/recycle",{"code": code, "quantity": quantity})
+        response = post(f"/my/{self.name}/action/recycling",{"code": code, "quantity": quantity})
         print(f"{self.name} recycled {quantity} {code}")
         return response
 
