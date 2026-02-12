@@ -182,6 +182,15 @@ class Character:
         self.craft(code, ammount)
         self.bank_deposit_full_inventory()
         return None
+    
+    def recycle(self, code, quantity=1):
+        poi = get_item(code)["data"]["craft"]["skill"] # /!\ no security
+        self.move_to(poi)
+        handle_cooldown(self.get_cooldown())
+        print("===RECYCLE===", end=" ")
+        response = post(f"/my/{self.name}/action/recycle",{"code": code, "quantity": quantity})
+        print(f"{self.name} recycled {quantity} {code}")
+        return response
 
 BAGAR = Character("BAGAR")
 FEMME = Character("FEMME")
