@@ -1,13 +1,16 @@
 from Source.BASE import *
 
 if __name__ == '__main__':
-    while CHILD.get_character()["jewelrycrafting_level"] < 5:
-      CHILD.auto_craft("copper_ring")
-      CHILD.bank_withdraw_item("copper_ring", get_bank_item_quantity("copper_ring"))
-      CHILD.recycle("copper_ring",get_bank_item_quantity("copper_ring"))
-    
+    current = 0
+    trigger = 10
+    CHILD.bank_deposit_full_inventory()
     while True:
-      CHILD.auto_craft("copper_legs_armor")
-      CHILD.bank_withdraw_item("copper_legs_armor", get_bank_item_quantity("copper_legs_armor"))
-      CHILD.recycle("copper_legs_armor",get_bank_item_quantity("copper_legs_armor"))
+      CHILD.auto_craft_self_only("copper_legs_armor")
+      CHILD.bank_deposit_full_inventory()
+      current+=1
+      if current == trigger:
+        CHILD.bank_withdraw_item("copper_legs_armor", trigger)
+        CHILD.recycle("copper_legs_armor",trigger)
+        CHILD.bank_deposit_full_inventory()
+        current = 0
     
