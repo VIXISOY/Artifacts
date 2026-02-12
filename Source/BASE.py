@@ -192,7 +192,7 @@ class Character:
                 print(f"Missing {missing} {items['code']}")
                 print(f"Estimated Time before retrieval: {int(missing * 30 / 60)}m {missing * 30 % 60}s")
                 if loot_dict.get(items["code"]) == None:
-                    self.auto_craft(items["code"],missing)
+                    self.auto_craft_self_only(items["code"],missing)
                 else:
                     start = self.get_item_quantity(items["code"])
                     while self.get_item_quantity(items["code"])-start < missing :
