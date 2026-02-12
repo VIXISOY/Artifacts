@@ -65,7 +65,7 @@ class Character:
                 case "gather":
                     self.gather(loot_dict[loot]["location"])
                 case "fight":
-                    if self.fight_smart != False :
+                    if self.fight_smart == False :
                         if self.get_character()["hp"]/self.get_character()["max_hp"]<= 0.2:
                             self.rest()
                         else:
