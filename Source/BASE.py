@@ -182,6 +182,24 @@ class Character:
         self.craft(code, ammount)
         self.bank_deposit_full_inventory()
         return None
+
+    def auto_craft_self_only(self,code,ammount=1):
+        print("===AUTOCRAFT-SELF===", end=" ")
+        print(f"{self.name} auto craft {ammount} {code}")
+        for items in get_item(code)["data"]["craft"]["items"]:
+            missing = items["quantity"] * ammount - self.get_item_quantity(items["code"])
+            if missing > 0:
+                print(f"Missing {missing} {items['code']}")
+                print(f"Estimated Time before retrieval: {int(missing * 30 / 60)}m {missing * 30 % 60}s")
+                if loot_dict.get(items["code"]) == None:
+                    self.auto_craft(items["code"],missing)
+                else:
+                    start = self.get_item_quantity(items["code"])
+                    while self.get_item_quantity(items["code"])-start < missing :
+                        self.farm_item(items["code"],missing)
+            print(f"Enough {items["code"]} in Bank")
+        self.craft(code, ammount)
+        return None
     
     def recycle(self, code, quantity=1):
         poi = get_item(code)["data"]["craft"]["skill"] # /!\ no security
