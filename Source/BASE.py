@@ -1,9 +1,16 @@
 from Source.Reseau import *
 
+def fight_smart(self, loot):
+        if self.get_character()["hp"]/self.get_character()["max_hp"]<= 0.5:
+            self.rest()
+        else:
+            self.fight(loot_dict[loot]["location"])
+
 class Character:
     def __init__(self, name, api=APIClient()):
         self.name = name
         self.client = api
+        self.fight_smart = False
 
     def get_cooldown(self):
         cooldown_timestamp = get(f"/characters/{self.name}")["data"]["cooldown_expiration"]
@@ -64,10 +71,13 @@ class Character:
                 case "gather":
                     self.gather(loot_dict[loot]["location"])
                 case "fight":
-                    if self.get_character()["hp"]/self.get_character()["max_hp"]<= 0.2:
-                        self.rest()
+                    if self.fight_smart == False :
+                        if self.get_character()["hp"]/self.get_character()["max_hp"]<= 0.2:
+                            self.rest()
+                        else:
+                            self.fight(loot_dict[loot]["location"])
                     else:
-                        self.fight(loot_dict[loot]["location"])
+                        fight_smart(self, loot)
 
     def craft(self, item, amount=1):
         self.move_to(get_item(item)["data"]["craft"]["skill"])
