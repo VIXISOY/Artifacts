@@ -1,16 +1,10 @@
 from Source.Reseau import *
 
-def fight_smart(self, loot):
-        if self.get_character()["hp"]/self.get_character()["max_hp"]<= 0.5:
-            self.rest()
-        else:
-            self.fight(loot_dict[loot]["location"])
-
 class Character:
     def __init__(self, name, api=APIClient()):
         self.name = name
         self.client = api
-        self.fight_smart = False
+        self.fighting_smart = False
 
     def get_cooldown(self):
         cooldown_timestamp = get(f"/characters/{self.name}")["data"]["cooldown_expiration"]
@@ -45,6 +39,31 @@ class Character:
         response = post(f"/my/{self.name}/action/fight")
         print(f"{self.name} fought {enemy} and {response['data']['fight']['result']}")
         return response
+    
+    def fight_smart(self, loot, eating_item = "cooked_gudgeon", potion_item = "small_health_potion"):
+        info = self.get_character()
+
+        potion_quantity = 30
+        potion_amount =  info["utility1_slot_quantity"] if info["utility1_slot"]==potion_item else 0
+        potion_amount += info["utility2_slot_quantity"] if info["utility2_slot"]==potion_item else 0
+        
+        eating_quantity = 10
+        eating_amount = self.get_item_quantity(eating_item)
+        eating_heal_amount = get(f'/items/{eating_item}')["data"]["effects"][0]["value"]
+
+        if potion_amount < 10:
+            to_get = min(get_bank_item_quantity(potion_item), potion_quantity - potion_amount)
+            self.bank_withdraw_item(potion_item, to_get)
+            self.equip(potion_item, quantity=to_get)
+
+        if eating_amount == 0:
+            self.bank_withdraw_item(eating_item, min(get_bank_item_quantity(eating_item), eating_quantity))
+
+
+        missing_health = info["max_hp"]-info["hp"]
+        self.use(eating_item,min(missing_health//eating_heal_amount, eating_quantity))
+        self.rest()
+        self.fight(loot_dict[loot]["location"])
 
     def gather(self, poi):
         self.move_to(poi)
@@ -71,13 +90,13 @@ class Character:
                 case "gather":
                     self.gather(loot_dict[loot]["location"])
                 case "fight":
-                    if self.fight_smart == False :
+                    if self.fighting_smart == False :
                         if self.get_character()["hp"]/self.get_character()["max_hp"]<= 0.2:
                             self.rest()
                         else:
                             self.fight(loot_dict[loot]["location"])
                     else:
-                        fight_smart(self, loot)
+                        self.fight_smart(loot)
 
     def craft(self, item, amount=1):
         self.move_to(get_item(item)["data"]["craft"]["skill"])
@@ -166,12 +185,15 @@ class Character:
             slot = get_item(item)["data"]["type"]
             if slot == "ring" :
                 slot = "ring1"
+            elif slot == "utility" :
+                slot = "utility1"
         print("===EQUIP===", end=" ")
         response = post(f"/my/{self.name}/action/equip",{"code": item, "slot": slot, "quantity": quantity})
         print(f"{self.name} equiped {quantity} {item} on slot {slot}")
         return response
 
     def auto_craft(self,code,ammount=1):
+        handle_cooldown(self.get_cooldown())
         print("===AUTOCRAFT===", end=" ")
         print(f"{self.name} auto craft {ammount} {code}")
         for items in get_item(code)["data"]["craft"]["items"]:
@@ -193,6 +215,7 @@ class Character:
         return None
 
     def auto_craft_self_only(self,code,ammount=1):
+        handle_cooldown(self.get_cooldown())
         print("===AUTOCRAFT-SELF===", end=" ")
         print(f"{self.name} auto craft {ammount} {code}")
         for items in get_item(code)["data"]["craft"]["items"]:

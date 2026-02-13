@@ -19,5 +19,7 @@ loot_dict = {
     "milk_bucket": {"action":"fight","location":"cow"},
     "cowhide": {"action":"fight","location":"cow"},
     "nettle_leaf": {"action":"gather","location":"nettle"},
-    "trout": {"action":"gather","location":"trout_spot"}
+    "trout": {"action":"gather","location":"trout_spot"},
+    "mushroom": {"action":"fight","location":"mushmush"},
+    "forest_ring": {"action":"fight","location":"mushmush"},
 }
