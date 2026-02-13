@@ -1,9 +1,18 @@
 from Source.BASE import *
 
 if __name__ == '__main__':
+    count = 4
+    CHOPA.bank_deposit_full_inventory()
     while True:
         CHOPA.auto_craft_self_only("wooden_shield")
         CHOPA.recycle("wooden_shield")
+
+        count += 1
+
+        if count == 5:
+            CHOPA.bank_deposit_full_inventory()
+            count = 0
+
     while True:
         CHOPA.bank_deposit_full_inventory()
         if get_bank_item_quantity("spruce_wood") <= 50:
