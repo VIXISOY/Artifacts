@@ -193,6 +193,7 @@ class Character:
         return response
 
     def auto_craft(self,code,ammount=1):
+        handle_cooldown(self.get_cooldown())
         print("===AUTOCRAFT===", end=" ")
         print(f"{self.name} auto craft {ammount} {code}")
         for items in get_item(code)["data"]["craft"]["items"]:
@@ -214,6 +215,7 @@ class Character:
         return None
 
     def auto_craft_self_only(self,code,ammount=1):
+        handle_cooldown(self.get_cooldown())
         print("===AUTOCRAFT-SELF===", end=" ")
         print(f"{self.name} auto craft {ammount} {code}")
         for items in get_item(code)["data"]["craft"]["items"]:
