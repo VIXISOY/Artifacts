@@ -1,10 +1,16 @@
 from Source.Reseau import *
 
-def fight_smart(self, loot):
-        if self.get_character()["hp"]/self.get_character()["max_hp"]<= 0.5:
-            self.rest()
-        else:
-            self.fight(loot_dict[loot]["location"])
+def fight_smart(self, loot, heal_item = "cooked_gudgeon"):
+    quantity = 20
+    heal_amount = get(f'/items/{heal_item}')["effects"][0]["value"]
+    current_amount = self.get_item_quantity(heal_item)
+    if current_amount == 0:
+        self.bank_withdraw_item(heal_item, min(get_bank_item_quantity(heal_item), quantity))
+    info = self.get_character()
+    missing_health = info["max_hp"]-info["hp"]
+    self.use(heal_item,min(missing_health//heal_amount, quantity))
+    self.rest()
+    self.fight(loot_dict[loot]["location"])
 
 class Character:
     def __init__(self, name, api=APIClient()):
