@@ -1,6 +1,10 @@
 from Source.BASE import *
 
 if __name__ == '__main__':
+
+    while True:
+        CHOPA.auto_craft("wooden_shield")
+        CHOPA.recycle("wooden_shield")
     while True:
         CHOPA.bank_deposit_full_inventory()
         if get_bank_item_quantity("spruce_wood") <= 50:

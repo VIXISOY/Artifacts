@@ -186,11 +186,10 @@ class Character:
                     while self.get_item_quantity(items["code"])-start < missing :
                         self.farm_item(items["code"],missing)
                     self.bank_deposit_full_inventory()
-            print(f"Enough {items["code"]} in Bank")
+            print(f"Enough {items["code"]} in Bank and/or Inventory")
         for items in get_item(code)["data"]["craft"]["items"]:
                 self.bank_withdraw_item(items["code"], items["quantity"] * ammount)
         self.craft(code, ammount)
-        self.bank_deposit_full_inventory()
         return None
 
     def auto_craft_self_only(self,code,ammount=1):
@@ -207,7 +206,7 @@ class Character:
                     start = self.get_item_quantity(items["code"])
                     while self.get_item_quantity(items["code"])-start < missing :
                         self.farm_item(items["code"],missing)
-            print(f"Enough {items["code"]} in Bank")
+            print(f"Enough {items["code"]} in Inventory")
         self.craft(code, ammount)
         return None
     
