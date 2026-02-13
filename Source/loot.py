@@ -18,5 +18,6 @@ loot_dict = {
     "raw_beef": {"action":"fight","location":"cow"},
     "milk_bucket": {"action":"fight","location":"cow"},
     "cowhide": {"action":"fight","location":"cow"},
-    "nettle_leaf": {"action":"gather","location":"nettle"}
+    "nettle_leaf": {"action":"gather","location":"nettle"},
+    "trout": {"action":"gather","location":"trout_spot"}
 }
