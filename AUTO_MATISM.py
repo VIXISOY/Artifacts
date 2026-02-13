@@ -1,7 +1,7 @@
 from Source.BASE import *
 
 if __name__ == '__main__':
-    CHILD.fight_smart = True
+    CHILD.fighting_smart = True
     CHILD.auto_craft_self_only("adventurer_helmet")
     CHILD.equip("adventurer_helmet")
     CHILD.bank_deposit_full_inventory()
