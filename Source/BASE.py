@@ -61,7 +61,7 @@ class Character:
 
 
         missing_health = info["max_hp"]-info["hp"]
-        self.use(eating_item,min(missing_health//eating_heal_amount, eating_quantity))
+        self.use(eating_item,min(missing_health+(eating_heal_amount/3)//eating_heal_amount, eating_quantity))
         self.rest()
         self.fight(loot_dict[loot]["location"])
 
