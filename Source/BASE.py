@@ -63,7 +63,7 @@ class Character:
                     if (tmp["data"]["type"] == "weapon" and tmp["data"]["subtype"] == ""):
                         self.equip(item["code"])
                 else:
-                    if tmp["data"]["effects"] != []:
+                    if len(tmp["data"]["effects"]) >= 2:
                         if tmp["data"]["effects"][1]["code"] == subtype:
                             self.equip(item["code"])
         for i in range(quantity):
