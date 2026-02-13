@@ -11,6 +11,5 @@ if __name__ == '__main__':
       if current == trigger:
         CHILD.bank_withdraw_item("copper_legs_armor", trigger)
         CHILD.recycle("copper_legs_armor",trigger)
-        CHILD.bank_deposit_full_inventory()
         current = 0
     
