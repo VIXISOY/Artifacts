@@ -53,7 +53,6 @@ class Character:
 
         if potion_amount < 10:
             to_get = min(get_bank_item_quantity(potion_item), potion_quantity - potion_amount)
-            print(f"getting {to_get} {potion_item}")
             self.bank_withdraw_item(potion_item, to_get)
             self.equip(potion_item, quantity=to_get)
 
