@@ -77,7 +77,7 @@ class Character:
                         else:
                             self.fight(loot_dict[loot]["location"])
                     else:
-                        fight_smart()
+                        fight_smart(self, loot)
 
     def craft(self, item, amount=1):
         self.move_to(get_item(item)["data"]["craft"]["skill"])
