@@ -209,9 +209,11 @@ class Character:
                         self.farm_item(items["code"],missing)
                     self.bank_deposit_full_inventory()
             print(f"Enough {items["code"]} in Bank and/or Inventory")
+        self.bank_deposit_full_inventory()
         for items in get_item(code)["data"]["craft"]["items"]:
                 self.bank_withdraw_item(items["code"], items["quantity"] * ammount)
         self.craft(code, ammount)
+        self.bank_deposit_full_inventory()
         return None
 
     def auto_craft_self_only(self,code,ammount=1):
