@@ -1,5 +1,11 @@
 from Source.Reseau import *
 
+def fight_smart(self, loot):
+        if self.get_character()["hp"]/self.get_character()["max_hp"]<= 0.5:
+            self.rest()
+        else:
+            self.fight(loot_dict[loot]["location"])
+
 class Character:
     def __init__(self, name, api=APIClient()):
         self.name = name
