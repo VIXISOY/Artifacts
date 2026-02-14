@@ -51,13 +51,12 @@ class Character:
         eating_amount = self.get_item_quantity(eating_item)
         eating_heal_amount = get(f'/items/{eating_item}')["data"]["effects"][0]["value"]
 
-        if potion_amount < 10:
-            to_get = min(get_bank_item_quantity(potion_item), potion_quantity - potion_amount)
-            self.bank_withdraw_item(potion_item, to_get)
-            self.equip(potion_item, quantity=to_get)
+        if potion_amount < 10 and get_bank_item_quantity(potion_item) > potion_quantity:
+            self.bank_withdraw_item(potion_item, potion_quantity)
+            self.equip(potion_item, quantity=potion_quantity)
 
-        if eating_amount == 0:
-            self.bank_withdraw_item(eating_item, min(get_bank_item_quantity(eating_item), eating_quantity))
+        if eating_amount == 0 and get_bank_item_quantity(eating_item) > 0:
+            self.bank_withdraw_item(eating_item, eating_quantity)
 
 
         missing_health = info["max_hp"]-info["hp"]
