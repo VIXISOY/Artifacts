@@ -153,18 +153,22 @@ class Character:
         response = get(f"/characters/{self.name}")
         return response["data"]["x"], response["data"]["y"]
 
-    def bank_deposit_full_inventory(self):
+    def bank_deposit_full_inventory(self, blacklist = []):
         self.move_to("bank")
         handle_cooldown(self.get_cooldown())
         print("===DEPOSIT_FULL_INVENTORY===", end=" ")
         full = []
         for item in self.get_inventory() :
             if (item["quantity"] > 0):
-                if get_item(item["code"])["data"]["type"] != "weapon":
-                    full.append(item)
-        response = post(f"/my/{self.name}/action/bank/deposit/item", full)
+                if get_item(item["code"])["data"]["type"] == "weapon":
+                    continue
+                if item["code"] in blacklist:
+                    continue
+                full.append(item)
+                
         print(full)
-        print(f"{self.name} deposited full inventory in the bank")
+        response = post(f"/my/{self.name}/action/bank/deposit/item", full)
+        print(f"{self.name} deposited full inventory in the bank, except blacklist")
         return response
     
     def get_character(self):
@@ -242,6 +246,14 @@ class Character:
         response = post(f"/my/{self.name}/action/recycling",{"code": code, "quantity": quantity})
         print(f"{self.name} recycled {quantity} {code}")
         return response
+    
+    def inventory_space(self):
+        inventory = self.get_inventory()
+        space = 0
+        for item in inventory:
+            if item["quantity"] == 0:
+                space += 1
+        return space
 
 BAGAR = Character("BAGAR")
 FEMME = Character("FEMME")
