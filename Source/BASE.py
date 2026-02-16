@@ -74,7 +74,6 @@ class Character:
 
     def farm_item(self, loot, quantity=1):
         subtype = get_item(loot)["data"]["subtype"]
-        print(self.inventory_space())
         if self.inventory_space() == 0:
             self.bank_deposit_full_inventory([loot])
         for item in self.get_inventory():
