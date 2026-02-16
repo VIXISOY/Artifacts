@@ -2,7 +2,12 @@ from Source.BASE import *
 
 if __name__ == '__main__':
 
+    count = 20
     while True:
+        if count == 20:
+            CHOPA.bank_deposit_full_inventory()
+            count = 0
+        count += 1
         CHOPA.auto_craft("hardwood_plank")
 
 
