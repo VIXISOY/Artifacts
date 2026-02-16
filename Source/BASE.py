@@ -93,8 +93,9 @@ class Character:
                 case "fight":
                     if self.fighting_smart == False :
                         if (self.get_character()["hp"]/self.get_character()["max_hp"]<= 0.75):
-                            self.heal()
-                        elif (self.get_character()["hp"]/self.get_character()["max_hp"]<= 0.2):
+                            if not self.heal():
+                                self.bank_withdraw_item("cooked_shrimp",50)
+                        if (self.get_character()["hp"]/self.get_character()["max_hp"]<= 0.5):
                             self.rest()
                         self.fight(loot_dict[loot]["location"])
                     else:
@@ -210,7 +211,8 @@ class Character:
                     self.auto_craft(items["code"],missing)
                 else:
                     start = self.get_item_quantity(items["code"])
-                    while self.get_item_quantity(items["code"])-start < missing :
+                    current = self.get_item_quantity(items["code"])
+                    while current - start < missing :
                         self.farm_item(items["code"],missing)
             print(f"Enough {items["code"]} in Bank and/or Inventory")
         self.bank_deposit_full_inventory()
@@ -256,10 +258,16 @@ class Character:
         return space
 
     def heal(self):
+        handle_cooldown(self.get_cooldown())
+        print("===HEAL===", end=" ")
         for item in self.get_inventory() :
             if (item["quantity"] > 0):
                 if get_item(item["code"])["data"]["type"] == "consumable":
+                    print()
                     self.use(item["code"])
+                    return True
+        print(f"No healing item")
+        return False
 
 
 BAGAR = Character("BAGAR")
