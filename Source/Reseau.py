@@ -5,6 +5,7 @@ import time
 from datetime import datetime, timezone
 from Source.poi import poi_dict
 from Source.loot import loot_dict
+import math
 
 class APIClient:
     BASE_URL = "https://api.artifactsmmo.com"
@@ -83,6 +84,9 @@ def get_bank_item_quantity(code):
         return get_bank_items(code)["data"][0]["quantity"]
     else:
         return 0
+
+def get_monster(code):
+    return get(f"/monsters/{code}")
 
 if __name__ == "__main__":
 
