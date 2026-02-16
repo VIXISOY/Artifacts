@@ -263,8 +263,12 @@ class Character:
         for item in self.get_inventory() :
             if (item["quantity"] > 0):
                 if get_item(item["code"])["data"]["type"] == "consumable":
+                    char = self.get_character()
+                    missing_health = char["max_hp"] - char["hp"]
+                    required = ceil(missing_health/get_item(item["code"])["data"]["effects"][1]["value"])
+                    ammount = min(item["quantity"], required)
                     print()
-                    self.use(item["code"])
+                    self.use(item["code"],ammount)
                     return True
         print(f"No healing item")
         return False
