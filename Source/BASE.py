@@ -74,6 +74,7 @@ class Character:
 
     def farm_item(self, loot, quantity=1):
         subtype = get_item(loot)["data"]["subtype"]
+        print(self.inventory_space())
         if self.inventory_space() == 0:
             self.bank_deposit_full_inventory([loot])
         for item in self.get_inventory():
@@ -96,8 +97,7 @@ class Character:
                             self.heal()
                         elif (self.get_character()["hp"]/self.get_character()["max_hp"]<= 0.2):
                             self.rest()
-                        else:
-                            self.fight(loot_dict[loot]["location"])
+                        self.fight(loot_dict[loot]["location"])
                     else:
                         self.fight_smart(loot)
 
