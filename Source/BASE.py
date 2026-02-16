@@ -90,7 +90,9 @@ class Character:
                     self.gather(loot_dict[loot]["location"])
                 case "fight":
                     if self.fighting_smart == False :
-                        if self.get_character()["hp"]/self.get_character()["max_hp"]<= 0.2:
+                        if (self.get_character()["hp"]/self.get_character()["max_hp"]<= 0.75):
+                            self.heal()
+                        elif (self.get_character()["hp"]/self.get_character()["max_hp"]<= 0.2):
                             self.rest()
                         else:
                             self.fight(loot_dict[loot]["location"])
@@ -160,7 +162,7 @@ class Character:
         full = []
         for item in self.get_inventory() :
             if (item["quantity"] > 0):
-                if get_item(item["code"])["data"]["type"] == "weapon":
+                if get_item(item["code"])["data"]["type"] == "weapon" or get_item(item["code"])["data"]["type"] == "consumable":
                     continue
                 if item["code"] in blacklist:
                     continue
@@ -253,6 +255,13 @@ class Character:
             if item["quantity"] == 0:
                 space += 1
         return space
+
+    def heal(self):
+        for item in self.get_inventory() :
+            if (item["quantity"] > 0):
+                if get_item(item["code"])["data"]["type"] == "consumable":
+                    self.use(item["code"])
+
 
 BAGAR = Character("BAGAR")
 FEMME = Character("FEMME")
