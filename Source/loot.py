@@ -22,4 +22,5 @@ loot_dict = {
     "trout": {"action":"gather","location":"trout_spot"},
     "mushroom": {"action":"fight","location":"mushmush"},
     "forest_ring": {"action":"fight","location":"mushmush"},
+    "birch_wood": {"action":"gather","location":"birch_tree"},
 }

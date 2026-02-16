@@ -19,6 +19,7 @@ poi_dict = {
     "nettle": {"x":7, "y":14, "layer":["Overworld"] },
     "trout_spot": {"x":7, "y":12, "layer":["Overworld"] },
     "mushmush": {"x":5, "y":3, "layer":["Overworld"] },
+    "birch_tree": {"x":3, "y":5, "layer":["Overworld"] },
 
     "woodcutting": {"x":-2, "y":-3, "layer":["Overworld"] },
     "cooking": {"x": 1, "y": 1, "layer": ["Overworld"]},
