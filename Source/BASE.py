@@ -165,9 +165,8 @@ class Character:
                 if item["code"] in blacklist:
                     continue
                 full.append(item)
-                
-        print(full)
         response = post(f"/my/{self.name}/action/bank/deposit/item", full)
+        print(full)
         print(f"{self.name} deposited full inventory in the bank, except blacklist")
         return response
     
