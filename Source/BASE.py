@@ -38,6 +38,7 @@ class Character:
         print("===FIGHT===", end=" ")
         response = post(f"/my/{self.name}/action/fight")
         print(f"{self.name} fought {enemy} and {response['data']['fight']['result']}")
+        print(f"Drops: {response['data']['fight']['characters'][0]['drops']}")
         return response
     
     def fight_smart(self, loot, eating_item = "cooked_gudgeon", potion_item = "small_health_potion"):
@@ -265,7 +266,7 @@ class Character:
                 if get_item(item["code"])["data"]["type"] == "consumable":
                     char = self.get_character()
                     missing_health = char["max_hp"] - char["hp"]
-                    required = ceil(missing_health/get_item(item["code"])["data"]["effects"][1]["value"])
+                    required = math.ceil(missing_health/get_item(item["code"])["data"]["effects"][0]["value"])
                     ammount = min(item["quantity"], required)
                     print()
                     self.use(item["code"],ammount)
