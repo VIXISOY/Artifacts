@@ -2,10 +2,11 @@ from Source.BASE import *
 
 if __name__ == '__main__':
 
-    BAGAR.auto_craft("adventurer_helmet")
+
 
     while True:
-        BAGAR.farm_item("mushroom")
+        BAGAR.auto_craft("greater_wooden_staff")
+        BAGAR.recycle("greater_wooden_staff")
 
     count = 0
     while True:

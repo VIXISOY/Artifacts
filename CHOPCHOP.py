@@ -2,15 +2,8 @@ from Source.BASE import *
 
 if __name__ == '__main__':
 
-    CHOPA.auto_craft("iron_shield")
-    CHOPA.withdraw("iron_shield")
-    CHOPA.equip("iron_shield")
     while True:
-        sleep(1)
-
-    CHOPA.auto_craft("spruce_plank",4)
-    while True:
-        CHOPA.auto_craft("hardwood_plank")
+        CHOPA.auto_craft("hardwoord_plank")
 
 
     count = 4
