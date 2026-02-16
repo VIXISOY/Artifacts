@@ -1,6 +1,9 @@
 from Source.BASE import *
 
 if __name__ == '__main__':
+  CHILD.auto_craft("satchel",5)
+  CHILD.bank_deposit_full_inventory()
   while True:
-    CHILD.bank_deposit_full_inventory()
-    CHILD.auto_craft_self_only("iron_legs_armor")
+    CHILD.auto_craft_self_only("iron_boots")
+    CHILD.recycle("iron_boots")
+    CHILD.bank_deposit_full_inventory(["feather","iron_bar"])

@@ -93,10 +93,11 @@ class Character:
                     self.gather(loot_dict[loot]["location"])
                 case "fight":
                     if self.fighting_smart == False :
-                        if (self.get_character()["hp"]/self.get_character()["max_hp"]<= 0.75):
+                        HP_percent = self.get_character()["hp"]/self.get_character()["max_hp"]
+                        if (HP_percent <= 0.75):
                             if not self.heal():
                                 self.bank_withdraw_item("cooked_shrimp",50)
-                        if (self.get_character()["hp"]/self.get_character()["max_hp"]<= 0.5):
+                        if (HP_percent <= 0.5):
                             self.rest()
                         self.fight(loot_dict[loot]["location"])
                     else:
