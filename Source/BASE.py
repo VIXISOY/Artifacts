@@ -250,7 +250,7 @@ class Character:
         return response
     
     def inventory_space(self):
-        space = self.get_inventory()["data"]["inventory_max_items"]
+        space = self.get_character()["inventory_max_items"]
         inventory = self.get_inventory()
         for item in inventory:
             space -= item["quantity"]
