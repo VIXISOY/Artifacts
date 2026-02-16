@@ -3,7 +3,7 @@ from Source.BASE import *
 if __name__ == '__main__':
 
     while True:
-        CHOPA.auto_craft("hardwoord_plank")
+        CHOPA.auto_craft("hardwood_plank")
 
 
     count = 4

@@ -77,13 +77,42 @@ class Character:
         subtype = get_item(loot)["data"]["subtype"]
         if self.inventory_space() == 0:
             self.bank_deposit_full_inventory([loot])
-        for item in self.get_inventory():
-            if item["code"] != "":
-                tmp = get_item(item["code"])
-                if loot_dict[loot]["action"] == "fight":
+        if loot_dict[loot]["action"] == "fight":
+            #print(f"Want to fight {loot_dict[loot]["location"]}")
+            weapons = []
+            monster = get_monster(loot_dict[loot]["location"])["data"]
+            resistances = {
+                "res_fire": (100-monster["res_fire"])/100,
+                "res_air": (100-monster["res_air"])/100,
+                "res_earth": (100-monster["res_earth"])/100,
+                "res_water": (100-monster["res_water"])/100,
+            }
+            for item in self.get_inventory():
+                if item["code"] != "":
+                    tmp = get_item(item["code"])
                     if (tmp["data"]["type"] == "weapon" and tmp["data"]["subtype"] == ""):
-                        self.equip(item["code"])
-                else:
+                        weapons.append(tmp)
+            weapons.append(get_item(self.get_character()["weapon_slot"]))
+            best_score = 0
+            for weapon in weapons:
+                score = 0
+                effects = {effect["code"]: effect["value"] for effect in weapon["data"]["effects"]}
+                score += effects.get("attack_earth",0)*resistances.get("res_earth")
+                score += effects.get("attack_water", 0) * resistances.get("res_water")
+                score += effects.get("attack_fire", 0) * resistances.get("res_fire")
+                score += effects.get("attack_air", 0) * resistances.get("res_air")
+                score *= (1+effects.get("critical_strike")/100)
+                #print(f"{weapon["data"]["code"]} score: {score}", end= " ")
+                if score > best_score :
+                    best_score = score
+                    best_weapon = weapon["data"]["code"]
+            #print(f"Best weapon is {best_weapon}")
+            if self.get_character()["weapon_slot"] != best_weapon:
+                self.equip(best_weapon)
+        else:
+            for item in self.get_inventory():
+                if item["code"] != "":
+                    tmp = get_item(item["code"])
                     if len(tmp["data"]["effects"]) >= 2:
                         if tmp["data"]["effects"][1]["code"] == subtype:
                             self.equip(item["code"])
@@ -170,10 +199,13 @@ class Character:
                 if item["code"] in blacklist:
                     continue
                 full.append(item)
-        response = post(f"/my/{self.name}/action/bank/deposit/item", full)
-        print(full)
-        print(f"{self.name} deposited full inventory in the bank, except blacklist")
-        return response
+        if len(full) == 0:
+            print("Inventory is empty")
+        else:
+            response = post(f"/my/{self.name}/action/bank/deposit/item", full)
+            print(full)
+            print(f"{self.name} deposited full inventory in the bank, except blacklist")
+            return response
     
     def get_character(self):
         response = get(f"/characters/{self.name}")
