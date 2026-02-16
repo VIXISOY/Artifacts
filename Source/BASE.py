@@ -249,11 +249,10 @@ class Character:
         return response
     
     def inventory_space(self):
+        space = self.get_inventory()["data"]["inventory_max_items"]
         inventory = self.get_inventory()
-        space = 0
         for item in inventory:
-            if item["quantity"] == 0:
-                space += 1
+            space -= item["quantity"]
         return space
 
     def heal(self):
