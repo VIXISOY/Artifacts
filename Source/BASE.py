@@ -74,6 +74,8 @@ class Character:
 
     def farm_item(self, loot, quantity=1):
         subtype = get_item(loot)["data"]["subtype"]
+        if self.inventory_space() == 0:
+            self.bank_deposit_full_inventory([loot])
         for item in self.get_inventory():
             if item["code"] != "":
                 tmp = get_item(item["code"])
@@ -211,7 +213,6 @@ class Character:
                     start = self.get_item_quantity(items["code"])
                     while self.get_item_quantity(items["code"])-start < missing :
                         self.farm_item(items["code"],missing)
-                    self.bank_deposit_full_inventory()
             print(f"Enough {items["code"]} in Bank and/or Inventory")
         self.bank_deposit_full_inventory()
         for items in get_item(code)["data"]["craft"]["items"]:
