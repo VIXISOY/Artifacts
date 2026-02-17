@@ -241,7 +241,7 @@ class Character:
         print(f"{self.name} equiped {quantity} {item} on slot {slot}")
         return response
 
-    def auto_craft(self,code,ammount=1,depth=0):
+    def auto_craft(self,code,ammount=1,depth=0,recycle=False):
         handle_cooldown(self.get_cooldown())
         print("===AUTOCRAFT===", end=" ")
         print(f"{self.name} auto craft {ammount} {code}")
@@ -264,8 +264,10 @@ class Character:
             if already_have < (items["quantity"] * ammount) :
                 self.bank_withdraw_item(items["code"], (items["quantity"] * ammount) - already_have )
         self.craft(code, ammount)
-        if depth == 0:
-            self.bank_deposit_full_inventory()
+        if recycle:
+            self.recycle(code,ammount)
+        elif depth == 0:
+            self.bank_deposit_item(code,ammount)
         return None
 
     def auto_craft_self_only(self,code,ammount=1):

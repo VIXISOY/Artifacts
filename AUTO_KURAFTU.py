@@ -2,11 +2,10 @@ from Source.BASE import *
 
 if __name__ == '__main__':
 
-    BAGAR.bank_deposit_full_inventory()
+    #BAGAR.bank_deposit_full_inventory()
 
     while True:
-        BAGAR.auto_craft("iron_dagger")
-        BAGAR.recycle("iron_dagger")
+        BAGAR.auto_craft("iron_dagger",recycle=True)
 
     count = 0
     while True:
