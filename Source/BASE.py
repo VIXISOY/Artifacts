@@ -241,7 +241,7 @@ class Character:
         print(f"{self.name} equiped {quantity} {item} on slot {slot}")
         return response
 
-    def auto_craft(self,code,ammount=1):
+    def auto_craft(self,code,ammount=1,depth=0):
         handle_cooldown(self.get_cooldown())
         print("===AUTOCRAFT===", end=" ")
         print(f"{self.name} auto craft {ammount} {code}")
@@ -251,18 +251,21 @@ class Character:
                 print(f"Missing {missing} {items['code']}")
                 print(f"Estimated Time before retrieval: {int(missing * 30 / 60)}m {missing * 30 % 60}s")
                 if loot_dict.get(items["code"]) == None:
-                    self.auto_craft(items["code"],missing)
+                    self.auto_craft(items["code"],missing,depth+1)
                 else:
                     start = self.get_item_quantity(items["code"])
-                    current = self.get_item_quantity(items["code"])
-                    while current - start < missing :
-                        self.farm_item(items["code"],missing)
+                    current = 0
+                    while current < missing :
+                        self.farm_item(items["code"],missing - current)
+                        current = self.get_item_quantity(items["code"]) - start
             print(f"Enough {items["code"]} in Bank and/or Inventory")
-        self.bank_deposit_full_inventory()
         for items in get_item(code)["data"]["craft"]["items"]:
-                self.bank_withdraw_item(items["code"], items["quantity"] * ammount)
+            already_have = self.get_item_quantity(items["code"])
+            if already_have < (items["quantity"] * ammount) :
+                self.bank_withdraw_item(items["code"], (items["quantity"] * ammount) - already_have )
         self.craft(code, ammount)
-        self.bank_deposit_full_inventory()
+        if depth == 0:
+            self.bank_deposit_full_inventory()
         return None
 
     def auto_craft_self_only(self,code,ammount=1):
@@ -278,8 +281,10 @@ class Character:
                     self.auto_craft_self_only(items["code"],missing)
                 else:
                     start = self.get_item_quantity(items["code"])
-                    while self.get_item_quantity(items["code"])-start < missing :
+                    current = 0
+                    while current < missing :
                         self.farm_item(items["code"],missing)
+                        current = self.get_item_quantity(items["code"]) - start
             print(f"Enough {items["code"]} in Inventory")
         self.craft(code, ammount)
         return None

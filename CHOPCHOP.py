@@ -8,7 +8,8 @@ if __name__ == '__main__':
             CHOPA.bank_deposit_full_inventory()
             count = 0
         count += 1
-        CHOPA.auto_craft("hardwood_plank",6)
+        CHOPA.auto_craft("hardwood_plank",3)
+        CHOPA.auto_craft("spruce_plank",3)
 
 
     count = 4

@@ -5,8 +5,8 @@ if __name__ == '__main__':
     BAGAR.bank_deposit_full_inventory()
 
     while True:
-        BAGAR.auto_craft("greater_wooden_staff")
-        BAGAR.recycle("greater_wooden_staff")
+        BAGAR.auto_craft("iron_dagger")
+        BAGAR.recycle("iron_dagger")
 
     count = 0
     while True:
