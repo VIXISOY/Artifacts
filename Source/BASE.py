@@ -73,42 +73,47 @@ class Character:
         print(f"{self.name} gathered at {poi}")
         return response
 
+    def equip_best(self,loot):
+        weapons = []
+        monster = get_monster(loot_dict[loot]["location"])["data"]
+        char = self.get_character()
+        resistances = {
+            "res_fire": (100 - monster["res_fire"]) / 100,
+            "res_air": (100 - monster["res_air"]) / 100,
+            "res_earth": (100 - monster["res_earth"]) / 100,
+            "res_water": (100 - monster["res_water"]) / 100,
+        }
+        for item in self.get_inventory():
+            if item["code"] != "":
+                tmp = get_item(item["code"])
+                if (tmp["data"]["type"] == "weapon" and tmp["data"]["subtype"] == "" and tmp["data"]["level"] <= char["level"] ):
+                    weapons.append(tmp)
+        if char["weapon_slot"] != "" :
+            weapons.append(get_item(char["weapon_slot"]))
+        best_score = 0
+        for weapon in weapons:
+            score = 0
+            effects = {effect["code"]: effect["value"] for effect in weapon["data"]["effects"]}
+            score += effects.get("attack_earth", 0) * resistances.get("res_earth")
+            score += effects.get("attack_water", 0) * resistances.get("res_water")
+            score += effects.get("attack_fire", 0) * resistances.get("res_fire")
+            score += effects.get("attack_air", 0) * resistances.get("res_air")
+            score *= (1 + effects.get("critical_strike") / 100)
+            # print(f"{weapon["data"]["code"]} score: {score}", end= " ")
+            if score > best_score:
+                best_score = score
+                best_weapon = weapon["data"]["code"]
+        # print(f"Best weapon is {best_weapon}")
+        if char["weapon_slot"] != best_weapon:
+            self.equip(best_weapon)
+
     def farm_item(self, loot, quantity=1):
         subtype = get_item(loot)["data"]["subtype"]
         if self.inventory_space() == 0:
             self.bank_deposit_full_inventory([loot])
         if loot_dict[loot]["action"] == "fight":
             #print(f"Want to fight {loot_dict[loot]["location"]}")
-            weapons = []
-            monster = get_monster(loot_dict[loot]["location"])["data"]
-            resistances = {
-                "res_fire": (100-monster["res_fire"])/100,
-                "res_air": (100-monster["res_air"])/100,
-                "res_earth": (100-monster["res_earth"])/100,
-                "res_water": (100-monster["res_water"])/100,
-            }
-            for item in self.get_inventory():
-                if item["code"] != "":
-                    tmp = get_item(item["code"])
-                    if (tmp["data"]["type"] == "weapon" and tmp["data"]["subtype"] == ""):
-                        weapons.append(tmp)
-            weapons.append(get_item(self.get_character()["weapon_slot"]))
-            best_score = 0
-            for weapon in weapons:
-                score = 0
-                effects = {effect["code"]: effect["value"] for effect in weapon["data"]["effects"]}
-                score += effects.get("attack_earth",0)*resistances.get("res_earth")
-                score += effects.get("attack_water", 0) * resistances.get("res_water")
-                score += effects.get("attack_fire", 0) * resistances.get("res_fire")
-                score += effects.get("attack_air", 0) * resistances.get("res_air")
-                score *= (1+effects.get("critical_strike")/100)
-                #print(f"{weapon["data"]["code"]} score: {score}", end= " ")
-                if score > best_score :
-                    best_score = score
-                    best_weapon = weapon["data"]["code"]
-            #print(f"Best weapon is {best_weapon}")
-            if self.get_character()["weapon_slot"] != best_weapon:
-                self.equip(best_weapon)
+            self.equip_best(loot)
         else:
             for item in self.get_inventory():
                 if item["code"] != "":
