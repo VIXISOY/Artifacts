@@ -2,6 +2,8 @@ from Source.BASE import *
 
 if __name__ == '__main__':
 
+    BAGAR.bank_deposit_full_inventory()
+
     while True:
         BAGAR.auto_craft("greater_wooden_staff")
         BAGAR.recycle("greater_wooden_staff")
