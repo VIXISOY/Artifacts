@@ -83,13 +83,13 @@ class Character:
             "res_earth": (100 - monster["res_earth"]) / 100,
             "res_water": (100 - monster["res_water"]) / 100,
         }
+        if char["weapon_slot"] != "" :
+            weapons.append(get_item(char["weapon_slot"]))
         for item in self.get_inventory():
             if item["code"] != "":
                 tmp = get_item(item["code"])
                 if (tmp["data"]["type"] == "weapon" and tmp["data"]["subtype"] == "" and tmp["data"]["level"] <= char["level"] ):
                     weapons.append(tmp)
-        if char["weapon_slot"] != "" :
-            weapons.append(get_item(char["weapon_slot"]))
         best_score = 0
         for weapon in weapons:
             score = 0
@@ -98,8 +98,8 @@ class Character:
             score += effects.get("attack_water", 0) * resistances.get("res_water")
             score += effects.get("attack_fire", 0) * resistances.get("res_fire")
             score += effects.get("attack_air", 0) * resistances.get("res_air")
-            score *= (1 + effects.get("critical_strike") / 2 / 100)
-            # print(f"{weapon["data"]["code"]} score: {score}", end= " ")
+            score *= (1 + effects.get("critical_strike",0) / 2 / 100)
+            #print(f"{weapon["data"]["code"]} score: {score}")
             if score > best_score:
                 best_score = score
                 best_weapon = weapon["data"]["code"]
