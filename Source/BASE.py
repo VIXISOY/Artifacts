@@ -98,7 +98,7 @@ class Character:
             score += effects.get("attack_water", 0) * resistances.get("res_water")
             score += effects.get("attack_fire", 0) * resistances.get("res_fire")
             score += effects.get("attack_air", 0) * resistances.get("res_air")
-            score *= (1 + effects.get("critical_strike") / 100)
+            score *= (1 + effects.get("critical_strike") / 2 / 100)
             # print(f"{weapon["data"]["code"]} score: {score}", end= " ")
             if score > best_score:
                 best_score = score
@@ -127,11 +127,15 @@ class Character:
                     self.gather(loot_dict[loot]["location"])
                 case "fight":
                     if self.fighting_smart == False :
-                        HP_percent = self.get_character()["hp"]/self.get_character()["max_hp"]
-                        if (HP_percent <= 0.75):
+                        char = self.get_character()
+                        hp_percent = char["hp"]/char["max_hp"]
+                        if (hp_percent <= 0.75):
                             if not self.heal():
-                                self.bank_withdraw_item("cooked_shrimp",50)
-                        if (HP_percent <= 0.5):
+                                if char["level"] < 10:
+                                    self.bank_withdraw_item("cooked_gudgeon",50)
+                                else :
+                                    self.bank_withdraw_item("cooked_shrimp",50)
+                        if (hp_percent <= 0.5):
                             self.rest()
                         self.fight(loot_dict[loot]["location"])
                     else:
