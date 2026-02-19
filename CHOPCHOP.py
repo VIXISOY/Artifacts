@@ -2,9 +2,9 @@ from Source.BASE import *
 
 if __name__ == '__main__':
 
-    count = 4
+    count = 2
     while True:
-        if count == 4:
+        if count == 2:
             CHOPA.bank_deposit_full_inventory()
             count = 0
         count += 1
