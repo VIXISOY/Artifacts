@@ -1,5 +1,11 @@
 from Source.Reseau import *
 
+def try_print(string):
+    try:
+            print(string)
+    except:
+        print(f"failed to display ")
+
 class Character:
     def __init__(self, name, api=APIClient()):
         self.name = name
@@ -15,7 +21,7 @@ class Character:
         handle_cooldown(self.get_cooldown())
         print("===MOVE===", end=" ")
         response = post(f"/my/{self.name}/action/move", {"x": x, "y": y})
-        print(f"{self.name} is at: {x}, {y} {poi}")
+        try_print(f"{self.name} is at: {x}, {y} {poi}")        
         return response
 
     def move_to(self, poi):
@@ -32,13 +38,21 @@ class Character:
         response = post(f"/my/{self.name}/action/rest")
         return response
 
+    def buy_NPC(self, code, quantity):
+        self.move_to(loot_dict[code]["location"])
+        handle_cooldown(self.get_cooldown())
+        print("===TRADING===", end=" ")
+        response = post(f"/my/{self.name}/action/npc/buy",{"code": code, "quantity": quantity})
+        try_print(f"{self.name} traded {quantity} {code}")
+        return response
+
     def fight(self, enemy):
         self.move_to(enemy)
         handle_cooldown(self.get_cooldown())
         print("===FIGHT===", end=" ")
         response = post(f"/my/{self.name}/action/fight")
-        print(f"{self.name} fought {enemy} and {response['data']['fight']['result']}")
-        print(f"Drops: {response['data']['fight']['characters'][0]['drops']}")
+        try_print(f"{self.name} fought {enemy} and {response['data']['fight']['result']}")
+        try_print(f"Drops: {response['data']['fight']['characters'][0]['drops']}")
         return response
     
     def fight_smart(self, loot, eating_item = "cooked_gudgeon", potion_item = "small_health_potion"):
@@ -72,7 +86,7 @@ class Character:
         response = post(f"/my/{self.name}/action/gathering")
         print(f"{self.name} gathered at {poi}")
         return response
-
+    
     def equip_best(self,loot):
         weapons = []
         monster = get_monster(loot_dict[loot]["location"])["data"]
@@ -114,6 +128,21 @@ class Character:
         if loot_dict[loot]["action"] == "fight":
             #print(f"Want to fight {loot_dict[loot]["location"]}")
             self.equip_best(loot)
+        elif loot_dict[loot]["action"] == "trade":
+            trader = loot_dict[loot]["location"]
+            for trade in get(f'/npcs/items/{trader}')['data']:
+                if item["code"] == loot:
+                    currency = trade["currency"]
+                    quantity_item = trade["buy_price"]
+                    break
+            if currency =="gold":
+                pass #TODO
+            currency_amount = self.get_item_quantity(currency)
+            currency_needed_amount = quantity_item * quantity
+            if currency_amount < currency_needed_amount:
+                self.farm_item(currency,currency_needed_amount - currency_amount)
+            self.buy_NPC(currency, quantity)
+            return #quit function
         else:
             for item in self.get_inventory():
                 if item["code"] != "":
@@ -201,6 +230,7 @@ class Character:
         self.move_to("bank")
         handle_cooldown(self.get_cooldown())
         print("===DEPOSIT_FULL_INVENTORY===", end=" ")
+
         full = []
         for item in self.get_inventory() :
             if (item["quantity"] > 0):
@@ -322,7 +352,6 @@ class Character:
                     return True
         print(f"No healing item")
         return False
-
 
 BAGAR = Character("BAGAR")
 FEMME = Character("FEMME")
