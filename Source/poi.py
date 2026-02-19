@@ -27,5 +27,12 @@ poi_dict = {
     "gearcrafting": {"x": 3, "y": 1, "layer": ["overworld"]},
     "jewelrycrafting": {"x": 1, "y": 3, "layer": ["overworld"]},
     "alchemy": {"x": 2, "y": 3, "layer": ["overworld"]},
-    "mining": {"x": 1, "y": 5, "layer": ["overworld"]}
+    "mining": {"x": 1, "y": 5, "layer": ["overworld"]},
+
+    "tailor": {"x": 3, "y": 3, "layer": ["overworld"]},
+    "rune_vendor": {"x": 8, "y": 13, "layer": ["overworld"]},
+    "cultist_wizard": {"x": 2, "y": 13, "layer": ["overworld"]},
+    
+    "task_master_monster": {"x": 1, "y": 2, "layer": ["overworld"]},
+    "task_master_item": {"x": 4, "y": 13, "layer": ["overworld"]},
 }
