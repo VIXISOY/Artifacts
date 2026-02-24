@@ -294,10 +294,10 @@ class Character:
             if already_have < (items["quantity"] * ammount) :
                 self.bank_withdraw_item(items["code"], (items["quantity"] * ammount) - already_have )
         self.craft(code, ammount)
-        if equip:
-            self.equip(code)
         if recycle:
             self.recycle(code,ammount)
+        elif equip:
+            self.equip(code)
         elif depth == 0:
             self.bank_deposit_item(code,ammount)
         return None
