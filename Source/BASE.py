@@ -234,7 +234,7 @@ class Character:
         full = []
         for item in self.get_inventory() :
             if (item["quantity"] > 0):
-                if get_item(item["code"])["data"]["type"] == "weapon" or item["code"].contains("cooked") :
+                if get_item(item["code"])["data"]["type"] == "weapon" or "cooked" in item["code"] :
                     continue
                 if item["code"] in blacklist:
                     continue
