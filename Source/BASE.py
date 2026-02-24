@@ -234,7 +234,7 @@ class Character:
         full = []
         for item in self.get_inventory() :
             if (item["quantity"] > 0):
-                if get_item(item["code"])["data"]["type"] == "weapon" or get_item(item["code"])["data"]["type"] == "consumable":
+                if get_item(item["code"])["data"]["type"] == "weapon" or "cooked" in item["code"] :
                     continue
                 if item["code"] in blacklist:
                     continue
@@ -271,7 +271,7 @@ class Character:
         print(f"{self.name} equiped {quantity} {item} on slot {slot}")
         return response
 
-    def auto_craft(self,code,ammount=1,depth=0,recycle=False):
+    def auto_craft(self,code,ammount=1,depth=0,recycle=False,equip=False):
         handle_cooldown(self.get_cooldown())
         print("===AUTOCRAFT===", end=" ")
         print(f"{self.name} auto craft {ammount} {code}")
@@ -296,6 +296,8 @@ class Character:
         self.craft(code, ammount)
         if recycle:
             self.recycle(code,ammount)
+        elif equip:
+            self.equip(code)
         elif depth == 0:
             self.bank_deposit_item(code,ammount)
         return None
