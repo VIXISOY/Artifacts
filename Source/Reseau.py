@@ -6,6 +6,7 @@ from datetime import datetime, timezone
 from Source.poi import poi_dict
 from Source.loot import loot_dict
 import math
+from operator import contains
 
 class APIClient:
     BASE_URL = "https://api.artifactsmmo.com"
