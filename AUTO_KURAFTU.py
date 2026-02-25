@@ -1,14 +1,21 @@
 from Source.BASE import *
 
 if __name__ == '__main__':
+    print(BAGAR.get_character()["weapon_slot"])
 
-    BAGAR.auto_craft("copper_pickaxe",equip=True)
-    BAGAR.auto_craft("copper_pickaxe", 3)
+    BAGAR.auto_craft("copper_pickaxe")
+    BAGAR.auto_craft("copper_pickaxe")
+    BAGAR.auto_craft("copper_pickaxe")
     BAGAR.bank_deposit_full_inventory()
     BAGAR.auto_craft("copper_axe", equip=True)
-    BAGAR.auto_craft("copper_axe", 3)
+    BAGAR.auto_craft("copper_axe")
+    BAGAR.auto_craft("copper_axe")
+    BAGAR.auto_craft("copper_axe")
+    BAGAR.bank_deposit_full_inventory()
     BAGAR.auto_craft("copper_dagger", equip=True)
-    BAGAR.auto_craft("copper_dagger", 3)
+    BAGAR.auto_craft("copper_dagger")
+    BAGAR.auto_craft("copper_dagger")
+    BAGAR.auto_craft("copper_dagger")
     BAGAR.bank_deposit_full_inventory()
 
     while BAGAR.get_character()["weaponcrafting_level"] < 5:
@@ -28,7 +35,10 @@ if __name__ == '__main__':
 
     BAGAR.bank_deposit_full_inventory()
     BAGAR.auto_craft("sticky_sword", equip=True)
-    BAGAR.auto_craft("sticky_sword", 3)
+    BAGAR.auto_craft("sticky_sword")
+    BAGAR.auto_craft("sticky_sword")
+    BAGAR.auto_craft("sticky_sword")
+    BAGAR.bank_deposit_full_inventory()
 
     while BAGAR.get_character()["weaponcrafting_level"] < 10:
         BAGAR.auto_craft("sticky_sword", recycle=True)

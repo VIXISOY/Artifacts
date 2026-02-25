@@ -3,7 +3,9 @@ from Source.BASE import *
 if __name__ == '__main__':
 
     CHOPA.auto_craft("wooden_shield", equip=True)
-    CHOPA.auto_craft("wooden_shield", 3)
+    CHOPA.auto_craft("wooden_shield")
+    CHOPA.auto_craft("wooden_shield")
+    CHOPA.auto_craft("wooden_shield")
     CHOPA.bank_deposit_full_inventory()
 
     while CHOPA.get_character()["gearcrafting_level"] < 5:
