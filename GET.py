@@ -1,5 +1,8 @@
 from Source.BASE import *
+import time
 
 if __name__ == '__main__':
 
-    print(CHOPA.get_character()["shield_slot"])
+    while True:
+        print("TEST LOG")
+        time.sleep(1)
