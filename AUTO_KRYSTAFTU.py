@@ -1,8 +1,13 @@
 from Source.BASE import *
 
 if __name__ == '__main__':
-  KRYST.auto_craft_self_only("water_bow",4)
-  KRYST.bank_deposit_item("water_bow",3)
+  KRYST.auto_craft_self_only("water_bow")
+  CHILD.bank_deposit_item("water_bow")
+  KRYST.auto_craft_self_only("water_bow")
+  CHILD.bank_deposit_item("water_bow")
+  KRYST.auto_craft_self_only("water_bow")
+  CHILD.bank_deposit_item("water_bow")
+  KRYST.auto_craft_self_only("water_bow")
 
   sticky_sword = 0
   copper_legs_armor = 0
@@ -30,8 +35,13 @@ if __name__ == '__main__':
     CHILD.farm_item("ash_plank",6)
     CHILD.bank_deposit_full_inventory()
 
-  KRYST.auto_craft_self_only("greater_wooden_staff",4)
-  KRYST.bank_deposit_item("greater_wooden_staff",3)
+  KRYST.auto_craft_self_only("greater_wooden_staff")
+  KRYST.bank_deposit_item("greater_wooden_staff")
+  KRYST.auto_craft_self_only("greater_wooden_staff")
+  KRYST.bank_deposit_item("greater_wooden_staff")
+  KRYST.auto_craft_self_only("greater_wooden_staff")
+  KRYST.bank_deposit_item("greater_wooden_staff")
+  KRYST.auto_craft_self_only("greater_wooden_staff")
 
 while True :
     CHILD.auto_craft_self_only("greater_wooden_staff")
