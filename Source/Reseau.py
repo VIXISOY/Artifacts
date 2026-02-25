@@ -40,11 +40,11 @@ def handle_response(response):
         return None
     
 def get(endpoint, params=None):
-    response = requests.get(client.BASE_URL+endpoint, headers=client.headers, params=params, verify = False)
+    response = requests.get(client.BASE_URL+endpoint, headers=client.headers, params=params)
     return handle_response(response)
         
 def post(endpoint, data=None):
-    response = requests.post(client.BASE_URL+endpoint, headers=client.headers, json=data, verify = False)
+    response = requests.post(client.BASE_URL+endpoint, headers=client.headers, json=data)
     return handle_response(response)
 
 def json_print(get_response):
