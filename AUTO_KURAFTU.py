@@ -3,6 +3,7 @@ from Source.BASE import *
 if __name__ == '__main__':
     print(BAGAR.get_character()["weapon_slot"])
 
+
     BAGAR.bank_deposit_full_inventory()
 
     while BAGAR.get_character()["weaponcrafting_level"] < 5:
