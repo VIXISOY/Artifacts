@@ -3,7 +3,6 @@ from Source.BASE import *
 if __name__ == '__main__':
 
     CHOPA.bank_deposit_full_inventory()
-    CHOPA.recycle("copper_dagger")
 
     water_bow = 0
     while CHOPA.get_character()["gearcrafting_level"] < 10:
