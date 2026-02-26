@@ -1,8 +1,6 @@
 from Source.BASE import *
 
 if __name__ == '__main__':
-  CHILD.auto_craft_self_only("copper_legs_armor")
-  CHILD.equip("copper_legs_armor")
   CHILD.bank_deposit_full_inventory()
 
   CHILD.auto_craft_self_only("copper_armor")
