@@ -9,5 +9,3 @@ if __name__ == '__main__':
         FEMME.auto_craft("cooked_gudgeon", 50)
         FEMME.bank_deposit_full_inventory()
         FEMME.auto_craft("cooked_shrimp", 50)
-        FEMME.bank_deposit_full_inventory()
-        FEMME.auto_craft("cooked_gudgeon", 50)

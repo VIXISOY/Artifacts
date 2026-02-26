@@ -36,8 +36,12 @@ def handle_response(response):
         print(f'Action could not be made {float(response.json()["error"]["message"].split()[5])} seconds [COOLDOWN]')
         return response.json()
     else:
-        print(response.json())
-        return None
+        try:
+            print(response.json())
+            return None
+        except ValueError:
+            print("Error decoding JSON response")
+            return None
     
 def get(endpoint, params=None):
     response = requests.get(client.BASE_URL+endpoint, headers=client.headers, params=params)
