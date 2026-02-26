@@ -1,16 +1,6 @@
 from Source.BASE import *
 
 if __name__ == '__main__':
-  CHILD.bank_deposit_item("cooked_gudgeon",4)
-  CHILD.bank_withdraw_item("wooden_shield")
-  CHILD.equip("wooden_shield")
-  
-  CHILD.auto_craft_self_only("copper_legs_armor")
-  CHILD.bank_deposit_item("copper_legs_armor")
-  CHILD.auto_craft_self_only("copper_legs_armor")
-  CHILD.bank_deposit_item("copper_legs_armor")
-  CHILD.auto_craft_self_only("copper_legs_armor")
-  CHILD.bank_deposit_item("copper_legs_armor")
   CHILD.auto_craft_self_only("copper_legs_armor")
   CHILD.equip("copper_legs_armor")
   CHILD.bank_deposit_full_inventory()
