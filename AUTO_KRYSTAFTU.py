@@ -5,7 +5,7 @@ if __name__ == '__main__':
   sticky_sword = 0
   copper_legs_armor = 0
   copper_armor = 0
-  while sticky_sword == 0 and copper_legs_armor == 0 and copper_armor == 0 and KRYST.get_character()["gearcrafting_level"] < 5:
+  while sticky_sword == 0 or copper_legs_armor == 0 or copper_armor == 0 or KRYST.get_character()["gearcrafting_level"] < 5:
     if sticky_sword == 0 and  get_bank_item_quantity("sticky_sword") > 0:
       CHILD.bank_withdraw_item("sticky_sword")
       sticky_sword = 1
