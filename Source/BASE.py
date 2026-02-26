@@ -161,9 +161,11 @@ class Character:
                         if (hp_percent <= 0.75):
                             if not self.heal():
                                 if char["level"] < 10:
-                                    self.bank_withdraw_item("cooked_gudgeon",50)
+                                    if get_bank_item_quantity("cooked_gudeon") > 50:
+                                        self.bank_withdraw_item("cooked_gudgeon",50)
                                 else :
-                                    self.bank_withdraw_item("cooked_shrimp",50)
+                                    if get_bank_item_quantity("cooked_shrimp") > 50:
+                                        self.bank_withdraw_item("cooked_shrimp",50)
                         if (hp_percent <= 0.5):
                             self.rest()
                         self.fight(loot_dict[loot]["location"])
