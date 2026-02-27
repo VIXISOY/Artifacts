@@ -4,22 +4,11 @@ if __name__ == '__main__':
   CHILD.bank_deposit_full_inventory()
 
   CHILD.auto_craft_self_only("copper_armor")
-  CHILD.bank_deposit_item("copper_armor")
-  CHILD.auto_craft_self_only("copper_armor")
-  CHILD.bank_deposit_item("copper_armor")
-  CHILD.auto_craft_self_only("copper_armor")
-  CHILD.bank_deposit_item("copper_armor")
-  CHILD.auto_craft_self_only("copper_armor")
   CHILD.equip("copper_armor")
   CHILD.bank_deposit_full_inventory()
 
-  sticky_sword = 0
   water_bow = 0
   while CHILD.get_character()["gearcrafting_level"] < 10:
-    if sticky_sword == 0 and  get_bank_item_quantity("sticky_sword") > 0:
-      CHILD.bank_withdraw_item("sticky_sword")
-      sticky_sword = 1
-      
     if water_bow == 0 and  get_bank_item_quantity("water_bow") > 0:
       CHILD.bank_withdraw_item("water_bow")
       water_bow = 1

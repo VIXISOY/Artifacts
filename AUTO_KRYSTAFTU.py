@@ -2,36 +2,14 @@ from Source.BASE import *
 
 if __name__ == '__main__':
 
-  sticky_sword = 0
-  copper_legs_armor = 0
-  copper_armor = 0
-  while sticky_sword == 0 or copper_legs_armor == 0 or copper_armor == 0 or KRYST.get_character()["gearcrafting_level"] < 5:
-    if sticky_sword == 0 and  get_bank_item_quantity("sticky_sword") > 0:
-      CHILD.bank_withdraw_item("sticky_sword")
-      sticky_sword = 1
-
-    if copper_legs_armor == 0 and  get_bank_item_quantity("copper_legs_armor") > 0:
-      KRYST.bank_withdraw_item("copper_legs_armor")
-      KRYST.equip("copper_legs_armor")
-      copper_legs_armor = 1
-
-    if copper_armor == 0 and  get_bank_item_quantity("copper_armor") > 0:
-      KRYST.bank_withdraw_item("copper_armor")
-      KRYST.equip("copper_armor")
-      copper_armor = 1
-
-    KRYST.auto_craft_self_only("apprentice_gloves")
-    KRYST.recycle("apprentice_gloves")
-    KRYST.bank_deposit_full_inventory(["feather"])
-
-
+  KRYST.auto_craft_self_only("water_bow")
+  CHILD.equip("water_bow")
   KRYST.auto_craft_self_only("water_bow")
   CHILD.bank_deposit_item("water_bow")
   KRYST.auto_craft_self_only("water_bow")
   CHILD.bank_deposit_item("water_bow")
   KRYST.auto_craft_self_only("water_bow")
   CHILD.bank_deposit_item("water_bow")
-  KRYST.auto_craft_self_only("water_bow")
 
   while KRYST.get_character()["gearcrafting_level"] < 10:
     KRYST.auto_craft_self_only("water_bow")
