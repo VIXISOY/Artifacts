@@ -161,7 +161,8 @@ class Character:
                         if (hp_percent <= 0.75):
                             if not self.heal():
                                 if char["level"] < 10:
-                                    if get_bank_item_quantity("cooked_gudeon") > 50:
+                                    print(char["level"])
+                                    if get_bank_item_quantity("cooked_gudgeon") > 50:
                                         self.bank_withdraw_item("cooked_gudgeon",50)
                                 else :
                                     if get_bank_item_quantity("cooked_shrimp") > 50:
