@@ -5,7 +5,7 @@ poi_dict = {
     "ash_tree": {"x":-1, "y":0, "layer":["overworld"] },
     "forge": {"x":1, "y":5, "layer":["overworld"] },
     "copper_rocks": {"x":2, "y":0, "layer":["overworld"] },
-    "red_slime": {"x":2, "y":-2, "layer":["overworld"] },
+    "red_slime": {"x":1, "y":-1, "layer":["overworld"] },
     "green_slime": {"x":0, "y":-1, "layer":["overworld"] },
     "yellow_slime": {"x":4, "y":-1, "layer":["overworld"] },
     "blue_slime": {"x":2, "y":-1, "layer":["overworld"] },
