@@ -2,10 +2,8 @@ from Source.BASE import *
 
 if __name__ == '__main__':
   CHILD.bank_deposit_full_inventory()
-
-  CHILD.auto_craft_self_only("copper_armor")
-  CHILD.equip("copper_armor")
-  CHILD.bank_deposit_full_inventory()
+  while CHILD.get_character()["level"] < 10:
+    CHILD.farm_item("green_slimeball")
 
   water_bow = 0
   while CHILD.get_character()["gearcrafting_level"] < 10:

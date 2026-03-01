@@ -1,16 +1,6 @@
 from Source.BASE import *
 
 if __name__ == '__main__':
-
-  KRYST.auto_craft_self_only("water_bow")
-  CHILD.equip("water_bow")
-  KRYST.auto_craft_self_only("water_bow")
-  CHILD.bank_deposit_item("water_bow")
-  KRYST.auto_craft_self_only("water_bow")
-  CHILD.bank_deposit_item("water_bow")
-  KRYST.auto_craft_self_only("water_bow")
-  CHILD.bank_deposit_item("water_bow")
-
   while KRYST.get_character()["gearcrafting_level"] < 10:
     KRYST.auto_craft_self_only("water_bow")
     KRYST.recycle("water_bow")
