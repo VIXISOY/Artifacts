@@ -1,22 +1,15 @@
 from Source.BASE import *
 
 if __name__ == '__main__':
-  while KRYST.get_character()["gearcrafting_level"] < 10:
-    KRYST.auto_craft_self_only("water_bow")
-    KRYST.recycle("water_bow")
-    KRYST.bank_deposit_full_inventory(["ash_plank","blue_slimeball"])
-
-  while CHILD.get_character()["woodcutting_level"] < 10 :
-    CHILD.farm_item("ash_plank",6)
-    CHILD.bank_deposit_full_inventory()
+  KRYST
 
   KRYST.auto_craft_self_only("greater_wooden_staff")
-  KRYST.bank_deposit_item("greater_wooden_staff")
   KRYST.auto_craft_self_only("greater_wooden_staff")
   KRYST.bank_deposit_item("greater_wooden_staff")
   KRYST.auto_craft_self_only("greater_wooden_staff")
   KRYST.bank_deposit_item("greater_wooden_staff")
   KRYST.auto_craft_self_only("greater_wooden_staff")
+  CHILD.bank_deposit_full_inventory(["spruce_plank","blue_slimeball"])
 
 while True :
     CHILD.auto_craft_self_only("greater_wooden_staff")

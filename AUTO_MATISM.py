@@ -2,51 +2,25 @@ from Source.BASE import *
 
 if __name__ == '__main__':
   CHILD.bank_deposit_full_inventory()
-  while CHILD.get_character()["level"] < 10:
-    CHILD.farm_item("green_slimeball")
 
-  water_bow = 0
-  while CHILD.get_character()["gearcrafting_level"] < 10:
-    if water_bow == 0 and  get_bank_item_quantity("water_bow") > 0:
-      CHILD.bank_withdraw_item("water_bow")
-      water_bow = 1
-    
-    CHILD.auto_craft_self_only("copper_legs_armor")
-    CHILD.recycle("copper_legs_armor")
-    CHILD.bank_deposit_full_inventory(["copper_bar","feather"])
-
-  while CHILD.get_character()["mining_level"] < 10 :
-    CHILD.farm_item("copper_bar",6)
-    CHILD.bank_deposit_full_inventory()
-
-  CHILD.auto_craft_self_only("iron_boots")
-  CHILD.bank_deposit_item("iron_boots")
-  CHILD.auto_craft_self_only("iron_boots")
-  CHILD.bank_deposit_item("iron_boots")
-  CHILD.auto_craft_self_only("iron_boots")
-  CHILD.bank_deposit_item("iron_boots")
-  CHILD.auto_craft_self_only("iron_boots")
-  CHILD.equip("iron_boots")
+  CHILD.auto_craft_self_only("iron_helm")
+  CHILD.bank_deposit_item("iron_helm")
+  CHILD.auto_craft_self_only("iron_helm")
+  CHILD.bank_deposit_item("iron_helm")
+  CHILD.auto_craft_self_only("iron_helm")
+  CHILD.bank_deposit_item("iron_helm")
+  CHILD.auto_craft_self_only("iron_helm")
+  CHILD.equip("iron_helm")
 
   CHILD.bank_deposit_full_inventory()
-  CHILD.auto_craft_self_only("iron_armor")
-  CHILD.bank_deposit_item("iron_armor")
-  CHILD.auto_craft_self_only("iron_armor")
-  CHILD.bank_deposit_item("iron_armor")
-  CHILD.auto_craft_self_only("iron_armor")
-  CHILD.bank_deposit_item("iron_armor")
-  CHILD.auto_craft_self_only("iron_armor")
-  CHILD.equip("iron_armor")
-  CHILD.bank_deposit_full_inventory()
-  
-  CHILD.auto_craft_self_only("iron_legs_armor")
-  CHILD.bank_deposit_item("iron_legs_armor")
-  CHILD.auto_craft_self_only("iron_legs_armor")
-  CHILD.bank_deposit_item("iron_legs_armor")
-  CHILD.auto_craft_self_only("iron_legs_armor")
-  CHILD.bank_deposit_item("iron_legs_armor")
-  CHILD.auto_craft_self_only("iron_legs_armor")
-  CHILD.equip("iron_legs_armor")
+  CHILD.auto_craft_self_only("iron_shield")
+  CHILD.bank_deposit_item("iron_shield")
+  CHILD.auto_craft_self_only("iron_shield")
+  CHILD.bank_deposit_item("iron_shield")
+  CHILD.auto_craft_self_only("iron_shield")
+  CHILD.bank_deposit_item("iron_shield")
+  CHILD.auto_craft_self_only("iron_shield")
+  CHILD.equip("iron_shield")
   CHILD.bank_deposit_full_inventory()
 
   while True :
