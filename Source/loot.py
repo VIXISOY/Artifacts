@@ -32,9 +32,9 @@ loot_dict = {
     "healing_rune":         {"action":"trade",  "location":"rune_vendor"},
     "lifesteal_rune":       {"action":"trade",  "location":"rune_vendor"},
     "protection_rune":      {"action":"trade",  "location":"rune_vendor"},
-    "raw_wolf_meat":        {"action":"fight",  "location":"mushmush"},
-    "wolf_bone":            {"action":"fight",  "location":"mushmush"},
-    "wolf_hair":            {"action":"fight",  "location":"mushmush"},
+    "raw_wolf_meat":        {"action":"fight",  "location":"wolf"},
+    "wolf_bone":            {"action":"fight",  "location":"wolf"},
+    "wolf_hair":            {"action":"fight",  "location":"wolf"},
 
 
 }
