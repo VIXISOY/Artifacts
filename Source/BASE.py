@@ -131,7 +131,7 @@ class Character:
         elif loot_dict[loot]["action"] == "trade":
             trader = loot_dict[loot]["location"]
             for trade in get(f'/npcs/items/{trader}')['data']:
-                if item["code"] == loot:
+                if trade["code"] == loot:
                     currency = trade["currency"]
                     quantity_item = trade["buy_price"]
                     break
