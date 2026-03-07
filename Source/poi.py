@@ -23,6 +23,10 @@ poi_dict = {
     "wolf": {"x":-2, "y":1, "layer":["overworld"] },
     "highwayman": {"x":2, "y":8, "layer":["overworld"] },
     "flying_snake": {"x":5, "y":4, "layer":["overworld"] },
+    "skeleton": {"x":8, "y":6, "layer":["overworld"] },
+    "pig": {"x":-3, "y":-3, "layer":["overworld"] },
+    "ogre": {"x":8, "y":-2, "layer":["overworld"] },
+    "spider": {"x":-3, "y":12, "layer":["overworld"] },
     
 
     "woodcutting": {"x":-2, "y":-3, "layer":["overworld"] },

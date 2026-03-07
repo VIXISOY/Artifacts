@@ -50,34 +50,11 @@ class Character:
         self.move_to(enemy)
         handle_cooldown(self.get_cooldown())
         print("===FIGHT===", end=" ")
+        self.equip_best(enemy)
         response = post(f"/my/{self.name}/action/fight")
         try_print(f"{self.name} fought {enemy} and {response['data']['fight']['result']}")
         try_print(f"Drops: {response['data']['fight']['characters'][0]['drops']}")
         return response
-    
-    def fight_smart(self, loot, eating_item = "cooked_gudgeon", potion_item = "small_health_potion"):
-        info = self.get_character()
-
-        potion_quantity = 30
-        potion_amount =  info["utility1_slot_quantity"] if info["utility1_slot"]==potion_item else 0
-        potion_amount += info["utility2_slot_quantity"] if info["utility2_slot"]==potion_item else 0
-        
-        eating_quantity = 10
-        eating_amount = self.get_item_quantity(eating_item)
-        eating_heal_amount = get(f'/items/{eating_item}')["data"]["effects"][0]["value"]
-
-        if potion_amount < 10 and get_bank_item_quantity(potion_item) > potion_quantity:
-            self.bank_withdraw_item(potion_item, potion_quantity)
-            self.equip(potion_item, quantity=potion_quantity)
-
-        if eating_amount == 0 and get_bank_item_quantity(eating_item) > 0:
-            self.bank_withdraw_item(eating_item, eating_quantity)
-
-
-        missing_health = info["max_hp"]-info["hp"]
-        self.use(eating_item,min((missing_health+(eating_heal_amount/3))//eating_heal_amount, eating_quantity))
-        self.rest()
-        self.fight(loot_dict[loot]["location"])
 
     def gather(self, poi):
         self.move_to(poi)
@@ -87,9 +64,9 @@ class Character:
         print(f"{self.name} gathered at {poi}")
         return response
     
-    def equip_best(self,loot):
+    def equip_best(self,enemy):
         weapons = []
-        monster = get_monster(loot_dict[loot]["location"])["data"]
+        monster = get_monster(enemy)["data"]
         char = self.get_character()
         resistances = {
             "res_fire": (100 - monster["res_fire"]) / 100,
@@ -123,12 +100,9 @@ class Character:
 
     def farm_item(self, loot, quantity=1):
         subtype = get_item(loot)["data"]["subtype"]
-        if self.inventory_space() < 2:
+        if self.inventory_space() <= 5:
             print("Inventory full !")
             self.bank_deposit_full_inventory([loot])
-        if loot_dict[loot]["action"] == "fight":
-            #print(f"Want to fight {loot_dict[loot]["location"]}")
-            self.equip_best(loot)
         elif loot_dict[loot]["action"] == "trade":
             trader = loot_dict[loot]["location"]
             for trade in get(f'/npcs/items/{trader}')['data']:
@@ -141,12 +115,14 @@ class Character:
             currency_amount = self.get_item_quantity(currency)
             currency_needed_amount = quantity_item * quantity
             while currency_amount < currency_needed_amount:
-                self.farm_item(currency,currency_needed_amount - currency_amount)
+                self.farm_item(currency)
                 currency_amount = self.get_item_quantity(currency)
             self.buy_NPC(loot, quantity)
             return #quit function
         elif loot_dict[loot]["action"] == "task":
-            None
+            for i in range(quantity):
+                self.task_farm(loot)
+            return
         else:
             for item in self.get_inventory():
                 if item["code"] != "":
@@ -159,23 +135,20 @@ class Character:
                 case "gather":
                     self.gather(loot_dict[loot]["location"])
                 case "fight":
-                    if self.fighting_smart == False :
-                        char = self.get_character()
-                        hp_percent = char["hp"]/char["max_hp"]
-                        if (hp_percent <= 0.75):
-                            if not self.heal():
-                                if char["level"] < 10:
-                                    print(char["level"])
-                                    if get_bank_item_quantity("cooked_gudgeon") > 50:
-                                        self.bank_withdraw_item("cooked_gudgeon",50)
-                                else :
-                                    if get_bank_item_quantity("cooked_shrimp") > 50:
-                                        self.bank_withdraw_item("cooked_shrimp",50)
-                        if (hp_percent <= 0.5):
-                            self.rest()
-                        self.fight(loot_dict[loot]["location"])
-                    else:
-                        self.fight_smart(loot)
+                    char = self.get_character()
+                    hp_percent = char["hp"]/char["max_hp"]
+                    if (hp_percent <= 0.75):
+                        if not self.heal():
+                            if char["level"] < 10:
+                                print(char["level"])
+                                if get_bank_item_quantity("cooked_gudgeon") > 50:
+                                    self.bank_withdraw_item("cooked_gudgeon",50)
+                            else :
+                                if get_bank_item_quantity("cooked_shrimp") > 50:
+                                    self.bank_withdraw_item("cooked_shrimp",50)
+                    if (hp_percent <= 0.5):
+                        self.rest()
+                    self.fight(loot_dict[loot]["location"])
 
     def craft(self, item, amount=1):
         self.move_to(get_item(item)["data"]["craft"]["skill"])
@@ -365,9 +338,41 @@ class Character:
         print(f"No healing item")
         return False
 
+    def get_task_type(self):
+        return self.get_character()["task_type"]
+
+    def task_accept(self,type):
+        if type == "monster":
+            self.move_to("task_master_monster")
+            response = post(f"/my/{self.name}/action/task/new")
+            return response["data"]
+        else:
+            return #TODO task_item
+
+    def task_cancel(self):
+        if type == "monster":
+            self.move_to("task_master_monster")
+            response = post(f"/my/{self.name}/action/task/cancel")
+            return response["data"]
+        else:
+            return #TODO task_item
+
     def task_farm(self):
-        level = self.get_character()["level"]
-        handle_cooldown(self.get_cooldown())
+        if self.get_task_type() == "":
+            self.task_accept("monster")
+
+        char = self.get_character()
+        #if get_monster(char["task"])["level"] >= char["level"]-5 :
+        #    self.task_cancel()
+
+        print("===TASK===", end=" ")
+        if self.get_task_type() == "monsters":
+            quantity=char["task_total"]-char["task_progress"]
+            loot=get_monster(char["task"])["drops"][0]["code"]
+            self.farm_item(loot,quantity)
+        else:
+            return #TODO item_task
+
 
 BAGAR = Character("BAGAR")
 FEMME = Character("FEMME")

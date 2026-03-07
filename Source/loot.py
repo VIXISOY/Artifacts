@@ -1,6 +1,7 @@
 loot_dict = {
     "copper_ore":           {"action":"gather", "location":"copper_rocks" },
     "feather":              {"action":"fight",  "location":"chicken" },
+    "raw_chicken":          {"action":"fight",  "location":"chicken" },
     "ash_wood":             {"action":"gather", "location": "ash_tree" },
     "spruce_wood":          {"action":"gather", "location":"spruce_tree"},
     "gudgeon":              {"action":"gather", "location": "gudgeon_spot" },
@@ -37,10 +38,19 @@ loot_dict = {
     "raw_wolf_meat":        {"action":"fight",  "location":"wolf"},
     "wolf_bone":            {"action":"fight",  "location":"wolf"},
     "wolf_hair":            {"action":"fight",  "location":"wolf"},
+    "wolf_ears":            {"action":"fight",  "location":"wolf"},
     "flying_wing":          {"action":"fight",  "location":"flying_snake"},
     "snake_hide":           {"action":"fight",  "location":"flying_snake"},
     "jasper_crystal":       {"action":"trade",  "location":"task_trader"},
     "magical_cure":         {"action":"trade",  "location":"task_trader"},
-    "task_coins":           {"action":"task",  "location":"task_master"},
+    "task_coins":           {"action":"task",   "location":"task_master"},
+    "pig_skin":             {"action":"fight",  "location":"pig" },
+    "skeleton_bone":        {"action":"fight",  "location":"skeleton" },
+    "skeleton_skull":       {"action":"fight",  "location":"skeleton" },
+    "lich_tomb_key":        {"action":"fight",  "location":"skeleton" },
+    "ogre_eye":             {"action":"fight",  "location":"ogre" },
+    "ogre_skin":            {"action":"fight",  "location":"ogre" },
+    "old_boots":            {"action":"fight",  "location":"spider" },
+    "spider_leg":           {"action":"fight",  "location":"spider" },
     
 }
