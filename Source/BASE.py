@@ -280,11 +280,14 @@ class Character:
         handle_cooldown(self.get_cooldown())
         print("===AUTOCRAFT===", end=" ")
         print(f"{self.name} auto craft {ammount} {code}")
+        if self.inventory_space() < 50:
+            print("Not enough Inventory space (<50)")
+            self.bank_deposit_full_inventory()
         for items in get_item(code)["data"]["craft"]["items"]:
             missing = items["quantity"] * ammount - get_bank_item_quantity(items["code"]) - self.get_item_quantity(items["code"])
             if missing > 0:
                 print(f"Missing {missing} {items['code']}")
-                print(f"Estimated Time before retrieval: {int(missing * 30 / 60)}m {missing * 30 % 60}s")
+                #print(f"Estimated Time before retrieval: {int(missing * 30 / 60)}m {missing * 30 % 60}s")
                 if loot_dict.get(items["code"]) == None:
                     self.auto_craft(items["code"],missing,depth+1)
                 else:
