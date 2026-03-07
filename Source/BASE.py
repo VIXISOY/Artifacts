@@ -124,6 +124,7 @@ class Character:
     def farm_item(self, loot, quantity=1):
         subtype = get_item(loot)["data"]["subtype"]
         if self.inventory_space() < 2:
+            print("Inventory full !")
             self.bank_deposit_full_inventory([loot])
         if loot_dict[loot]["action"] == "fight":
             #print(f"Want to fight {loot_dict[loot]["location"]}")
