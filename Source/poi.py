@@ -22,6 +22,8 @@ poi_dict = {
     "birch_tree": {"x":3, "y":5, "layer":["overworld"] },
     "wolf": {"x":-2, "y":1, "layer":["overworld"] },
     "highwayman": {"x":2, "y":8, "layer":["overworld"] },
+    "flying_snake": {"x":5, "y":4, "layer":["overworld"] },
+    
 
     "woodcutting": {"x":-2, "y":-3, "layer":["overworld"] },
     "cooking": {"x": 1, "y": 1, "layer": ["overworld"]},

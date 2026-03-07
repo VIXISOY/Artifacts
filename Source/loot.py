@@ -37,4 +37,7 @@ loot_dict = {
     "raw_wolf_meat":        {"action":"fight",  "location":"wolf"},
     "wolf_bone":            {"action":"fight",  "location":"wolf"},
     "wolf_hair":            {"action":"fight",  "location":"wolf"},
+    "flying_wing":            {"action":"fight",  "location":"flying_snake"},
+    "snake_hide":            {"action":"fight",  "location":"flying_snake"},
+    
 }

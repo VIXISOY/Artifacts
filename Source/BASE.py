@@ -38,7 +38,7 @@ class Character:
         response = post(f"/my/{self.name}/action/rest")
         return response
 
-    def buy_NPC(self, code, quantity):
+    def buy_NPC(self, code, quantity=1):
         self.move_to(loot_dict[code]["location"])
         handle_cooldown(self.get_cooldown())
         print("===TRADING===", end=" ")
@@ -132,7 +132,7 @@ class Character:
         elif loot_dict[loot]["action"] == "trade":
             trader = loot_dict[loot]["location"]
             for trade in get(f'/npcs/items/{trader}')['data']:
-                if item["code"] == loot:
+                if trade["code"] == loot:
                     currency = trade["currency"]
                     quantity_item = trade["buy_price"]
                     break
@@ -140,9 +140,10 @@ class Character:
                 pass #TODO
             currency_amount = self.get_item_quantity(currency)
             currency_needed_amount = quantity_item * quantity
-            if currency_amount < currency_needed_amount:
+            while currency_amount < currency_needed_amount:
                 self.farm_item(currency,currency_needed_amount - currency_amount)
-            self.buy_NPC(currency, quantity)
+                currency_amount = self.get_item_quantity(currency)
+            self.buy_NPC(loot, quantity)
             return #quit function
         else:
             for item in self.get_inventory():
