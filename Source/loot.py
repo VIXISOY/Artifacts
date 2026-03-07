@@ -41,5 +41,6 @@ loot_dict = {
     "snake_hide":           {"action":"fight",  "location":"flying_snake"},
     "jasper_crystal":       {"action":"trade",  "location":"task_trader"},
     "magical_cure":         {"action":"trade",  "location":"task_trader"},
+    "task_coins":           {"action":"task",  "location":"task_master"},
     
 }

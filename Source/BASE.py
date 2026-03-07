@@ -145,6 +145,8 @@ class Character:
                 currency_amount = self.get_item_quantity(currency)
             self.buy_NPC(loot, quantity)
             return #quit function
+        elif loot_dict[loot]["action"] == "task":
+            None
         else:
             for item in self.get_inventory():
                 if item["code"] != "":
@@ -362,6 +364,10 @@ class Character:
                     return True
         print(f"No healing item")
         return False
+
+    def task_farm(self):
+        level = self.get_character()["level"]
+        handle_cooldown(self.get_cooldown())
 
 BAGAR = Character("BAGAR")
 FEMME = Character("FEMME")

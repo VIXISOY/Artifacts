@@ -61,10 +61,12 @@ def calculate_cooldown(end_timestamp):
 
 def handle_cooldown(cooldown):
     if cooldown != 0:
-        for i in range(cooldown, 0, -1):
-            print(f"\r===COOL=== Cooldown: {i-1}s", end="", flush=True)
-            time.sleep(1)
-        print()
+        print(f"===COOL=== Cooldown: {cooldown}s")
+        time.sleep(cooldown)
+        #for i in range(cooldown, 0, -1):
+        #    print(f"\r===COOL=== Cooldown: {i-1}s", end="", flush=True)
+        #    time.sleep(1)
+        #print()
     else:
         print("===COOL=== No cooldown")
 
