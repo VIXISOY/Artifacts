@@ -48,9 +48,9 @@ class Character:
 
     def fight(self, enemy):
         self.move_to(enemy)
-        handle_cooldown(self.get_cooldown())
         print("===FIGHT===", end=" ")
         self.equip_best(enemy)
+        handle_cooldown(self.get_cooldown())
         response = post(f"/my/{self.name}/action/fight")
         try_print(f"{self.name} fought {enemy} and {response['data']['fight']['result']}")
         try_print(f"Drops: {response['data']['fight']['characters'][0]['drops']}")
