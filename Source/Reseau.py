@@ -26,7 +26,7 @@ def handle_response(response):
     if response.status_code == 200:
         if response.request.method == "POST":
             try:
-                print(f'{float(response.json()["data"]["cooldown"]["remaining_seconds"])} seconds [COOLDOWN]')
+                #print(f'{float(response.json()["data"]["cooldown"]["remaining_seconds"])} seconds [COOLDOWN]')
                 return response.json()
             except json.JSONDecodeError:
                 print("Error decoding JSON response")
@@ -61,14 +61,11 @@ def calculate_cooldown(end_timestamp):
 
 def handle_cooldown(cooldown):
     if cooldown != 0:
-        print(f"===COOL=== Cooldown: {cooldown}s")
         time.sleep(cooldown)
         #for i in range(cooldown, 0, -1):
         #    print(f"\r===COOL=== Cooldown: {i-1}s", end="", flush=True)
         #    time.sleep(1)
-        #print()
-    else:
-        print("===COOL=== No cooldown")
+        #print()seconds [COOLDOWN]
 
 def get_server_status():
     return get("/")
