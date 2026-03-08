@@ -378,6 +378,8 @@ class Character:
     def task_accept(self,type):
         if type == "monster":
             self.move_to("tasks_master_monster")
+            handle_cooldown(self.get_cooldown())
+            print("===TASK ACCEPT===", end=" ")
             response = post(f"/my/{self.name}/action/task/new")
             return response["data"]
         else:
@@ -386,7 +388,19 @@ class Character:
     def task_cancel(self):
         if type == "monster":
             self.move_to("tasks_master_monster")
+            handle_cooldown(self.get_cooldown())
+            print("===TASK CANCEL===", end=" ")
             response = post(f"/my/{self.name}/action/task/cancel")
+            return response["data"]
+        else:
+            return #TODO task_item
+
+    def task_complete(self,type):
+        if type == "monster":
+            self.move_to("tasks_master_monster")
+            handle_cooldown(self.get_cooldown())
+            print("===TASK COMPLETE===", end=" ")
+            response = post(f"/my/{self.name}/action/task/complete")
             return response["data"]
         else:
             return #TODO task_item
@@ -399,11 +413,12 @@ class Character:
         #if get_monster(char["task"])["level"] >= char["level"]-5 :
         #    self.task_cancel()
 
-        print(f"===TASK=== {char["task_progress"]}/{char["task_total"]} {char["task"]}")
+        print(f"===TASK FARM=== {char["task_progress"]}/{char["task_total"]} {char["task"]}")
         if self.get_task_type() == "monsters":
             quantity=char["task_total"]-char["task_progress"]
             loot=get_monster(char["task"])["data"]["drops"][0]["code"]
             self.farm_item(loot,quantity)
+            self.task_complete("monster")
         else:
             return #TODO item_task
 
