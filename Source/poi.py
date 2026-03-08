@@ -41,7 +41,7 @@ poi_dict = {
     "rune_vendor": {"x": 8, "y": 13, "layer": ["overworld"]},
     "cultist_wizard": {"x": 2, "y": 13, "layer": ["overworld"]},
     
-    "task_master_monster": {"x": 1, "y": 2, "layer": ["overworld"]},
-    "task_master_item": {"x": 4, "y": 13, "layer": ["overworld"]},
-    "task_trader": {"x": 5, "y": 11, "layer": ["overworld"]},
+    "tasks_master_monster": {"x": 1, "y": 2, "layer": ["overworld"]},
+    "tasks_master_item": {"x": 4, "y": 13, "layer": ["overworld"]},
+    "tasks_trader": {"x": 5, "y": 11, "layer": ["overworld"]},
 }

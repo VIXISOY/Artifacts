@@ -48,9 +48,9 @@ class Character:
 
     def fight(self, enemy):
         self.move_to(enemy)
-        print("===FIGHT===", end=" ")
         self.equip_best(enemy)
         handle_cooldown(self.get_cooldown())
+        print("===FIGHT===", end=" ")
         response = post(f"/my/{self.name}/action/fight")
         try_print(f"{self.name} fought {enemy} and {response['data']['fight']['result']}")
         try_print(f"Drops: {response['data']['fight']['characters'][0]['drops']}")
@@ -121,7 +121,7 @@ class Character:
             return #quit function
         elif loot_dict[loot]["action"] == "task":
             for i in range(quantity):
-                self.task_farm(loot)
+                self.task_farm()
             return
         else:
             for item in self.get_inventory():
@@ -343,7 +343,7 @@ class Character:
 
     def task_accept(self,type):
         if type == "monster":
-            self.move_to("task_master_monster")
+            self.move_to("tasks_master_monster")
             response = post(f"/my/{self.name}/action/task/new")
             return response["data"]
         else:
@@ -351,7 +351,7 @@ class Character:
 
     def task_cancel(self):
         if type == "monster":
-            self.move_to("task_master_monster")
+            self.move_to("tasks_master_monster")
             response = post(f"/my/{self.name}/action/task/cancel")
             return response["data"]
         else:
@@ -365,10 +365,10 @@ class Character:
         #if get_monster(char["task"])["level"] >= char["level"]-5 :
         #    self.task_cancel()
 
-        print("===TASK===", end=" ")
+        print(f"===TASK=== {char["task_progress"]}/{char["task_total"]} {char["task"]}")
         if self.get_task_type() == "monsters":
             quantity=char["task_total"]-char["task_progress"]
-            loot=get_monster(char["task"])["drops"][0]["code"]
+            loot=get_monster(char["task"])["data"]["drops"][0]["code"]
             self.farm_item(loot,quantity)
         else:
             return #TODO item_task
