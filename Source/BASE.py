@@ -19,12 +19,9 @@ class Character:
 
     def move(self, x, y, poi=None):
         handle_cooldown(self.get_cooldown())
-        response = None
-        try:
-            response = post(f"/my/{self.name}/action/move", {"x": x, "y": y})
-            print(f"MOVE: {self.name} is at: {x}, {y} {poi} | Cooldown: {self.get_cooldown()}s")
-        except:
-            print(f"MOVE: Failed to move to {x}, {y}")
+        print("===MOVE===", end=" ")
+        response = post(f"/my/{self.name}/action/move", {"x": x, "y": y})
+        print(f"{self.name} is at: {x}, {y} {poi}")
         return response
 
     def move_to(self, poi):
@@ -37,23 +34,16 @@ class Character:
 
     def rest(self):
         handle_cooldown(self.get_cooldown())
-        response = None
-        try:
-            response = post(f"/my/{self.name}/action/rest")
-            print(f"REST: {self.name} is resting | Cooldown: {self.get_cooldown()}s")
-        except:
-            print(f"REST: {self.name} failed to rest")
+        print("===REST===", end=" ")
+        response = post(f"/my/{self.name}/action/rest")
         return response
 
     def buy_NPC(self, code, quantity=1):
         self.move_to(loot_dict[code]["location"])
         handle_cooldown(self.get_cooldown())
-        response = None
-        try:
-            response = post(f"/my/{self.name}/action/npc/buy",{"code": code, "quantity": quantity})
-            print(f"NPC TRADE: {self.name} traded {quantity} {code} | Cooldown: {self.get_cooldown()}s")
-        except:
-            print(f"NPC TRADE: {self.name} failed to trade {quantity} {code}")
+        print("===BUY NPC===", end=" ")
+        response = post(f"/my/{self.name}/action/npc/buy",{"code": code, "quantity": quantity})
+        print(f"{self.name} traded {quantity} {code}")
         return response
 
     def fight(self, enemy):
@@ -61,25 +51,18 @@ class Character:
         handle_cooldown(self.get_cooldown())
         self.equip_best(enemy)
         handle_cooldown(self.get_cooldown())
-
-        response = None
-        try:
-            response = post(f"/my/{self.name}/action/fight")
-            print(f"FIGHT: {self.name} fought {enemy} and {response['data']['fight']['result']} | Cooldown: {self.get_cooldown()}s")
-            print(f"Drops: {response['data']['fight']['characters'][0]['drops']}")
-        except:
-            print(f"FIGHT: {self.name} failed to fight {enemy}")
+        print("===FIGHT===", end=" ")
+        response = post(f"/my/{self.name}/action/fight")
+        print(f"{self.name} fought {enemy} and {response['data']['fight']['result']}")
+        print(f"Drops: {response['data']['fight']['characters'][0]['drops']}")
         return response
 
     def gather_at(self, poi):
         self.move_to(poi)
         handle_cooldown(self.get_cooldown())
-        response = None
-        try:
-            response = post(f"/my/{self.name}/action/gathering")
-            print(f"GATHER: {self.name} gathered at {poi} | Cooldown: {self.get_cooldown()}s")
-        except:
-            print(f"GATHER: {self.name} failed to gather at {poi}")
+        print("===GATHER===", end=" ")
+        response = post(f"/my/{self.name}/action/gathering")
+        print(f"{self.name} gathered at {poi}")
         return response
     
     def equip_best(self,enemy):
@@ -171,34 +154,25 @@ class Character:
     def craft(self, item, amount=1):
         self.move_to(get_item(item)["data"]["craft"]["skill"])
         handle_cooldown(self.get_cooldown())
-        response = None
-        try:
-            response = post(f"/my/{self.name}/action/crafting",{"code": item, "quantity": amount})
-            print(f"CRAFT: {self.name} crafted {amount} {item} | Cooldown: {self.get_cooldown()}s")
-        except:
-            print(f"CRAFT: {self.name} Failed to craft {item}")
+        print("===CRAFTING===", end=" ")
+        response = post(f"/my/{self.name}/action/crafting", {"code": item, "quantity": amount})
+        print(f"{self.name} crafted {amount} {item}")
         return response
         
     def bank_deposit_item(self,item, amount=1):
         self.move_to("bank")
         handle_cooldown(self.get_cooldown())
-        response = None
-        try:
-            response = post(f"/my/{self.name}/action/bank/deposit/item",[{"code": item, "quantity": amount}])
-            print(f"DEPOSIT_BANK: {self.name} deposited {amount} {item} in the bank | Cooldown: {self.get_cooldown()}s")
-        except:
-            print(f"DEPOSIT_BANK: {self.name} failed to deposit {amount} {item} in the bank")
+        print("===DEPOSIT_BANK===", end=" ")
+        response = post(f"/my/{self.name}/action/bank/deposit/item", [{"code": item, "quantity": amount}])
+        print(f"{self.name} deposited {amount} {item} in the bank")
         return response
 
     def bank_withdraw_item(self,item, amount=1):
         self.move_to("bank")
         handle_cooldown(self.get_cooldown())
-        response = None
-        try:
-            response = post(f"/my/{self.name}/action/bank/withdraw/item",[{"code": item, "quantity": amount}])
-            print(f"WITHDRAW_BANK: {self.name} withdrew {amount} {item} from the bank | Cooldown: {self.get_cooldown()}s") 
-        except:
-            print(f"WITHDRAW_BANK: {self.name} failed to withdraw {amount} {item} from the bank")
+        print("===WITHDRAW_BANK===", end=" ")
+        response = post(f"/my/{self.name}/action/bank/withdraw/item", [{"code": item, "quantity": amount}])
+        print(f"{self.name} withdrew {amount} {item} from the bank")
         return response
 
     def get_inventory(self):
@@ -260,12 +234,9 @@ class Character:
     
     def use(self, item, quantity=1):
         handle_cooldown(self.get_cooldown())
-        response = None
-        try:
-            response = post(f"/my/{self.name}/action/use",{"code": item, "quantity": quantity})
-            print(f"USE: {self.name} used {quantity} {item} | Cooldown: {self.get_cooldown()}s")
-        except:
-            print(f"USE: {self.name} failed to use {quantity} {item}")
+        print("===USE===", end=" ")
+        response = post(f"/my/{self.name}/action/use", {"code": item, "quantity": quantity})
+        print(f"{self.name} used {quantity} {item}")
         return response
     
     def equip(self, item, slot=None, quantity=1):
@@ -276,17 +247,15 @@ class Character:
                 slot = "ring1"
             elif slot == "utility" :
                 slot = "utility1"
-        response = None
-        try:
-            response = post(f"/my/{self.name}/action/equip",{"code": item, "slot": slot, "quantity": quantity})
-            print(f"EQUIP: {self.name} equiped {quantity} {item} on slot {slot} | Cooldown: {self.get_cooldown()}s")    
-        except:
-            print(f"EQUIP: {self.name} failed to equip {quantity} {item} on slot {slot}")
+        print("===EQUIP===", end=" ")
+        response = post(f"/my/{self.name}/action/equip", {"code": item, "slot": slot, "quantity": quantity})
+        print(f"{self.name} equiped {quantity} {item} on slot {slot}")
         return response
 
     def auto_craft(self,code,ammount=1,depth=0,recycle=False,equip=False):
         handle_cooldown(self.get_cooldown())
-        print(f"AUTOCRAFT: {self.name} auto craft {ammount} {code}")
+        print("===AUTOCRAFT===", end=" ")
+        print(f"{self.name} auto craft {ammount} {code}")
         if self.inventory_space() < 50:
             print("Not enough Inventory space (<50)")
             self.bank_deposit_full_inventory()
@@ -342,12 +311,9 @@ class Character:
         poi = get_item(code)["data"]["craft"]["skill"]
         self.move_to(poi)
         handle_cooldown(self.get_cooldown())
-        response = None
-        try:
-            response = post(f"/my/{self.name}/action/recycling",{"code": code, "quantity": quantity})
-            print(f"RECYCLE: {self.name} recycled {quantity} {code} | Cooldown: {self.get_cooldown()}s")
-        except:
-            print(f"RECYCLE: {self.name} failed to recycle {quantity} {code}")
+        print("===RECYCLE===", end=" ")
+        response = post(f"/my/{self.name}/action/recycling", {"code": code, "quantity": quantity})
+        print(f"{self.name} recycled {quantity} {code}")
         return response
     
     def inventory_space(self):

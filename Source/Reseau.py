@@ -26,7 +26,7 @@ def handle_response(response):
     if response.status_code == 200:
         if response.request.method == "POST":
             try:
-                #print(f'{float(response.json()["data"]["cooldown"]["remaining_seconds"])} seconds [COOLDOWN]')
+                print(f'{float(response.json()["data"]["cooldown"]["remaining_seconds"])} seconds [COOLDOWN]', end=' | ')
                 return response.json()
             except json.JSONDecodeError:
                 print("Error decoding JSON response")
