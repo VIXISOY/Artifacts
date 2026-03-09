@@ -36,6 +36,7 @@ class Character:
         handle_cooldown(self.get_cooldown())
         print("===REST===", end=" ")
         response = post(f"/my/{self.name}/action/rest")
+        print()
         return response
 
     def buy_NPC(self, code, quantity=1):
@@ -53,7 +54,7 @@ class Character:
         handle_cooldown(self.get_cooldown())
         print("===FIGHT===", end=" ")
         response = post(f"/my/{self.name}/action/fight")
-        print(f"{self.name} fought {enemy} and {response.get("data").get("fight").get("result")}")
+        print(f"{self.name} -> {enemy} {response.get("data").get("fight").get("result")}", end=' ')
         print(f"Drops: {response.get("data").get("fight").get("characters", [{}])[0].get("drops")}")
         return response
 
@@ -103,22 +104,31 @@ class Character:
         subtype = get_item(loot)["data"]["subtype"]
         if self.inventory_space() <= 5:
             print("Inventory full !")
-            self.bank_deposit_full_inventory()
-        if loot_dict[loot]["action"] == "trade":
-            trader = loot_dict[loot]["location"]
-            for trade in get(f'/npcs/items/{trader}')['data']:
-                if trade["code"] == loot:
-                    currency = trade["currency"]
-                    quantity_item = trade["buy_price"]
-                    break
-            if currency =="gold":
-                pass #TODO
-            currency_amount = self.get_item_quantity(currency)
+            self.bank_deposit_full_inventory([loot])
+        if loot_dict[loot]["action"] == "trade" or loot_dict[loot]["action"] == "reward":
+            if loot_dict[loot]["action"] == "trade":
+                trader = loot_dict[loot]["location"]
+                for trade in get(f'/npcs/items/{trader}')['data']:
+                    if trade["code"] == loot:
+                        currency = trade["currency"]
+                        quantity_item = trade["buy_price"]
+                        break
+                if currency =="gold":
+                    pass #TODO
+            if loot_dict[loot]["action"] == "reward":
+                currency = "tasks_coin"
+                quantity_item = 6
+            currency_amount = self.get_item_quantity(currency) + get_bank_item_quantity(currency)
             currency_needed_amount = quantity_item * quantity
             while currency_amount < currency_needed_amount:
                 self.farm_item(currency)
-                currency_amount = self.get_item_quantity(currency)
-            self.buy_NPC(loot, quantity)
+                currency_amount = self.get_item_quantity(currency) + get_bank_item_quantity(currency)
+            if currency_needed_amount-self.get_item_quantity(currency) > 0:
+                self.bank_withdraw_item(currency,currency_needed_amount-self.get_item_quantity(currency))
+            if loot_dict[loot]["action"] == "trade":
+                self.buy_NPC(loot, quantity)
+            if loot_dict[loot]["action"] == "reward":
+                self.task_exchange()
             return #quit function
         elif loot_dict[loot]["action"] == "task":
             for i in range(quantity):
@@ -134,7 +144,7 @@ class Character:
         for i in range(quantity):
             if self.inventory_space() <= 5:
                 print("Inventory full !")
-                self.bank_deposit_full_inventory()
+                self.bank_deposit_full_inventory([loot])
             match loot_dict[loot]["action"]:
                 case "gather":
                     self.gather_at(loot_dict[loot]["location"])
@@ -357,14 +367,19 @@ class Character:
             return #TODO task_item
 
     def task_cancel(self):
-        if type == "monster":
-            self.move_to("tasks_master_monster")
-            handle_cooldown(self.get_cooldown())
-            print("===TASK CANCEL===", end=" ")
-            response = post(f"/my/{self.name}/action/task/cancel")
-            return response["data"]
-        else:
-            return #TODO task_item
+        self.move_to("tasks_master_monster")
+        handle_cooldown(self.get_cooldown())
+        print("===TASK CANCEL===", end=" ")
+        response = post(f"/my/{self.name}/action/task/cancel")
+        return response["data"]
+
+    def task_exchange(self):
+        self.move_to("tasks_master_monster")
+        handle_cooldown(self.get_cooldown())
+        print("===TASK EXCHANGE===", end=" ")
+        response = post(f"/my/{self.name}/action/task/exchange")
+        print(f"Reward: {response.get("data").get("rewards")}")
+        return response["data"]
 
     def task_complete(self,type):
         if type == "monster":
