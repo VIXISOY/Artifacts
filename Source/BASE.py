@@ -53,8 +53,8 @@ class Character:
         handle_cooldown(self.get_cooldown())
         print("===FIGHT===", end=" ")
         response = post(f"/my/{self.name}/action/fight")
-        print(f"{self.name} fought {enemy} and {response['data']['fight']['result']}")
-        print(f"Drops: {response['data']['fight']['characters'][0]['drops']}")
+        print(f"{self.name} fought {enemy} and {response.get("data").get("fight").get("result")}")
+        print(f"Drops: {response.get("data").get("fight").get("characters", [{}])[0].get("drops")}")
         return response
 
     def gather_at(self, poi):
@@ -140,13 +140,14 @@ class Character:
                     hp_percent = char["hp"]/char["max_hp"]
                     if (hp_percent <= 0.75):
                         if not self.heal():
-                            if char["level"] < 10:
-                                print(char["level"])
-                                if get_bank_item_quantity("cooked_gudgeon") > 50:
-                                    self.bank_withdraw_item("cooked_gudgeon",50)
-                            else :
-                                if get_bank_item_quantity("cooked_shrimp") > 50:
-                                    self.bank_withdraw_item("cooked_shrimp",50)
+                            if self.inventory_space() >= 60:
+                                if char["level"] < 10:
+                                    print(char["level"])
+                                    if get_bank_item_quantity("cooked_gudgeon") > 50:
+                                        self.bank_withdraw_item("cooked_gudgeon", 50)
+                                else:
+                                    if get_bank_item_quantity("cooked_shrimp") > 50:
+                                        self.bank_withdraw_item("cooked_shrimp", 50)
                     if (hp_percent <= 0.5):
                         self.rest()
                     self.fight(loot_dict[loot]["location"])
