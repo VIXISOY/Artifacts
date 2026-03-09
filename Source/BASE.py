@@ -103,8 +103,8 @@ class Character:
         subtype = get_item(loot)["data"]["subtype"]
         if self.inventory_space() <= 5:
             print("Inventory full !")
-            self.bank_deposit_full_inventory([loot])
-        elif loot_dict[loot]["action"] == "trade":
+            self.bank_deposit_full_inventory()
+        if loot_dict[loot]["action"] == "trade":
             trader = loot_dict[loot]["location"]
             for trade in get(f'/npcs/items/{trader}')['data']:
                 if trade["code"] == loot:
@@ -132,6 +132,9 @@ class Character:
                         if tmp["data"]["effects"][1]["code"] == subtype:
                             self.equip(item["code"])
         for i in range(quantity):
+            if self.inventory_space() <= 5:
+                print("Inventory full !")
+                self.bank_deposit_full_inventory()
             match loot_dict[loot]["action"]:
                 case "gather":
                     self.gather_at(loot_dict[loot]["location"])
@@ -269,10 +272,11 @@ class Character:
                     self.auto_craft(items["code"],missing,depth+1)
                 else:
                     start = self.get_item_quantity(items["code"])
+                    start_bank = get_bank_item_quantity(items["code"])
                     current = 0
                     while current < missing :
                         self.farm_item(items["code"],missing - current)
-                        current = self.get_item_quantity(items["code"]) - start
+                        current = self.get_item_quantity(items["code"]) - start + get_bank_item_quantity(items["code"]) - start_bank
             print(f"Enough {items["code"]} in Bank and/or Inventory")
         for items in get_item(code)["data"]["craft"]["items"]:
             already_have = self.get_item_quantity(items["code"])
@@ -295,7 +299,7 @@ class Character:
             missing = items["quantity"] * ammount - self.get_item_quantity(items["code"])
             if missing > 0:
                 print(f"Missing {missing} {items['code']}")
-                print(f"Estimated Time before retrieval: {int(missing * 30 / 60)}m {missing * 30 % 60}s")
+                #print(f"Estimated Time before retrieval: {int(missing * 30 / 60)}m {missing * 30 % 60}s")
                 if loot_dict.get(items["code"]) == None:
                     self.auto_craft_self_only(items["code"],missing)
                 else:
