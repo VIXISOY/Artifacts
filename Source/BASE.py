@@ -154,13 +154,10 @@ class Character:
                     if (hp_percent <= 0.75):
                         if not self.heal():
                             if self.inventory_space() >= 60:
-                                if char["level"] < 10:
-                                    print(char["level"])
-                                    if get_bank_item_quantity("cooked_gudgeon") > 50:
-                                        self.bank_withdraw_item("cooked_gudgeon", 50)
-                                else:
-                                    if get_bank_item_quantity("cooked_shrimp") > 50:
-                                        self.bank_withdraw_item("cooked_shrimp", 50)
+                                if get_bank_item_quantity("cooked_shrimp") > 50 and char["level"] > 10:
+                                    self.bank_withdraw_item("cooked_shrimp", 50)
+                                elif get_bank_item_quantity("cooked_gudgeon") > 50:
+                                    self.bank_withdraw_item("cooked_gudgeon", 50)
                     if (hp_percent <= 0.5):
                         self.rest()
                     self.fight(loot_dict[loot]["location"])
