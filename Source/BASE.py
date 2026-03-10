@@ -364,6 +364,8 @@ class Character:
             return #TODO task_item
 
     def task_cancel(self):
+        if self.get_item_quantity("tasks_coin") < 1 :
+            self.bank_withdraw_item("tasks_coin",1)
         self.move_to("tasks_master_monster")
         handle_cooldown(self.get_cooldown())
         print("===TASK CANCEL===", end=" ")
@@ -393,8 +395,8 @@ class Character:
             self.task_accept("monster")
 
         char = self.get_character()
-        #if get_monster(char["task"])["level"] >= char["level"]-5 :
-        #    self.task_cancel()
+        if get_monster(char["task"])["level"] >= char["level"]-2 :
+            self.task_cancel()
 
         print(f"===TASK FARM=== {char["task_progress"]}/{char["task_total"]} {char["task"]}")
         if self.get_task_type() == "monsters":
