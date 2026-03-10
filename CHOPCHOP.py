@@ -6,5 +6,5 @@ if __name__ == '__main__':
     #    CHOPA.farm_item("red_slimeball")
 
     while CHOPA.get_character()["gearcrafting_level"] < 25:
-        CHOPA.auto_craft("adventurer_boots",recycle=True)
+        CHOPA.auto_craft("adventurer_pants",recycle=True)
 
