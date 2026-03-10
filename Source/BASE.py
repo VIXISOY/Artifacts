@@ -218,7 +218,7 @@ class Character:
         response = get(f"/characters/{self.name}")
         return response["data"]["x"], response["data"]["y"]
 
-    def bank_deposit_full_inventory(self, blacklist = []):
+    def bank_deposit_full_inventory(self, blacklist = [],consumable=False):
         self.move_to("bank")
         handle_cooldown(self.get_cooldown())
         print("===DEPOSIT_FULL_INVENTORY===", end=" ")
@@ -226,7 +226,9 @@ class Character:
         full = []
         for item in self.get_inventory() :
             if (item["quantity"] > 0):
-                if get_item(item["code"])["data"]["type"] == "weapon" or "cooked" in item["code"] :
+                if consumable and "cooked" in item["code"]:
+                    continue
+                if get_item(item["code"])["data"]["type"] == "weapon"  :
                     continue
                 if item["code"] in blacklist:
                     continue
