@@ -404,7 +404,9 @@ class Character:
         if self.get_task_type() == "monsters":
             quantity=char["task_total"]-char["task_progress"]
             loot=get_monster(char["task"])["data"]["drops"][0]["code"]
-            self.farm_item(loot,quantity)
+            while char["task_total"]-char["task_progress"] > 0 :
+                self.farm_item(loot,quantity)
+                char = self.get_character()
             self.task_complete("monster")
         else:
             return #TODO item_task
