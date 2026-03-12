@@ -361,6 +361,7 @@ class Character:
             handle_cooldown(self.get_cooldown())
             print("===TASK ACCEPT===", end=" ")
             response = post(f"/my/{self.name}/action/task/new")
+            print()
             return response["data"]
         else:
             return #TODO task_item
@@ -372,6 +373,7 @@ class Character:
         handle_cooldown(self.get_cooldown())
         print("===TASK CANCEL===", end=" ")
         response = post(f"/my/{self.name}/action/task/cancel")
+        print()
         return response["data"]
 
     def task_exchange(self):
@@ -388,6 +390,7 @@ class Character:
             handle_cooldown(self.get_cooldown())
             print("===TASK COMPLETE===", end=" ")
             response = post(f"/my/{self.name}/action/task/complete")
+            print()
             return response["data"]
         else:
             return #TODO task_item
@@ -404,7 +407,9 @@ class Character:
         if self.get_task_type() == "monsters":
             quantity=char["task_total"]-char["task_progress"]
             loot=get_monster(char["task"])["data"]["drops"][0]["code"]
-            self.farm_item(loot,quantity)
+            while char["task_total"]-char["task_progress"] > 0 :
+                self.farm_item(loot,quantity)
+                char = self.get_character()
             self.task_complete("monster")
         else:
             return #TODO item_task
