@@ -180,7 +180,7 @@ class Character:
                     if (hp_percent <= 0.75):
                         if not self.heal():
                             if self.inventory_space() >= 60:
-                                if get_bank_item_quantity("small_health_potion") > 30 and char["level"] > 5 and char["utility1_slot1"] == "":
+                                if get_bank_item_quantity("small_health_potion") > 30 and char["level"] > 5 and char["utility1_slot"] == "":
                                     self.bank_withdraw_item("small_health_potion",30)
                                     self.equip("small_health_potion",quantity=30)
                                 if get_bank_item_quantity("cooked_shrimp") > 50 and char["level"] > 10:
