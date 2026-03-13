@@ -100,11 +100,14 @@ class Character:
         if char["weapon_slot"] != best_weapon:
             self.equip(best_weapon)
 
-    def farm_item(self, loot, quantity=1):
+    def farm_item(self, loot, quantity=1,task=False):
         subtype = get_item(loot)["data"]["subtype"]
         if self.inventory_space() <= 5:
             print("Inventory full !")
-            self.bank_deposit_full_inventory([loot])
+            if task:
+                self.bank_deposit_full_inventory()
+            else:
+                self.bank_deposit_full_inventory([loot])
         if loot_dict[loot]["action"] == "trade" or loot_dict[loot]["action"] == "reward":
             if loot_dict[loot]["action"] == "trade":
                 trader = loot_dict[loot]["location"]
@@ -131,9 +134,7 @@ class Character:
                 self.task_exchange()
             return #quit function
         elif loot_dict[loot]["action"] == "task":
-            for i in range(quantity):
-                self.task_farm()
-            return
+            self.task_farm()
         else:
             for item in self.get_inventory():
                 if item["code"] != "":
@@ -144,7 +145,10 @@ class Character:
         for i in range(quantity):
             if self.inventory_space() <= 5:
                 print("Inventory full !")
-                self.bank_deposit_full_inventory([loot])
+                if task:
+                    self.bank_deposit_full_inventory()
+                else:
+                    self.bank_deposit_full_inventory([loot])
             match loot_dict[loot]["action"]:
                 case "gather":
                     self.gather_at(loot_dict[loot]["location"])
@@ -361,6 +365,7 @@ class Character:
             handle_cooldown(self.get_cooldown())
             print("===TASK ACCEPT===", end=" ")
             response = post(f"/my/{self.name}/action/task/new")
+            print()
             return response["data"]
         else:
             return #TODO task_item
@@ -372,6 +377,7 @@ class Character:
         handle_cooldown(self.get_cooldown())
         print("===TASK CANCEL===", end=" ")
         response = post(f"/my/{self.name}/action/task/cancel")
+        print()
         return response["data"]
 
     def task_exchange(self):
@@ -388,6 +394,7 @@ class Character:
             handle_cooldown(self.get_cooldown())
             print("===TASK COMPLETE===", end=" ")
             response = post(f"/my/{self.name}/action/task/complete")
+            print()
             return response["data"]
         else:
             return #TODO task_item
@@ -404,7 +411,10 @@ class Character:
         if self.get_task_type() == "monsters":
             quantity=char["task_total"]-char["task_progress"]
             loot=get_monster(char["task"])["data"]["drops"][0]["code"]
-            self.farm_item(loot,quantity)
+            while char["task_total"]-char["task_progress"] > 0 :
+                self.farm_item(loot,quantity,task=True)
+                char = self.get_character()
+                quantity = char["task_total"] - char["task_progress"]
             self.task_complete("monster")
         else:
             return #TODO item_task
