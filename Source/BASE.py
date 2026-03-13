@@ -76,6 +76,28 @@ class Character:
             "res_earth": (100 - monster["res_earth"]) / 100,
             "res_water": (100 - monster["res_water"]) / 100,
         }
+        equipements = []
+        slots = ["helmet_slot","body_armor_slot","leg_armor_slot","boots_slot","amulet_slot","shield_slot"]
+        for slot in slots:
+            if char[slot] != "":
+                equipements.append(get_item(char[slot]))
+        dmg_fire = 0
+        dmg_air = 0
+        dmg_earth = 0
+        dmg_water = 0
+        for equipement in equipements:
+            effects = {effect["code"]: effect["value"] for effect in equipement["data"]["effects"]}
+            dmg_fire += effects.get("dmg_fire",0)
+            dmg_earth += effects.get("dmg_earth",0)
+            dmg_water += effects.get("dmg_water",0)
+            dmg_air += effects.get("dmg_air",0)
+        dmgs = {
+            "dmg_fire": (100 + dmg_fire) / 100,
+            "dmg_air": (100 + dmg_air) / 100,
+            "dmg_earth": (100 + dmg_earth) / 100,
+            "dmg_water": (100 + dmg_water) / 100,
+        }
+        # print(dmgs)
         if char["weapon_slot"] != "" :
             weapons.append(get_item(char["weapon_slot"]))
         for item in self.get_inventory():
@@ -87,10 +109,10 @@ class Character:
         for weapon in weapons:
             score = 0
             effects = {effect["code"]: effect["value"] for effect in weapon["data"]["effects"]}
-            score += effects.get("attack_earth", 0) * resistances.get("res_earth")
-            score += effects.get("attack_water", 0) * resistances.get("res_water")
-            score += effects.get("attack_fire", 0) * resistances.get("res_fire")
-            score += effects.get("attack_air", 0) * resistances.get("res_air")
+            score += effects.get("attack_earth", 0) * resistances.get("res_earth") * dmgs.get("dmg_earth", 0)
+            score += effects.get("attack_water", 0) * resistances.get("res_water") * dmgs.get("dmg_water", 0)
+            score += effects.get("attack_fire", 0) * resistances.get("res_fire") * dmgs.get("dmg_fire", 0)
+            score += effects.get("attack_air", 0) * resistances.get("res_air") * dmgs.get("dmg_air", 0)
             score *= (1 + effects.get("critical_strike",0) / 2 / 100)
             #print(f"{weapon["data"]["code"]} score: {score}")
             if score > best_score:
@@ -158,10 +180,13 @@ class Character:
                     if (hp_percent <= 0.75):
                         if not self.heal():
                             if self.inventory_space() >= 60:
+                                if get_bank_item_quantity("small_health_potion") > 30 and char["level"] > 5:
+                                    self.bank_withdraw_item("small_health_potion",30)
+                                    self.equip("small_health_potion",quantity=30)
                                 if get_bank_item_quantity("cooked_shrimp") > 50 and char["level"] > 10:
                                     self.bank_withdraw_item("cooked_shrimp", 50)
-                                elif get_bank_item_quantity("cooked_gudgeon") > 50:
-                                    self.bank_withdraw_item("cooked_gudgeon", 50)
+                                elif get_bank_item_quantity("cooked_beef") > 50:
+                                    self.bank_withdraw_item("cooked_beef", 50)
                     if (hp_percent <= 0.5):
                         self.rest()
                     self.fight(loot_dict[loot]["location"])
