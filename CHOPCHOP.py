@@ -2,9 +2,12 @@ from Source.BASE import *
 
 if __name__ == '__main__':
 
-    #while CHOPA.get_character()["gearcrafting_level"] < 20:
-    #    CHOPA.farm_item("red_slimeball")
+    while get_bank_item_quantity("hard_leather_boots") < 4:
+        CHOPA.auto_craft("hard_leather_boots")
 
-    while CHOPA.get_character()["gearcrafting_level"] < 25:
-        CHOPA.auto_craft("adventurer_pants",recycle=True)
+    while get_bank_item_quantity("hardwood_plank") < 100:
+        CHOPA.auto_craft("hardwood_plank",5)
+
+    while CHOPA.get_character()["gearcrafting_level"] < 30:
+        CHOPA.auto_craft("hard_leather_boots",recycle=True)
 
