@@ -187,6 +187,8 @@ class Character:
                                     self.bank_withdraw_item("cooked_shrimp", 50)
                                 elif get_bank_item_quantity("cooked_beef") > 50:
                                     self.bank_withdraw_item("cooked_beef", 50)
+                    char = self.get_character()
+                    hp_percent = char["hp"] / char["max_hp"]
                     if (hp_percent <= 0.5):
                         self.rest()
                     self.fight(loot_dict[loot]["location"])
