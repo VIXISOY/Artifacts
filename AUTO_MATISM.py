@@ -9,9 +9,9 @@ if __name__ == '__main__':
     CHILD.auto_craft_self_only("steel_armor")
     CHILD.bank_deposit_item("steel_armor")
 
-  while get_bank_item_quantity("steel_legs_armor") < 4 :
-    CHILD.auto_craft_self_only("steel_legs_armor")
-    CHILD.bank_deposit_item("steel_legs_armor")
+  while get_bank_item_quantity("hard_leather_pants") < 4 :
+    CHILD.auto_craft_self_only("hard_leather_pants")
+    CHILD.bank_deposit_item("hard_leather_pants")
 
   while True :
     CHILD.auto_craft_self_only("steel_helm")
