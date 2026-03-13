@@ -28,6 +28,7 @@ poi_dict = {
     "ogre": {"x":8, "y":-2, "layer":["overworld"] },
     "spider": {"x":-3, "y":12, "layer":["overworld"] },
     "king_slime": {"x":3, "y":-1, "layer":["overworld"] },
+    "coal_rocks": {"x":1, "y":6, "layer":["overworld"] },
     
     
 

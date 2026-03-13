@@ -6,5 +6,5 @@ if __name__ == '__main__':
 
     while True :
         FEMME.bank_deposit_full_inventory(consumable=True)
-        FEMME.auto_craft("cooked_shrimp", 50)
+        FEMME.auto_craft("cooked_beef", 50)
         FEMME.auto_craft("small_health_potion", 30)
