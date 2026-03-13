@@ -52,5 +52,5 @@ loot_dict = {
     "ogre_skin":            {"action":"fight",  "location":"ogre" },
     "old_boots":            {"action":"fight",  "location":"spider" },
     "spider_leg":           {"action":"fight",  "location":"spider" },
-    
+    "king_slimeball":       {"action":"fight",  "location":"king_slime" },
 }

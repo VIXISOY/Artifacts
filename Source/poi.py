@@ -27,6 +27,8 @@ poi_dict = {
     "pig": {"x":-3, "y":-3, "layer":["overworld"] },
     "ogre": {"x":8, "y":-2, "layer":["overworld"] },
     "spider": {"x":-3, "y":12, "layer":["overworld"] },
+    "king_slime": {"x":3, "y":-1, "layer":["overworld"] },
+    
     
 
     "woodcutting": {"x":-2, "y":-3, "layer":["overworld"] },
