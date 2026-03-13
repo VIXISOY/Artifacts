@@ -238,7 +238,7 @@ class Character:
         else:
             response = post(f"/my/{self.name}/action/bank/deposit/item", full)
             print(full)
-            print(f"{self.name} deposited full inventory in the bank, except blacklist")
+            print(f"{self.name} deposited full inventory in the bank, except {blacklist}")
             return response
     
     def get_character(self):
