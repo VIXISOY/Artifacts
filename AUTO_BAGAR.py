@@ -2,11 +2,13 @@ from Source.BASE import *
 
 if __name__ == '__main__':
 
-    while BAGAR.get_character()["woodcutting_level"] < 20:
-        BAGAR.auto_craft("spruce_plank",5)
+    BAGAR.auto_craft("iron_axe")
 
-    while get_bank_item_quantity("steel_battle_axe") < 4:
-        BAGAR.auto_craft("steel_battleaxe")
+    while get_bank_item_quantity("skull_staff") < 4:
+        BAGAR.auto_craft("skull_staff")
+
+    while get_bank_item_quantity("battlestaff") < 4:
+        BAGAR.auto_craft("battlestaff")
     # BAGAR.auto_craft("iron_pickaxe")
 
 

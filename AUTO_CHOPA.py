@@ -2,9 +2,6 @@ from Source.BASE import *
 
 if __name__ == '__main__':
 
-    while get_bank_item_quantity("hard_leather_boots") < 4:
-        CHOPA.auto_craft("hard_leather_boots")
-
     while get_bank_item_quantity("hardwood_plank") < 100:
         CHOPA.auto_craft("hardwood_plank",5)
 
