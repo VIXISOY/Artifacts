@@ -405,7 +405,8 @@ class Character:
         print("===TASK CANCEL===", end=" ")
         response = post(f"/my/{self.name}/action/task/cancel")
         print()
-        return response["data"]
+        if response.get("data",0) != 0:
+            return response["data"]
 
     def task_exchange(self):
         self.move_to("tasks_master_monster")
