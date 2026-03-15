@@ -143,7 +143,9 @@ class Character:
             if loot_dict[loot]["action"] == "reward":
                 currency = "tasks_coin"
                 quantity_item = 6
-            currency_amount = self.get_item_quantity(currency) + get_bank_item_quantity(currency)
+                currency_amount = self.get_item_quantity(currency) + get_bank_item_quantity(currency) - 5
+            else:
+                currency_amount = self.get_item_quantity(currency) + get_bank_item_quantity(currency)
             currency_needed_amount = quantity_item * quantity
             while currency_amount < currency_needed_amount:
                 self.farm_item(currency)
