@@ -399,6 +399,9 @@ class Character:
 
     def task_cancel(self):
         if self.get_item_quantity("tasks_coin") < 1 :
+            if get_bank_item_quantity("tasks_coin") < 1:
+                print("Not enough coins to cancel task")
+                return None
             self.bank_withdraw_item("tasks_coin",1)
         self.move_to("tasks_master_monster")
         handle_cooldown(self.get_cooldown())
