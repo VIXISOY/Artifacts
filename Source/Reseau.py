@@ -46,7 +46,7 @@ def handle_response(response):
 def get(endpoint, params=None, delay=30):
     for attempt in range(10):
         try:
-            response = requests.get(client.BASE_URL+endpoint, headers=client.headers, params=params, verify=False)
+            response = requests.get(client.BASE_URL+endpoint, headers=client.headers, params=params)
         except (requests.exceptions.ConnectionError,requests.exceptions.Timeout,requests.exceptions.RequestException) as e:
             time.sleep(delay)
             delay += 30
@@ -57,7 +57,7 @@ def get(endpoint, params=None, delay=30):
 def post(endpoint, data=None, delay=30):
     for attempt in range(10):
         try:
-            response = requests.post(client.BASE_URL+endpoint, headers=client.headers, json=data, verify=False)
+            response = requests.post(client.BASE_URL+endpoint, headers=client.headers, json=data)
         except Error as e:
             time.sleep(delay)
             delay += 30
