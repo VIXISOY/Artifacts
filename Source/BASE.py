@@ -151,7 +151,7 @@ class Character:
                 self.farm_item(currency)
                 char = self.get_character()
                 currency_amount = self.get_item_quantity(currency,char=char) + get_bank_item_quantity(currency)
-            if currency_needed_amount-self.get_item_quantity(currency_ammount,char=char) > 0:
+            if currency_needed_amount-self.get_item_quantity(currency_amount,char=char) > 0:
                 self.bank_withdraw_item(currency,currency_needed_amount-self.get_item_quantity(currency,char=char))
             if loot_dict[loot]["action"] == "trade":
                 self.buy_NPC(loot, quantity)
