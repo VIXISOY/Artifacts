@@ -5,6 +5,7 @@ import time
 from datetime import datetime, timezone
 from Source.poi import poi_dict
 from Source.loot import loot_dict
+from Source.heal_items import heal_items
 import math
 
 class APIClient:
@@ -92,15 +93,22 @@ def get_item(code):
 
 def get_bank_items(code=None):
     if code == None:
-        return get(f"/my/bank/items")
+        resp = get(f"/my/bank/items", params={"size": 100})
+        bank = resp["data"]
+        page = 1
+        while resp["page"] < resp["pages"]:
+            page +=1
+            resp = get(f"/my/bank/items", params={"page": page,"size": 100})
+            bank += resp["data"]
+        bank_total = {item["code"]: item["quantity"] for item in bank}
+        return bank_total
     else:
         return get(f"/my/bank/items", params={"item_code": code})
 
-def get_bank_item_quantity(code):
-    if get_bank_items(code)["data"]:
-        return get_bank_items(code)["data"][0]["quantity"]
-    else:
-        return 0
+def get_bank_item_quantity(code, bank=None):
+    if bank == None:
+        bank = get_bank_items()
+    return bank.get(code,0)
 
 def get_monster(code):
     return get(f"/monsters/{code}")

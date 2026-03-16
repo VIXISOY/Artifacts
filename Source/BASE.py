@@ -50,8 +50,6 @@ class Character:
     def fight(self, enemy):
         self.move_to(enemy)
         handle_cooldown(self.get_cooldown())
-        self.equip_best(enemy)
-        handle_cooldown(self.get_cooldown())
         print("===FIGHT===", end=" ")
         response = post(f"/my/{self.name}/action/fight")
         print(f"{self.name} -> {enemy} {response.get("data").get("fight").get("result")}", end=' ')
@@ -122,14 +120,15 @@ class Character:
         if char["weapon_slot"] != best_weapon:
             self.equip(best_weapon)
 
-    def farm_item(self, loot, quantity=1,task=False):
-        subtype = get_item(loot)["data"]["subtype"]
-        if self.inventory_space() <= 5:
+    def farm_item(self, loot, quantity=1,task=False,char=None):
+        if char is None:
+            char = self.get_character()
+        if self.inventory_space(char=char) <= 5:
             print("Inventory full !")
             if task:
-                self.bank_deposit_full_inventory()
+                self.bank_deposit_full_inventory(char=char)
             else:
-                self.bank_deposit_full_inventory([loot])
+                self.bank_deposit_full_inventory([loot],char=char)
         if loot_dict[loot]["action"] == "trade" or loot_dict[loot]["action"] == "reward":
             if loot_dict[loot]["action"] == "trade":
                 trader = loot_dict[loot]["location"]
@@ -140,18 +139,20 @@ class Character:
                         break
                 if currency =="gold":
                     pass #TODO
+            char = self.get_character()
             if loot_dict[loot]["action"] == "reward":
                 currency = "tasks_coin"
                 quantity_item = 6
-                currency_amount = self.get_item_quantity(currency) + get_bank_item_quantity(currency) - 5
+                currency_amount = self.get_item_quantity(currency,char=char) + get_bank_item_quantity(currency) - 5
             else:
-                currency_amount = self.get_item_quantity(currency) + get_bank_item_quantity(currency)
+                currency_amount = self.get_item_quantity(currency,char=char) + get_bank_item_quantity(currency)
             currency_needed_amount = quantity_item * quantity
             while currency_amount < currency_needed_amount:
                 self.farm_item(currency)
-                currency_amount = self.get_item_quantity(currency) + get_bank_item_quantity(currency)
-            if currency_needed_amount-self.get_item_quantity(currency) > 0:
-                self.bank_withdraw_item(currency,currency_needed_amount-self.get_item_quantity(currency))
+                char = self.get_character()
+                currency_amount = self.get_item_quantity(currency,char=char) + get_bank_item_quantity(currency)
+            if currency_needed_amount-self.get_item_quantity(currency_ammount,char=char) > 0:
+                self.bank_withdraw_item(currency,currency_needed_amount-self.get_item_quantity(currency,char=char))
             if loot_dict[loot]["action"] == "trade":
                 self.buy_NPC(loot, quantity)
             if loot_dict[loot]["action"] == "reward":
@@ -159,20 +160,26 @@ class Character:
             return #quit function
         elif loot_dict[loot]["action"] == "task":
             self.task_farm()
-        else:
-            for item in self.get_inventory():
+        elif loot_dict[loot]["action"] == "gather":
+            #TODO Optimize speed here
+            subtype = get_item(loot)["data"]["subtype"]
+            for item in self.get_inventory(char=char):
                 if item["code"] != "":
                     tmp = get_item(item["code"])
                     if len(tmp["data"]["effects"]) >= 2:
                         if tmp["data"]["effects"][1]["code"] == subtype:
                             self.equip(item["code"])
+        elif loot_dict[loot]["action"] == "fight":
+            self.equip_best(loot_dict[loot]["location"])
+            #TODO Optimize equip best speed
         for i in range(quantity):
-            if self.inventory_space() <= 5:
+            char = self.get_character()
+            if self.inventory_space(char=char) <= 5:
                 print("Inventory full !")
                 if task:
-                    self.bank_deposit_full_inventory()
+                    self.bank_deposit_full_inventory(char=char)
                 else:
-                    self.bank_deposit_full_inventory([loot])
+                    self.bank_deposit_full_inventory([loot],char=char)
             match loot_dict[loot]["action"]:
                 case "gather":
                     self.gather_at(loot_dict[loot]["location"])
@@ -180,17 +187,18 @@ class Character:
                     char = self.get_character()
                     hp_percent = char["hp"]/char["max_hp"]
                     if (hp_percent <= 0.75):
-                        if not self.heal():
-                            if self.inventory_space() >= 60:
-                                if get_bank_item_quantity("small_health_potion") > 30 and char["level"] > 5 and char["utility1_slot"] == "":
+                        if not self.heal(char=char):
+                            if self.inventory_space(char=char) >= 60:
+                                bank = get_bank_items()
+                                if get_bank_item_quantity("small_health_potion",bank=bank) > 30 and char["level"] > 5 and char["utility1_slot"] == "":
                                     self.bank_withdraw_item("small_health_potion",30)
                                     self.equip("small_health_potion",quantity=30)
-                                if get_bank_item_quantity("cooked_shrimp") > 50 and char["level"] > 10:
+                                if get_bank_item_quantity("cooked_shrimp",bank=bank) > 50 and char["level"] > 10:
                                     self.bank_withdraw_item("cooked_shrimp", 50)
-                                elif get_bank_item_quantity("cooked_beef") > 50:
+                                elif get_bank_item_quantity("cooked_beef",bank=bank) > 50:
                                     self.bank_withdraw_item("cooked_beef", 50)
-                    char = self.get_character()
-                    hp_percent = char["hp"] / char["max_hp"]
+                    #char = self.get_character()
+                    #hp_percent = char["hp"] / char["max_hp"]
                     if (hp_percent <= 0.5):
                         self.rest()
                     self.fight(loot_dict[loot]["location"])
@@ -219,12 +227,15 @@ class Character:
         print(f"{self.name} withdrew {amount} {item} from the bank")
         return response
 
-    def get_inventory(self):
-        response = get(f"/characters/{self.name}")
-        return response["data"]["inventory"]
+    def get_inventory(self,char=None):
+        if char is None:
+            response = get(f"/characters/{self.name}")
+            return response["data"]["inventory"]
+        else:
+            return char["inventory"]
 
-    def get_item_quantity(self, code):
-        items = [item for item in self.get_inventory() if item["code"] == code]
+    def get_item_quantity(self, code, char=None):
+        items = [item for item in self.get_inventory(char=char) if item["code"] == code]
         if len(items) == 0:
             return 0
         return items[0]["quantity"]
@@ -251,19 +262,21 @@ class Character:
         response = get(f"/characters/{self.name}")
         return response["data"]["x"], response["data"]["y"]
 
-    def bank_deposit_full_inventory(self, blacklist = [],consumable=False):
+    def bank_deposit_full_inventory(self, blacklist = [], consumable=False, char=None):
+        if char == None:
+            char = self.get_character()
         self.move_to("bank")
         handle_cooldown(self.get_cooldown())
         print("===DEPOSIT_FULL_INVENTORY===", end=" ")
 
         full = []
-        for item in self.get_inventory() :
+        for item in self.get_inventory(char=char) :
             if (item["quantity"] > 0):
-                if consumable and "cooked" in item["code"]:
+                if item["code"] in blacklist:
                     continue
                 if get_item(item["code"])["data"]["type"] == "weapon"  :
                     continue
-                if item["code"] in blacklist:
+                if consumable and "cooked" in item["code"]:
                     continue
                 full.append(item)
         if len(full) == 0:
@@ -298,27 +311,32 @@ class Character:
         print(f"{self.name} equiped {quantity} {item} on slot {slot}")
         return response
 
-    def auto_craft(self,code,ammount=1,depth=0,recycle=False,equip=False):
+    def auto_craft(self,code,ammount=1,depth=0,recycle=False,equip=False,char=None):
         handle_cooldown(self.get_cooldown())
         print("===AUTOCRAFT===", end=" ")
         print(f"{self.name} auto craft {ammount} {code}")
-        if self.inventory_space() < 50:
+        if char == None:
+            char = self.get_character()
+        if self.inventory_space(char=char) < 50:
             print("Not enough Inventory space (<50)")
-            self.bank_deposit_full_inventory()
+            self.bank_deposit_full_inventory(char=char)
         for items in get_item(code)["data"]["craft"]["items"]:
-            missing = items["quantity"] * ammount - get_bank_item_quantity(items["code"]) - self.get_item_quantity(items["code"])
+            char = self.get_character()
+            bank = get_bank_items()
+            missing = items["quantity"] * ammount - get_bank_item_quantity(items["code"],bank=bank) - self.get_item_quantity(items["code"],char=char)
             if missing > 0:
                 print(f"Missing {missing} {items['code']}")
                 #print(f"Estimated Time before retrieval: {int(missing * 30 / 60)}m {missing * 30 % 60}s")
                 if loot_dict.get(items["code"]) == None:
-                    self.auto_craft(items["code"],missing,depth+1)
+                    self.auto_craft(items["code"],missing,depth+1,char=char)
                 else:
-                    start = self.get_item_quantity(items["code"])
-                    start_bank = get_bank_item_quantity(items["code"])
+                    start = self.get_item_quantity(items["code"],char=char)
+                    start_bank = get_bank_item_quantity(items["code"],bank=bank)
                     current = 0
                     while current < missing :
-                        self.farm_item(items["code"],missing - current)
-                        current = self.get_item_quantity(items["code"]) - start + get_bank_item_quantity(items["code"]) - start_bank
+                        self.farm_item(items["code"],missing - current,char=char)
+                        char = self.get_character()
+                        current = self.get_item_quantity(items["code"],char=char) - start + get_bank_item_quantity(items["code"]) - start_bank
             print(f"Enough {items["code"]} in Bank and/or Inventory")
         for items in get_item(code)["data"]["craft"]["items"]:
             already_have = self.get_item_quantity(items["code"])
@@ -363,20 +381,23 @@ class Character:
         print(f"{self.name} recycled {quantity} {code}")
         return response
     
-    def inventory_space(self):
-        space = self.get_character()["inventory_max_items"]
-        inventory = self.get_inventory()
+    def inventory_space(self,char=None):
+        if char == None:
+            char = self.get_character()
+        space = char["inventory_max_items"]
+        inventory = char["inventory"]
         for item in inventory:
             space -= item["quantity"]
         return space
 
-    def heal(self):
+    def heal(self,char=None):
+        if char == None:
+            char = self.get_character()
         handle_cooldown(self.get_cooldown())
         print("===HEAL===", end=" ")
-        for item in self.get_inventory() :
+        for item in char["inventory"] :
             if (item["quantity"] > 0):
-                if get_item(item["code"])["data"]["type"] == "consumable":
-                    char = self.get_character()
+                if item["code"] in heal_items :
                     missing_health = char["max_hp"] - char["hp"]
                     required = math.ceil(missing_health/get_item(item["code"])["data"]["effects"][0]["value"])
                     ammount = min(item["quantity"], required)
