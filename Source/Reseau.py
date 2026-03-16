@@ -43,13 +43,27 @@ def handle_response(response):
             print("Error decoding JSON response")
             return None
     
-def get(endpoint, params=None):
-    response = requests.get(client.BASE_URL+endpoint, headers=client.headers, params=params)
-    return handle_response(response)
+def get(endpoint, params=None, delay=30):
+    for attempt in range(10):
+        try:
+            response = requests.get(client.BASE_URL+endpoint, headers=client.headers, params=params, verify=False)
+        except Error as e:
+            time.sleep(delay)
+            delay += 30
+            continue
+        else:
+            return handle_response(response)
         
-def post(endpoint, data=None):
-    response = requests.post(client.BASE_URL+endpoint, headers=client.headers, json=data)
-    return handle_response(response)
+def post(endpoint, data=None, delay=30):
+    for attempt in range(10):
+        try:
+            response = requests.post(client.BASE_URL+endpoint, headers=client.headers, json=data, verify=False)
+        except Error as e:
+            time.sleep(delay)
+            delay += 30
+            continue
+        else:
+            return handle_response(response)
 
 def json_print(get_response):
     print("Response JSON:\n", json.dumps(get_response, indent=2))
