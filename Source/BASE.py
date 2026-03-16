@@ -74,35 +74,37 @@ class Character:
             "res_earth": (100 - monster["res_earth"]) / 100,
             "res_water": (100 - monster["res_water"]) / 100,
         }
-        equipements = []
-        slots = ["helmet_slot","body_armor_slot","leg_armor_slot","boots_slot","amulet_slot","shield_slot"]
-        for slot in slots:
-            if char[slot] != "":
-                equipements.append(get_item(char[slot]))
-        dmg_fire = 0
-        dmg_air = 0
-        dmg_earth = 0
-        dmg_water = 0
-        for equipement in equipements:
-            effects = {effect["code"]: effect["value"] for effect in equipement["data"]["effects"]}
-            dmg_fire += effects.get("dmg_fire",0)
-            dmg_earth += effects.get("dmg_earth",0)
-            dmg_water += effects.get("dmg_water",0)
-            dmg_air += effects.get("dmg_air",0)
+        # equipements = []
+        # slots = ["helmet_slot","body_armor_slot","leg_armor_slot","boots_slot","amulet_slot","shield_slot","ring1_slot","ring2_slot"]
+        # for slot in slots:
+        #     print(7)
+        #     if char[slot] != "":
+        #         equipements.append(get_item(char[slot]))
+        # dmg_fire = 0
+        # dmg_air = 0
+        # dmg_earth = 0
+        # dmg_water = 0
+        # for equipement in equipements:
+        #     effects = {effect["code"]: effect["value"] for effect in equipement["data"]["effects"]}
+        #     dmg_fire += effects.get("dmg_fire",0)
+        #     dmg_earth += effects.get("dmg_earth",0)
+        #     dmg_water += effects.get("dmg_water",0)
+        #     dmg_air += effects.get("dmg_air",0)
         dmgs = {
-            "dmg_fire": (100 + dmg_fire) / 100,
-            "dmg_air": (100 + dmg_air) / 100,
-            "dmg_earth": (100 + dmg_earth) / 100,
-            "dmg_water": (100 + dmg_water) / 100,
+            "dmg_fire": (100 + char["dmg_fire"]) / 100,
+            "dmg_air": (100 + char["dmg_air"]) / 100,
+            "dmg_earth": (100 + char["dmg_earth"]) / 100,
+            "dmg_water": (100 + char["dmg_water"]) / 100,
         }
         # print(dmgs)
         if char["weapon_slot"] != "" :
             weapons.append(get_item(char["weapon_slot"]))
-        for item in self.get_inventory():
+        for item in self.get_inventory(char=char):
             if item["code"] != "":
-                tmp = get_item(item["code"])
-                if (tmp["data"]["type"] == "weapon" and tmp["data"]["subtype"] == "" and tmp["data"]["level"] <= char["level"] ):
-                    weapons.append(tmp)
+                if item["quantity"] < 2 :
+                    tmp = get_item(item["code"])
+                    if (tmp["data"]["type"] == "weapon" and tmp["data"]["subtype"] == "" and tmp["data"]["level"] <= char["level"] ):
+                        weapons.append(tmp)
         best_score = 0
         for weapon in weapons:
             score = 0
