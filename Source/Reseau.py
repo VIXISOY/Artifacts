@@ -47,7 +47,7 @@ def get(endpoint, params=None, delay=30):
     for attempt in range(10):
         try:
             response = requests.get(client.BASE_URL+endpoint, headers=client.headers, params=params, verify=False)
-        except Error as e:
+        except (requests.exceptions.ConnectionError,requests.exceptions.Timeout,requests.exceptions.RequestException) as e:
             time.sleep(delay)
             delay += 30
             continue
