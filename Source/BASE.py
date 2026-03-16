@@ -193,7 +193,9 @@ class Character:
                                 if get_bank_item_quantity("small_health_potion",bank=bank) > 30 and char["level"] > 5 and char["utility1_slot"] == "":
                                     self.bank_withdraw_item("small_health_potion",30)
                                     self.equip("small_health_potion",quantity=30)
-                                if get_bank_item_quantity("cooked_shrimp",bank=bank) > 50 and char["level"] > 10:
+                                if get_bank_item_quantity("cooked_trout", bank=bank) > 50 and char["level"] > 20:
+                                    self.bank_withdraw_item("cooked_trout", 50)
+                                elif get_bank_item_quantity("cooked_shrimp",bank=bank) > 50 and char["level"] > 10:
                                     self.bank_withdraw_item("cooked_shrimp", 50)
                                 elif get_bank_item_quantity("cooked_beef",bank=bank) > 50:
                                     self.bank_withdraw_item("cooked_beef", 50)
@@ -393,7 +395,6 @@ class Character:
     def heal(self,char=None):
         if char == None:
             char = self.get_character()
-        handle_cooldown(self.get_cooldown())
         print("===HEAL===", end=" ")
         for item in char["inventory"] :
             if (item["quantity"] > 0):
