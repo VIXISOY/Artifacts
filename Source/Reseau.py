@@ -49,6 +49,7 @@ def get(endpoint, params=None, delay=30):
         try:
             response = requests.get(client.BASE_URL+endpoint, headers=client.headers, params=params)
         except (requests.exceptions.ConnectionError,requests.exceptions.Timeout,requests.exceptions.RequestException) as e:
+            print(f"Connection Error, delay {delay}")
             time.sleep(delay)
             delay += 30
             continue
@@ -60,6 +61,7 @@ def post(endpoint, data=None, delay=30):
         try:
             response = requests.post(client.BASE_URL+endpoint, headers=client.headers, json=data)
         except Error as e:
+            print(f"Connection Error, delay {delay}")
             time.sleep(delay)
             delay += 30
             continue
