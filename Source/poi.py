@@ -25,7 +25,7 @@ poi_dict = {
     "flying_snake": {"x":5, "y":4, "layer":["overworld"] },
     "skeleton": {"x":8, "y":6, "layer":["overworld"] },
     "pig": {"x":-3, "y":-3, "layer":["overworld"] },
-    "ogre": {"x":8, "y":-2, "layer":["overworld"] },
+    "ogre": {"x":8, "y":-4, "layer":["overworld"] },
     "spider": {"x":-3, "y":12, "layer":["overworld"] },
     "king_slime": {"x":3, "y":-1, "layer":["overworld"] },
     "coal_rocks": {"x":1, "y":6, "layer":["overworld"] },
