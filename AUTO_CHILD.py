@@ -8,7 +8,7 @@ if __name__ == '__main__':
   while get_bank_item_quantity("skeleton_pants") < 4:
     CHILD.auto_craft("skeleton_pants")
 
-  while get_bank_item_quantity("tromatising_mask-pants") < 4:
+  while get_bank_item_quantity("tromatising_mask") < 4:
     CHILD.auto_craft("tromatising_mask")
 
   while True:
