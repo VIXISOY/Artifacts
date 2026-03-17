@@ -2,8 +2,8 @@ from Source.BASE import *
 
 if __name__ == '__main__':
 
-    # while get_bank_item_quantity("fire_and_earth_amulet") < 4:
-    #     BAGAR.auto_craft("fire_and_earth_amulet")
+    while get_bank_item_quantity("forest_whip") < 4:
+        BAGAR.auto_craft("forest_whip")
 
 
     while True:
