@@ -315,7 +315,65 @@ class Character:
         print(f"{self.name} equiped {quantity} {item} on slot {slot}")
         return response
 
-    def auto_craft(self,code,ammount=1,depth=0,recycle=False,equip=False,char=None):
+    def auto_craft(self, code, amount=1, depth = 0, char=None, recycle = False, deposit = True, equip = False, solo = False):
+        handle_cooldown(self.get_cooldown())
+        print("===AUTOCRAFT===", end=" ")
+        print(f"{self.name} auto craft {amount} {code}")
+
+        if char == None:
+            char = self.get_character()
+        space = 50
+        if solo:
+            space = 90
+        if self.inventory_space(char=char) < space:
+            print("Not enough Inventory space < ", space)
+            self.bank_deposit_full_inventory(char=char)
+        
+        for items in get_item(code)["data"]["craft"]["items"]:
+            char = self.get_character()
+
+            bank_items = get_bank_items()
+            item_needed_quantity = items["quantity"] * amount
+            bank_quantity =  get_bank_item_quantity(items["code"],bank=bank_items) 
+            missing = item_needed_quantity - self.get_item_quantity(items["code"],char=char) - bank_quantity
+            if solo:
+                missing += bank_quantity
+                
+            if missing > 0:
+                print(f"Missing {missing} {items['code']}")
+                if loot_dict.get(items["code"]) == None:
+                    self.auto_craft(items["code"],missing, depth+1, char=char, solo=solo)
+                else:
+                    start_inventory = self.get_item_quantity(items["code"],char=char)
+                    start_bank = get_bank_item_quantity(items["code"],bank=bank_items)
+                    if solo:
+                        start_bank = 0
+                    current = 0
+                    while current < missing :
+                        self.farm_item(items["code"],missing - current,char=char)
+                        char = self.get_character()
+                        bank_quantity =  get_bank_item_quantity(items["code"]) - start_bank
+                        current = self.get_item_quantity(items["code"],char=char) - start_inventory + bank_quantity
+                        if solo:
+                            current -= bank_quantity
+            print(f"Enough {items["code"]} in Bank and/or Inventory")
+        if not solo:
+            for items in get_item(code)["data"]["craft"]["items"]:
+                already_have = self.get_item_quantity(items["code"])
+                if already_have < (items["quantity"] * amount) :
+                    self.bank_withdraw_item(items["code"], (items["quantity"] * amount) - already_have )
+
+        self.craft(code, amount)
+        if recycle:
+            self.recycle(code,amount)
+        elif equip:
+            self.equip(code)
+        elif depth == 0:
+            if deposit:
+                self.bank_deposit_item(code,amount)
+        return None
+
+    def auto_craft_old(self,code,ammount=1,depth=0,recycle=False,equip=False,char=None):
         handle_cooldown(self.get_cooldown())
         print("===AUTOCRAFT===", end=" ")
         print(f"{self.name} auto craft {ammount} {code}")
@@ -332,7 +390,7 @@ class Character:
                 print(f"Missing {missing} {items['code']}")
                 #print(f"Estimated Time before retrieval: {int(missing * 30 / 60)}m {missing * 30 % 60}s")
                 if loot_dict.get(items["code"]) == None:
-                    self.auto_craft(items["code"],missing,depth+1,char=char)
+                    self.auto_craft_old(items["code"],missing,depth+1,char=char)
                 else:
                     start = self.get_item_quantity(items["code"],char=char)
                     start_bank = get_bank_item_quantity(items["code"],bank=bank)
