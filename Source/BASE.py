@@ -577,7 +577,7 @@ class Character:
             participant2.equip_best(enemy)
 
         for i in range(quantity):
-            self.heal_logic(char=char)
+            self.heal_logic()
             if participant1 != None:
                 participant1.heal_logic()
             if participant2 != None:
