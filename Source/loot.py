@@ -43,6 +43,8 @@ loot_dict = {
     "snake_hide":           {"action":"fight",  "location":"flying_snake"},
     "jasper_crystal":       {"action":"trade",  "location":"tasks_trader"},#chanage to trade once task_trader is available
     "magical_cure":         {"action":"trade",  "location":"tasks_trader"},
+    "astralyte_crystal":    {"action":"trade", "location": "tasks_trader"},
+    "enchanted_fabric":     {"action":"trade", "location": "tasks_trader"},
     "tasks_coin":           {"action":"task",   "location":"tasks_master"},
     "pig_skin":             {"action":"fight",  "location":"pig" },
     "skeleton_bone":        {"action":"fight",  "location":"skeleton" },
