@@ -10,7 +10,7 @@ class Character:
     def __init__(self, name, api=APIClient()):
         self.name = name
         self.client = api
-        self.fighting_smart = False
+        self.layer_proxy = None
 
     def get_cooldown(self):
         cooldown_timestamp = get(f"/characters/{self.name}")["data"]["cooldown_expiration"]
@@ -31,6 +31,13 @@ class Character:
                 return self.move(x, y, poi)
         else:
             print("ERROR poi name not found")
+
+    def transition(self):
+        handle_cooldown(self.get_cooldown())
+        print("===TRANSITION===", end=" ")
+        response = post(f"/my/{self.name}/action/transition")
+        print(f"{self.name} transitioned to layer {response['data']['layer']}")
+        return response
 
     def rest(self):
         handle_cooldown(self.get_cooldown())
