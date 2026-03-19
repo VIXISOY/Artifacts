@@ -549,16 +549,14 @@ class Character:
 
     def boss_fight(self,enemy,participant1=None,participant2=None):
         self.move_to(enemy)
-        handle_cooldown(self.get_cooldown())
         participants = []
         if participant1 != None:
             participants.append(participant1.name)
             participant1.move_to(enemy)
-            handle_cooldown(participant1.get_cooldown())
         if participant2 != None:
             participants.append(participant2.name)
             participant2.move_to(enemy)
-            handle_cooldown(participant2.get_cooldown())
+        handle_cooldown(self.get_cooldown())
         print("===FIGHT BOSS===", end=" ")
         response = post(f"/my/{self.name}/action/fight", {"participants": participants})
         print(f"{self.name} and {participants} -> {enemy} {response.get("data").get("fight").get("result")}", end=' ')
