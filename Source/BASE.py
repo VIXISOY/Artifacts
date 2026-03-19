@@ -187,25 +187,31 @@ class Character:
                     self.gather_at(loot_dict[loot]["location"])
                 case "fight":
                     char = self.get_character()
-                    hp_percent = char["hp"]/char["max_hp"]
-                    if (hp_percent <= 0.75):
-                        if not self.heal(char=char):
-                            if self.inventory_space(char=char) >= 60:
-                                bank = get_bank_items()
-                                if get_bank_item_quantity("small_health_potion",bank=bank) > 30 and char["level"] > 5 and char["utility1_slot"] == "":
-                                    self.bank_withdraw_item("small_health_potion",30)
-                                    self.equip("small_health_potion",quantity=30)
-                                if get_bank_item_quantity("cooked_trout", bank=bank) > 50 and char["level"] > 20:
-                                    self.bank_withdraw_item("cooked_trout", 50)
-                                elif get_bank_item_quantity("cooked_shrimp",bank=bank) > 50 and char["level"] > 10:
-                                    self.bank_withdraw_item("cooked_shrimp", 50)
-                                elif get_bank_item_quantity("cooked_beef",bank=bank) > 50:
-                                    self.bank_withdraw_item("cooked_beef", 50)
-                    #char = self.get_character()
-                    #hp_percent = char["hp"] / char["max_hp"]
-                    if (hp_percent <= 0.5):
-                        self.rest()
+                    self.heal_logic(char=char)
                     self.fight(loot_dict[loot]["location"])
+
+    def heal_logic(self, char=None):
+        if char == None:
+            char = self.get_character()
+        hp_percent = char["hp"] / char["max_hp"]
+        if (hp_percent <= 0.75):
+            if not self.heal(char=char):
+                if self.inventory_space(char=char) >= 60:
+                    bank = get_bank_items()
+                    if get_bank_item_quantity("small_health_potion", bank=bank) > 30 and char["level"] > 5 and char["utility1_slot"] == "":
+                        self.bank_withdraw_item("small_health_potion", 30)
+                        self.equip("small_health_potion", quantity=30)
+                    if get_bank_item_quantity("cooked_trout", bank=bank) > 50 and char["level"] > 20:
+                        self.bank_withdraw_item("cooked_trout", 50)
+                    elif get_bank_item_quantity("cooked_shrimp", bank=bank) > 50 and char["level"] > 10:
+                        self.bank_withdraw_item("cooked_shrimp", 50)
+                    elif get_bank_item_quantity("cooked_beef", bank=bank) > 50:
+                        self.bank_withdraw_item("cooked_beef", 50)
+        # char = self.get_character()
+        # hp_percent = char["hp"] / char["max_hp"]
+        if (hp_percent <= 0.5):
+            self.rest()
+        return None
 
     def craft(self, item, amount=1):
         self.move_to(get_item(item)["data"]["craft"]["skill"])
@@ -533,6 +539,50 @@ class Character:
             self.task_complete("monster")
         else:
             return #TODO item_task
+
+    def boss_fight(self,enemy,participant1=None,participant2=None):
+        self.move_to(enemy)
+        handle_cooldown(self.get_cooldown())
+        participants = []
+        if participant1 != None:
+            participants.append(participant1.name)
+            participant1.move_to(enemy)
+            handle_cooldown(participant1.get_cooldown())
+        if participant2 != None:
+            participants.append(participant2.name)
+            participant2.move_to(enemy)
+            handle_cooldown(participant2.get_cooldown())
+        print("===FIGHT BOSS===", end=" ")
+        response = post(f"/my/{self.name}/action/fight", {"participants": participants})
+        print(f"{self.name} and {participants} -> {enemy} {response.get("data").get("fight").get("result")}", end=' ')
+        print(f"Drops: {response.get("data").get("fight").get("characters", [{}])[0].get("drops")}")
+        return response
+
+    def boss_farm(self,enemy,participant1=None,participant2=None,quantity=1,char=None):
+        if char == None:
+            char = self.get_character()
+        if self.inventory_space(char=char) <= 5:
+            print("Inventory full !")
+            self.bank_deposit_full_inventory(char=char)
+        self.equip_best(enemy)
+        if participant1 != None:
+            if participant1.inventory_space() <= 5:
+                print("Inventory full !")
+                participant1.bank_deposit_full_inventory()
+            participant1.equip_best(enemy)
+        if participant2 != None:
+            if participant2.inventory_space() <= 5:
+                print("Inventory full !")
+                participant2.bank_deposit_full_inventory()
+            participant2.equip_best(enemy)
+
+        for i in range(quantity):
+            self.heal_logic(char=char)
+            if participant1 != None:
+                participant1.heal_logic()
+            if participant2 != None:
+                participant2.heal_logic()
+            self.boss_fight(enemy,participant1,participant2)
 
 
 BAGAR = Character("BAGAR")
