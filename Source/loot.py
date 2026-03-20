@@ -41,8 +41,10 @@ loot_dict = {
     "wolf_ears":            {"action":"fight",  "location":"wolf"},
     "flying_wing":          {"action":"fight",  "location":"flying_snake"},
     "snake_hide":           {"action":"fight",  "location":"flying_snake"},
-    "jasper_crystal":       {"action":"reward", "location":"tasks_trader"},#chanage to trade once task_trader is available
+    "jasper_crystal":       {"action":"trade",  "location":"tasks_trader"},#chanage to trade once task_trader is available
     "magical_cure":         {"action":"trade",  "location":"tasks_trader"},
+    "astralyte_crystal":    {"action":"trade", "location": "tasks_trader"},
+    "enchanted_fabric":     {"action":"trade", "location": "tasks_trader"},
     "tasks_coin":           {"action":"task",   "location":"tasks_master"},
     "pig_skin":             {"action":"fight",  "location":"pig" },
     "skeleton_bone":        {"action":"fight",  "location":"skeleton" },
@@ -58,4 +60,5 @@ loot_dict = {
     "vampire_blood":        {"action":"fight",  "location":"vampire"},
     "vampire_tooth":        {"action":"fight",  "location":"vampire"},
     "lich_tomb_key":        {"action":"fight",  "location":"vampire"},
+    "dead_wood":            {"action":"gather", "location":"dead_tree"},
 }
