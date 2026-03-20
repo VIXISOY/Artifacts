@@ -60,4 +60,5 @@ loot_dict = {
     "vampire_blood":        {"action":"fight",  "location":"vampire"},
     "vampire_tooth":        {"action":"fight",  "location":"vampire"},
     "dead_wood":            {"action":"gather", "location":"dead_tree"},
+    "cyclops_eye":          {"action":"fight",  "location":"cyclops"},
 }

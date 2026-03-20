@@ -532,7 +532,7 @@ class Character:
             self.task_accept("monster")
 
         char = self.get_character()
-        if get_monster(char["task"])["data"]["level"] >= 20 :
+        if get_monster(char["task"])["data"]["level"] >= 25 :
             self.task_cancel()
 
         print(f"===TASK FARM=== {char["task_progress"]}/{char["task_total"]} {char["task"]}")
