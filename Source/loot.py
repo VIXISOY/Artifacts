@@ -59,8 +59,5 @@ loot_dict = {
     "gold_ore":             {"action":"gather", "location":"gold_rocks"},
     "vampire_blood":        {"action":"fight",  "location":"vampire"},
     "vampire_tooth":        {"action":"fight",  "location":"vampire"},
-    "lich_tomb_key":        {"action":"fight",  "location":"vampire"},
     "dead_wood":            {"action":"gather", "location":"dead_tree"},
-    "vampire_blood":       {"action":"fight",  "location":"vampire" },
-    "vampire_tooth":       {"action":"fight",  "location":"vampire" },
 }

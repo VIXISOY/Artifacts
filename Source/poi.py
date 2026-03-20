@@ -33,6 +33,7 @@ poi_dict = {
     "dead_tree":            {"x": 9 , "y": 6 , "layer":["overworld"] },
     "mine":                 {"x": 5 , "y":-3 , "layer":["underground", "overworld"]},
     "gold_rocks":           {"x": 5 , "y":-4 , "layer":["underground"], "proxy": "mine"},
+    "cyclops":              {"x": 7 , "y":-3 , "layer":["overworld"] },
 
     "woodcutting":          {"x":-2 , "y":-3 , "layer":["overworld"] },
     "cooking":              {"x": 1 , "y": 1 , "layer":["overworld"] },
