@@ -56,4 +56,5 @@ loot_dict = {
     "spider_leg":           {"action":"fight",  "location":"spider" },
     "king_slimeball":       {"action":"fight",  "location":"king_slime" },
     "coal":                 {"action":"gather", "location":"coal_rocks"},
+    "dead_wood":            {"action":"gather", "location":"dead_tree"},
 }
