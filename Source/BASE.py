@@ -10,7 +10,7 @@ class Character:
     def __init__(self, name, api=APIClient()):
         self.name = name
         self.client = api
-        self.layer_proxy = None
+        self.proxy_zone = None
 
     def get_cooldown(self):
         cooldown_timestamp = get(f"/characters/{self.name}")["data"]["cooldown_expiration"]

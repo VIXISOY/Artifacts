@@ -31,8 +31,8 @@ poi_dict = {
     "coal_rocks":           {"x": 1 , "y": 6 , "layer":["overworld"] },
     "vampire":              {"x": 10, "y": 6 , "layer":["overworld"] },
     "dead_tree":            {"x": 9 , "y": 6 , "layer":["overworld"] },
-    "mine":                 {"x": 5 , "y":-3 , "layer":["underground", "overworld"]},
-    "gold_rocks":           {"x": 5 , "y":-4 , "layer":["underground"], "proxy": "mine"},
+    "forest":               {"x": 5 , "y":-3 , "layer":["underground", "overworld"]},
+    "gold_rocks":           {"x": 5 , "y":-4 , "layer":["underground"], "proxy": "forest"},
     "cyclops":              {"x": 7 , "y":-3 , "layer":["overworld"] },
 
     "woodcutting":          {"x":-2 , "y":-3 , "layer":["overworld"] },
