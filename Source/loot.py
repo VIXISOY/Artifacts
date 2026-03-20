@@ -57,4 +57,6 @@ loot_dict = {
     "king_slimeball":       {"action":"fight",  "location":"king_slime" },
     "coal":                 {"action":"gather", "location":"coal_rocks"},
     "dead_wood":            {"action":"gather", "location":"dead_tree"},
+    "vampire_blood":       {"action":"fight",  "location":"vampire" },
+    "vampire_tooth":       {"action":"fight",  "location":"vampire" },
 }

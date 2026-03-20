@@ -30,6 +30,7 @@ poi_dict = {
     "king_slime": {"x":3, "y":-1, "layer":["overworld"] },
     "coal_rocks": {"x":1, "y":6, "layer":["overworld"] },
     "dead_tree": {"x":9, "y":6, "layer":["overworld"] },
+    "vampire": {"x":10, "y":6, "layer":["overworld"] },
     
     
 
