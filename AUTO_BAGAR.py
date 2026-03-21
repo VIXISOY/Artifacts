@@ -2,12 +2,6 @@ from Source.BASE import *
 
 if __name__ == '__main__':
 
-    BAGAR.move_to("mithril_rocks")
-
-    BAGAR.move_to("gold_rocks")
-
-    BAGAR.move_to("chicken")
-
     while get_bank_item_quantity("steel_axe") < 1:
         BAGAR.auto_craft("steel_axe")
 
