@@ -1,7 +1,6 @@
 poi_dict = {
     "chicken":              {"x": 0 , "y": 1 , "layer":["overworld"] },
     "cow":                  {"x": 0 , "y": 2 , "layer":["overworld"] },
-    "mountain_entrance":    {"x":-2 , "y": 6 , "layer":["overworld","underground"] },
     "ash_tree":             {"x":-1 , "y": 0 , "layer":["overworld"] },
     "forge":                {"x": 1 , "y": 5 , "layer":["overworld"] },
     "copper_rocks":         {"x": 2 , "y": 0 , "layer":["overworld"] },
@@ -31,9 +30,9 @@ poi_dict = {
     "coal_rocks":           {"x": 1 , "y": 6 , "layer":["overworld"] },
     "vampire":              {"x": 10, "y": 6 , "layer":["overworld"] },
     "dead_tree":            {"x": 9 , "y": 6 , "layer":["overworld"] },
-    "forest":               {"x": 5 , "y":-3 , "layer":["underground", "overworld"]},
-    "gold_rocks":           {"x": 5 , "y":-4 , "layer":["underground"], "proxy": "forest"},
+    "gold_rocks":           {"x": 5 , "y":-4 , "layer":["underground"], "proxy": "mine_nord"},
     "cyclops":              {"x": 7 , "y":-3 , "layer":["overworld"] },
+    "mithril_rocks":        {"x":-2 , "y": 5 , "layer":["underground"], "proxy": "mine_ouest"},
 
     "woodcutting":          {"x":-2 , "y":-3 , "layer":["overworld"] },
     "cooking":              {"x": 1 , "y": 1 , "layer":["overworld"] },
@@ -50,5 +49,11 @@ poi_dict = {
     "tasks_master_monster": {"x": 1 , "y": 2 , "layer":["overworld"] },
     "tasks_master_item":    {"x": 4 , "y": 13, "layer":["overworld"] },
     "tasks_trader":         {"x": 5 , "y": 11, "layer":["overworld"] },
+
+    "mine_nord":            {"x": 5 , "y":-3 , "layer":["underground", "overworld"], "proxy": "mine_nord"},
+    "mine_ouest":           {"x":-2 , "y": 6 , "layer":["underground", "overworld"], "proxy": "mine_ouest"},
+    "spider_house":         {"x":-3 , "y": 12, "layer":["interior", "overworld"], "proxy": "spider_house"},
+
+    "void":                 {"x":-10, "y":-10, "layer":["overworld"], "proxy": None},
 
 }

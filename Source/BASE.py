@@ -11,6 +11,22 @@ class Character:
         self.name = name
         self.client = api
         self.proxy_zone = None
+        char = self.get_character()
+        self.layer = char["layer"]
+        if char["layer"] != "overworld" :
+            if char["layer"] == "underground":
+                if char["y"] < -2:
+                    if char["x"] < 2:
+                        self.proxy_zone = "priestess"
+                    else:
+                        self.proxy_zone = "mine_nord"
+                elif char["y"] < 7:
+                    self.proxy_zone = "mine_ouest"
+                elif char["y"] < 9:
+                    self.proxy_zone = "lich"
+            elif char["layer"] != "interior":
+                if char["y"] < 13:
+                    self.proxy_zone = "spider_house"
 
     def get_cooldown(self):
         cooldown_timestamp = get(f"/characters/{self.name}")["data"]["cooldown_expiration"]
@@ -28,7 +44,31 @@ class Character:
         if poi_dict[poi] != None:
             x, y = poi_dict[poi]["x"], poi_dict[poi]["y"]
             if (x, y) != self.get_position():
-                return self.move(x, y, poi)
+                if self.proxy_zone == poi_dict[poi].get("proxy", None) or (self.layer == "overworld" and "overworld" in poi_dict[poi].get("layer", None)):
+                    print("Can go directly to", poi)
+                    return self.move(x, y, poi)
+                else:
+                    if self.proxy_zone != None :
+                        if poi_dict.get(poi_dict[poi].get("proxy", "void")).get("proxy", None) == self.proxy_zone:
+                            print(1)
+                            self.move_to(poi_dict[poi].get("proxy"))
+                        else:
+                            print("Go back outside")
+                            self.move_to(self.proxy_zone)
+                        self.layer = self.transition()["data"]["transition"]["layer"]
+                        if self.layer == "overworld":
+                            self.proxy_zone = None
+                        else:
+                            self.proxy_zone = poi_dict[poi].get("proxy")
+                        print("Is now in the zone",self.proxy_zone)
+                        return self.move_to(poi)
+                    else:
+                        print("Want to go to",poi_dict[poi]["proxy"])
+                        self.move_to(poi_dict[poi]["proxy"])
+                        self.layer = self.transition()["data"]["transition"]["layer"]
+                        self.proxy_zone = poi_dict[poi]["proxy"]
+                        print("Is now in the zone",self.proxy_zone)
+                        return self.move_to(poi)
         else:
             print("ERROR poi name not found")
 
@@ -36,7 +76,7 @@ class Character:
         handle_cooldown(self.get_cooldown())
         print("===TRANSITION===", end=" ")
         response = post(f"/my/{self.name}/action/transition")
-        print(f"{self.name} transitioned to layer {response['data']['layer']}")
+        print(f"{self.name} transitioned to layer {response["data"]["transition"]["layer"]}")
         return response
 
     def rest(self):
