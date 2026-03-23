@@ -3,7 +3,7 @@ from Source.BASE import *
 if __name__ == '__main__':
 
     while get_bank_item_quantity("ring_of_chance") < 3:
-        BAGAR.auto_craft("chance_ring")
+        BAGAR.auto_craft("ring_of_chance")
 
     while get_bank_item_quantity("skull_wand") < 4:
         BAGAR.auto_craft("skull_wand")
