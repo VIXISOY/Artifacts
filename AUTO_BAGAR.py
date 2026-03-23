@@ -2,6 +2,9 @@ from Source.BASE import *
 
 if __name__ == '__main__':
 
+    while BAGAR.get_character()["jewelrycrafting_level"] < 20:
+        BAGAR.auto_craft("life_ring",recycle=True)
+
     while get_bank_item_quantity("ring_of_chance") < 3:
         BAGAR.auto_craft("ring_of_chance")
 
