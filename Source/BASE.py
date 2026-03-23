@@ -45,7 +45,7 @@ class Character:
             x, y = poi_dict[poi]["x"], poi_dict[poi]["y"]
             if (x, y) != self.get_position():
                 if self.proxy_zone == poi_dict[poi].get("proxy", None) or (self.layer == "overworld" and "overworld" in poi_dict[poi].get("layer", None)):
-                    print("Can go directly to", poi)
+                    #print("Can go directly to", poi)
                     return self.move(x, y, poi)
                 else:
                     if self.proxy_zone != None :
