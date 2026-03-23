@@ -14,7 +14,7 @@ if __name__ == '__main__':
     while get_bank_item_quantity("steel_gloves") < 1:
         BAGAR.auto_craft("steel_gloves")
 
-    while get_bank_item_quantity("chance_ring") < 3:
+    while get_bank_item_quantity("ring_of_chance") < 3:
         BAGAR.auto_craft("chance_ring")
 
     while get_bank_item_quantity("skull_wand") < 4:
