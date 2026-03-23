@@ -2,18 +2,6 @@ from Source.BASE import *
 
 if __name__ == '__main__':
 
-    while get_bank_item_quantity("steel_axe") < 1:
-        BAGAR.auto_craft("steel_axe")
-
-    while get_bank_item_quantity("steel_pickaxe") < 2:
-        BAGAR.auto_craft("steel_pickaxe")
-
-    while get_bank_item_quantity("steel_fishing_rod") < 1:
-        BAGAR.auto_craft("steel_fishing_rod")
-
-    while get_bank_item_quantity("steel_gloves") < 1:
-        BAGAR.auto_craft("steel_gloves")
-
     while get_bank_item_quantity("ring_of_chance") < 3:
         BAGAR.auto_craft("chance_ring")
 
