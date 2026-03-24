@@ -500,9 +500,14 @@ class Character:
         if char == None:
             char = self.get_character()
         space = char["inventory_max_items"]
+        space_unique = 0
         inventory = char["inventory"]
         for item in inventory:
             space -= item["quantity"]
+            if item["code"] == "":
+                space_unique += 1
+        if space_unique <= 3:
+            return space_unique
         return space
 
     def heal(self,char=None):
