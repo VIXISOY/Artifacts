@@ -1,4 +1,6 @@
 from Source.BASE import *
+BAGAR = Character("BAGAR")
+
 
 if __name__ == '__main__':
 

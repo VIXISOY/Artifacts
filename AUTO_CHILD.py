@@ -1,4 +1,5 @@
 from Source.BASE import *
+CHILD = Character("CHILD")
 
 if __name__ == '__main__':
 

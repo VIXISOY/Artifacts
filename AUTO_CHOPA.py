@@ -1,4 +1,5 @@
 from Source.BASE import *
+CHOPA = Character("CHOPA")
 
 if __name__ == '__main__':
 

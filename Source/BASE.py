@@ -639,12 +639,6 @@ class Character:
             self.boss_fight(enemy,participant1,participant2)
 
 
-BAGAR = Character("BAGAR")
-FEMME = Character("FEMME")
-CHILD = Character("CHILD")
-CHOPA = Character("CHOPA")
-KRYST = Character("KRYST")
-
 if __name__ == "__main__":
 
     #json_print(CHILD.fight("chicken"))

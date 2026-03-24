@@ -1,4 +1,5 @@
 from Source.BASE import *
+FEMME = Character("FEMME")
 
 if __name__ == '__main__':
 
