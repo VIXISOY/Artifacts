@@ -33,6 +33,9 @@ poi_dict = {
     "gold_rocks":           {"x": 5 , "y":-4 , "layer":["underground"], "proxy": "mine_nord"},
     "cyclops":              {"x": 7 , "y":-3 , "layer":["overworld"] },
     "mithril_rocks":        {"x":-2 , "y": 5 , "layer":["underground"], "proxy": "mine_ouest"},
+    "owlbear":              {"x":10 , "y": 1 , "layer":["overworld"]}, 
+    "demon":                {"x": 0 , "y": 0 , "layer":["overworld"]}, #location decided by event
+    "corrupted_owlbear":    {"x": 0 , "y": 0 , "layer":["overworld"]}, #location decided by event
 
     "woodcutting":          {"x":-2 , "y":-3 , "layer":["overworld"] },
     "cooking":              {"x": 1 , "y": 1 , "layer":["overworld"] },

@@ -115,6 +115,9 @@ def get_bank_item_quantity(code, bank=None):
 def get_monster(code):
     return get(f"/monsters/{code}")
 
+def get_active_events():
+    return get("/events/active")
+
 if __name__ == "__main__":
 
     print("Number of Players Online:", get_number_of_players())

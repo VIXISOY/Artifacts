@@ -61,4 +61,9 @@ loot_dict = {
     "vampire_tooth":        {"action":"fight",  "location":"vampire"},
     "dead_wood":            {"action":"gather", "location":"dead_tree"},
     "cyclops_eye":          {"action":"fight",  "location":"cyclops"},
+    "owlbear_hair":         {"action":"fight",  "location":"owlbear"},
+    "owlbear_claw":         {"action":"fight",  "location":"owlbear"},
+    "corrupted_gem":        {"action":"fight",  "location":"corrupted_owlbear"},
+    "demon_horn":           {"action":"fight",  "location":"demon"},
+    "piece_of_obsidian":    {"action":"fight",  "location":"demon"},
 }

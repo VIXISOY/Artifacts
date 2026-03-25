@@ -1,10 +1,21 @@
 from Source.Reseau import *
 
-def try_print(string):
-    try:
-            print(string)
-    except:
-        print(f"failed to display ")
+def list_active_events_code():
+    events = []
+    response = get_active_events()
+    for event in response["data"]:
+        events.append(event["code"])
+    return events
+
+def active_event_location(code):
+    location = None
+    response = get_active_events()
+    if code in list_active_events_code():
+        for event in response["data"]:
+            if event["code"] == code:
+                location = [event['map']['x'], event['map']['y']]
+                break
+    return location
 
 class Character:
     def __init__(self, name, api=APIClient()):
