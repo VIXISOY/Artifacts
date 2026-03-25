@@ -1,4 +1,5 @@
 from Source.BASE import *
+KRYST = Character("KRYST")
 
 if __name__ == '__main__':
   while True:
