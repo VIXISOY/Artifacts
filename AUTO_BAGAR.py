@@ -1,4 +1,6 @@
 from Source.BASE import *
+BAGAR = Character("BAGAR")
+
 
 if __name__ == '__main__':
 
@@ -15,8 +17,8 @@ if __name__ == '__main__':
         BAGAR.auto_craft("skull_amulet")
 
     while True:
-        KRYST.farm_item("tasks_coin")
-        KRYST.bank_deposit_item("tasks_coin", KRYST.get_item_quantity("tasks_coin"))
+        BAGAR.farm_item("tasks_coin")
+        BAGAR.bank_deposit_item("tasks_coin", KRYST.get_item_quantity("tasks_coin"))
         # BAGAR.boss_farm("king_slime", CHOPA,quantity=20)
         # BAGAR.farm_item("tasks_coin")
         # BAGAR.bank_deposit_item("tasks_coin", BAGAR.get_item_quantity("tasks_coin"))

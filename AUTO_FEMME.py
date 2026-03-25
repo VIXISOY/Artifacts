@@ -1,12 +1,13 @@
 from Source.BASE import *
+FEMME = Character("FEMME")
 
 if __name__ == '__main__':
 
     #KRYST.get_character()["fishing_level"] < 20
 
     while True :
-        FEMME.auto_craft("earth_boost_potion", 30)
-        # FEMME.bank_deposit_full_inventory(consumable=True)
-        # FEMME.auto_craft("cooked_trout",50)
+        FEMME.bank_deposit_full_inventory(consumable=True)
+        FEMME.auto_craft("cooked_trout",50)
 
-        #FEMME.auto_craft("small_health_potion", 30)
+        # FEMME.auto_craft("small_health_potion", 30)
+        FEMME.auto_craft("minor_health_potion", 30)
