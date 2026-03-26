@@ -118,6 +118,23 @@ def get_monster(code):
 def get_active_events():
     return get("/events/active")
 
+def list_active_events_code():
+    events = []
+    response = get_active_events()
+    for event in response["data"]:
+        events.append(event["code"])
+    return events
+
+def active_event_location(code):
+    location = None
+    response = get_active_events()
+    if code in list_active_events_code():
+        for event in response["data"]:
+            if event["code"] == code:
+                location = [event['map']['x'], event['map']['y']]
+                break
+    return location
+
 if __name__ == "__main__":
 
     print("Number of Players Online:", get_number_of_players())

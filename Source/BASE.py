@@ -1,22 +1,5 @@
 from Source.Reseau import *
 
-def list_active_events_code():
-    events = []
-    response = get_active_events()
-    for event in response["data"]:
-        events.append(event["code"])
-    return events
-
-def active_event_location(code):
-    location = None
-    response = get_active_events()
-    if code in list_active_events_code():
-        for event in response["data"]:
-            if event["code"] == code:
-                location = [event['map']['x'], event['map']['y']]
-                break
-    return location
-
 class Character:
     def __init__(self, name, api=APIClient()):
         self.name = name
@@ -44,6 +27,7 @@ class Character:
         cooldown = calculate_cooldown(cooldown_timestamp)
         return cooldown
 
+    #brique
     def move(self, x, y, poi=None):
         handle_cooldown(self.get_cooldown())
         print("===MOVE===", end=" ")
@@ -83,6 +67,7 @@ class Character:
         else:
             print("ERROR poi name not found")
 
+    #brique
     def transition(self):
         handle_cooldown(self.get_cooldown())
         print("===TRANSITION===", end=" ")
@@ -90,6 +75,7 @@ class Character:
         print(f"{self.name} transitioned to layer {response["data"]["transition"]["layer"]}")
         return response
 
+    #brique
     def rest(self):
         handle_cooldown(self.get_cooldown())
         print("===REST===", end=" ")
@@ -97,6 +83,7 @@ class Character:
         print()
         return response
 
+    #brique
     def buy_NPC(self, code, quantity=1):
         self.move_to(loot_dict[code]["location"])
         handle_cooldown(self.get_cooldown())
@@ -105,8 +92,8 @@ class Character:
         print(f"{self.name} traded {quantity} {code}")
         return response
 
+
     def fight(self, enemy):
-        self.move_to(enemy)
         handle_cooldown(self.get_cooldown())
         print("===FIGHT===", end=" ")
         response = post(f"/my/{self.name}/action/fight")
@@ -114,8 +101,7 @@ class Character:
         print(f"Drops: {response.get("data").get("fight").get("characters", [{}])[0].get("drops")}")
         return response
 
-    def gather_at(self, poi):
-        self.move_to(poi)
+    def gather(self, poi):
         handle_cooldown(self.get_cooldown())
         print("===GATHER===", end=" ")
         response = post(f"/my/{self.name}/action/gathering")
@@ -189,6 +175,7 @@ class Character:
                 self.bank_deposit_full_inventory(char=char)
             else:
                 self.bank_deposit_full_inventory([loot],char=char)
+
         if loot_dict[loot]["action"] == "trade" or loot_dict[loot]["action"] == "reward":
             if loot_dict[loot]["action"] == "trade":
                 trader = loot_dict[loot]["location"]
@@ -218,8 +205,10 @@ class Character:
             if loot_dict[loot]["action"] == "reward":
                 self.task_exchange()
             return #quit function
+        
         elif loot_dict[loot]["action"] == "task":
             self.task_farm()
+
         elif loot_dict[loot]["action"] == "gather":
             #TODO Optimize speed here
             subtype = get_item(loot)["data"]["subtype"]
@@ -229,6 +218,7 @@ class Character:
                     if len(tmp["data"]["effects"]) >= 2:
                         if tmp["data"]["effects"][1]["code"] == subtype:
                             self.equip(item["code"])
+
         elif loot_dict[loot]["action"] == "fight":
             self.equip_best(loot_dict[loot]["location"])
             #TODO Optimize equip best speed
@@ -242,11 +232,18 @@ class Character:
                     self.bank_deposit_full_inventory([loot],char=char)
             match loot_dict[loot]["action"]:
                 case "gather":
+                    if(poi_dict[loot_dict[loot]["location"]].get("event") != None):
+                        self.event_gather(loot)
+                    self.move_to(loot_dict[loot]["location"])
                     self.gather_at(loot_dict[loot]["location"])
                 case "fight":
                     char = self.get_character()
                     self.heal_logic(char=char)
-                    self.fight(loot_dict[loot]["location"])
+                    if poi_dict[loot_dict[loot]["location"]]["event"] == True:
+                        self.event_fight(loot_dict[loot]["location"])
+                    else:
+                        self.move_to(loot_dict[loot]["location"])
+                        self.fight(loot_dict[loot]["location"])
 
     def heal_logic(self, char=None):
         if char == None:
@@ -271,6 +268,7 @@ class Character:
             self.rest()
         return None
 
+    #brique
     def craft(self, item, amount=1):
         self.move_to(get_item(item)["data"]["craft"]["skill"])
         handle_cooldown(self.get_cooldown())
@@ -278,7 +276,8 @@ class Character:
         response = post(f"/my/{self.name}/action/crafting", {"code": item, "quantity": amount})
         print(f"{self.name} crafted {amount} {item}")
         return response
-        
+    
+    #brique    
     def bank_deposit_item(self,item, amount=1):
         self.move_to("bank")
         handle_cooldown(self.get_cooldown())
@@ -287,6 +286,7 @@ class Character:
         print(f"{self.name} deposited {amount} {item} in the bank")
         return response
 
+    #brique
     def bank_withdraw_item(self,item, amount=1):
         self.move_to("bank")
         handle_cooldown(self.get_cooldown())
@@ -358,14 +358,16 @@ class Character:
     def get_character(self):
         response = get(f"/characters/{self.name}")
         return response["data"]
-    
+
+    #brique    
     def use(self, item, quantity=1):
         handle_cooldown(self.get_cooldown())
         print("===USE===", end=" ")
         response = post(f"/my/{self.name}/action/use", {"code": item, "quantity": quantity})
         print(f"{self.name} used {quantity} {item}")
         return response
-    
+
+    #brique    
     def equip(self, item, slot=None, quantity=1):
         handle_cooldown(self.get_cooldown())
         if slot is None:
@@ -497,7 +499,8 @@ class Character:
             print(f"Enough {items["code"]} in Inventory")
         self.craft(code, ammount)
         return None
-    
+
+    #brique    
     def recycle(self, code, quantity=1):
         poi = get_item(code)["data"]["craft"]["skill"]
         self.move_to(poi)
@@ -539,6 +542,7 @@ class Character:
     def get_task_type(self):
         return self.get_character()["task_type"]
 
+    #brique
     def task_accept(self,type):
         if type == "monster":
             self.move_to("tasks_master_monster")
@@ -550,6 +554,7 @@ class Character:
         else:
             return #TODO task_item
 
+    #brique
     def task_cancel(self):
         if self.get_item_quantity("tasks_coin") < 1 :
             if get_bank_item_quantity("tasks_coin") < 1:
@@ -564,6 +569,7 @@ class Character:
         if response.get("data",0) != 0:
             return response["data"]
 
+    #brique
     def task_exchange(self):
         self.move_to("tasks_master_monster")
         handle_cooldown(self.get_cooldown())
@@ -571,7 +577,8 @@ class Character:
         response = post(f"/my/{self.name}/action/task/exchange")
         print(f"Reward: {response.get("data").get("rewards")}")
         return response["data"]
-
+    
+    #brique
     def task_complete(self,type):
         if type == "monster":
             self.move_to("tasks_master_monster")
@@ -649,7 +656,26 @@ class Character:
                 participant2.heal_logic()
             self.boss_fight(enemy,participant1,participant2)
 
+    def event_fight(self, enemy):
+        event_code = poi_dict[enemy].get("event_code")# using get() to protect non existing keys
+        location = active_event_location(event_code)
+        if (location is not  None):
+            self.move(location[0], location[1], enemy)
+            self.fight(enemy)
+        else:
+            print(event_code," not active")
+            return None
 
+    def event_gather(self, code):
+        event_code = poi_dict[loot_dict[code]["location"]].get("event_code")# using get() to protect non existing keys
+        location = active_event_location(event_code)
+        if (location is None):
+            self.move(location[0], location[1], loot_dict[code]["location"])
+            self.gather(code)
+        else:
+            print(event_code," not active")
+            return None
+        
 if __name__ == "__main__":
 
     #json_print(CHILD.fight("chicken"))

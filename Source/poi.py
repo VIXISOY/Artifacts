@@ -34,8 +34,9 @@ poi_dict = {
     "cyclops":              {"x": 7 , "y":-3 , "layer":["overworld"] },
     "mithril_rocks":        {"x":-2 , "y": 5 , "layer":["underground"], "proxy": "mine_ouest"},
     "owlbear":              {"x":10 , "y": 1 , "layer":["overworld"]}, 
-    "demon":                {"x": 0 , "y": 0 , "layer":["overworld"]}, #location decided by event
-    "corrupted_owlbear":    {"x": 0 , "y": 0 , "layer":["overworld"]}, #location decided by event
+    "demon":                {"x": 0 , "y": 0 , "layer":["overworld"], "event": "portal_demon"}, #location decided by event
+    "corrupted_owlbear":    {"x": 0 , "y": 0 , "layer":["overworld"], "event": "corrupted_owlbear"}, #location decided by event
+    "magic_tree":           {"x": 0 , "y": 0 , "layer":["overworld"], "event": "magic_apparition"}, #location decided by event
 
     "woodcutting":          {"x":-2 , "y":-3 , "layer":["overworld"] },
     "cooking":              {"x": 1 , "y": 1 , "layer":["overworld"] },

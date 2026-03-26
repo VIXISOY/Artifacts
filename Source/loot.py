@@ -66,4 +66,5 @@ loot_dict = {
     "corrupted_gem":        {"action":"fight",  "location":"corrupted_owlbear"},
     "demon_horn":           {"action":"fight",  "location":"demon"},
     "piece_of_obsidian":    {"action":"fight",  "location":"demon"},
+    "magic_wood":           {"action":"fight",  "location":"magic_tree"},
 }
