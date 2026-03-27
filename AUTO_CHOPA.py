@@ -3,5 +3,5 @@ CHOPA = Character("CHOPA")
 
 if __name__ == '__main__':
 
-    while CHOPA.get_character()["gearcrafting_level"] < 35:
+    while CHOPA.get_character()["gearcrafting_level"] < 50:
         CHOPA.auto_craft("snakeskin_legs_armor",recycle=True)
